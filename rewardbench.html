@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The luckiest of 23 tries — a RewardBench subset-win audit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Report the subset where a model looks best and you're reporting the maximum of 23 noisy tests. A reproducible RewardBench audit: one 'significant' subset win (p=0.009) evaporates under multiple-comparison correction (p=0.19); a different one survives.">
+<meta property="og:title" content="The luckiest of 23 tries — a RewardBench subset-win audit">
+<meta property="og:description" content="'We lead on subset X' is often just the maximum of many noisy tests. Corrected, the win evaporates.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · RewardBench · reproducible</div>
+    <h1>The luckiest of 23 tries</h1>
+    <p class="lede">You have seen this claim a hundred times without noticing it was a claim: <em>“our model leads on [some subset].”</em> Not the overall benchmark — a slice of it. It sounds modest, even rigorous. It is, more often than not, the least rigorous number in the whole announcement.</p>
+
+    <p>The benchmark here is <strong>RewardBench</strong>, which scores a model across <strong>23 subsets</strong>. But the lesson is about any benchmark carved into many pieces — which is to say almost all of them: MMLU’s 57 subjects, a run’s dozens of checkpoints, the N ways to compute a metric.</p>
+
+    <h2>Why the best slice is a rigged coin</h2>
+    <p>The mechanism is pure arithmetic. Suppose you compare two models that are, in truth, <em>identical</em> — exactly equal in ability. On any single subset, one will edge out the other by chance; noise guarantees it. Now look across all 23 subsets and report the one where model A looks best. You are no longer reporting “A’s performance.” You are reporting <strong>the maximum of 23 noisy numbers</strong> — and the maximum of many noisy numbers is biased upward even when there is nothing to find.</p>
+    <p>With 23 subsets and the usual significance bar, you should <em>expect</em> about <strong>0.6 “significant” wins between two identical models</strong>, purely from noise. So one marginal subset win isn’t evidence of anything. It’s the base rate.</p>
+
+    <h2>Two real cases, opposite answers</h2>
+    <p>The pair is the whole point, because they come out opposite. Per-subset two-proportion test, then the best A-direction win corrected with Šidák, <span class="mono">1 − (1 − p)<sup>23</sup></span>:</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Case</th><th>The two models, overall</th><th>Best-subset raw p</th><th>Corrected (K=23)</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Inflated</strong></td>
+          <td class="num">tied (0.5350 vs 0.5340)</td>
+          <td class="num">0.009 <span style="color:var(--muted)">(looks sig.)</span></td>
+          <td class="num tag-bad">0.19</td>
+          <td class="tag-bad">selection artifact</td>
+        </tr>
+        <tr>
+          <td><strong>Robust</strong></td>
+          <td class="num">A is 0.4 pp <em>worse</em></td>
+          <td class="num">0.00049</td>
+          <td class="num tag-good">0.011</td>
+          <td class="tag-good">genuine</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>In the first case, two essentially tied models; A’s best-subset win looks significant on its own (p = 0.009). Once you account for it being the best of 23 tries, the significance evaporates (p = 0.19, well above the bar). It’s noise. “A beats B on subset X” is not a finding.</p>
+    <p>In the second — and this is what makes the check trustworthy rather than a naysayer — a <em>different</em> pair, where A is actually the weaker model overall, nonetheless shows a subset difference big enough to <strong>survive</strong> the same 23-way correction (p = 0.011). That’s a real subset-level result, and the audit certifies it, even though the overall ranking runs the other way.</p>
+
+    <div class="callout">
+      <span class="lbl">The discriminating fact</span>
+      What flips the verdict is <strong>not</strong> the size of the overall gap — in the robust case A is <em>behind</em> overall. It’s whether the specific subset win is big enough to survive being the best of 23 choices. An honest check refuses to bless or condemn a subset claim based on the overall ranking; it asks only whether that slice’s result exceeds what best-of-K selection produces by chance. One does. One doesn’t.
+    </div>
+
+    <h2>It’s everywhere, and the fix is one word</h2>
+    <p>Once you see the shape you can’t stop seeing it. Every “best subject,” “best checkpoint,” “best metric variant” is best-of-K selection, and every one inflates the same way. The published number looks specific and humble (“just this subset”) while being, statistically, the loosest claim in the document.</p>
+    <p>The fix is a single word: <strong>correct.</strong> Adjust the reported subset win for how many subsets you could have picked from — a Bonferroni or Šidák correction, both one line of arithmetic — and claim only the slices that survive. It costs nothing and turns “we lead on X” into either a certified result or a withdrawn one.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      RewardBench (<code>allenai/reward-bench-results</code>), per-subset accuracy, K=23.<br>
+      Per-subset two-proportion z-tests; best A-direction win corrected by Šidák and Bonferroni.<br>
+      Inflated: overall 0.5350 vs 0.5340, raw p=0.0091 → Šidák 0.19 → SELECTION-INFLATED.<br>
+      Robust: A 0.4pp worse overall, raw p=0.00049 → Šidák 0.011 → ROBUST.<br>
+      ~0.6 spurious wins expected between identical models at K=23. Deterministic.<br>
+      Run the correction yourself: <code>evalgate correct --p 0.009 --n 23</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you publish a “we lead on X”</div>
+    <h3>Send me the subset claim you’re least sure about.</h3>
+    <p>I’ll tell you whether it survives correction — before a reviewer or a competitor checks. Independent, reproducible, plain-English.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. Chapter 5 of <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
