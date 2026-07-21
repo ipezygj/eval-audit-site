@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Free eval checks — correct a subset win, test a judge, check a fit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Three free in-browser statistical checks for AI eval claims: multiple-comparison correction for a best-of-N subset win, a binomial test for judge/verbosity bias, and leave-one-out fragility for a fitted exponent. Runs entirely in your browser.">
+<meta property="og:title" content="Free eval checks — before you publish the number">
+<meta property="og:description" content="Correct a subset win, test a judge for bias, check whether one point flips your slope. Free, in-browser.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<style>
+  .calc{background:var(--paper-2); border:1px solid var(--line); border-radius:11px; padding:22px 22px 18px; margin:1.6rem 0; box-shadow:var(--shadow)}
+  .calc h2{margin:.1rem 0 .2rem; font-size:1.25rem}
+  .calc .sub{color:var(--muted); font-size:.95rem; margin:0 0 16px}
+  .fields{display:flex; flex-wrap:wrap; gap:14px 20px; align-items:flex-end}
+  .field{display:flex; flex-direction:column; gap:5px}
+  .field label{font-family:ui-monospace,Consolas,monospace; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .field input, .field textarea{
+    font-family:ui-monospace,Consolas,monospace; font-size:.95rem; color:var(--ink);
+    background:var(--paper); border:1px solid var(--line); border-radius:7px; padding:9px 11px; width:150px;
+  }
+  .field textarea{width:220px; height:96px; resize:vertical; line-height:1.5}
+  .field input:focus, .field textarea:focus{outline:2px solid var(--accent); outline-offset:1px}
+  .result{
+    margin-top:16px; padding:14px 16px; border-radius:8px; border:1px solid var(--line);
+    background:var(--accent-soft); font-family:ui-monospace,Consolas,monospace; font-size:.9rem;
+    line-height:1.7; color:var(--ink); min-height:2.2em;
+  }
+  .result .v{font-weight:600}
+  .r-pass{color:var(--accent)}
+  .r-fail{color:var(--verdict)}
+  .result .muted{color:var(--muted)}
+  .toolnote{font-size:.9rem; color:var(--muted); margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Free tools · runs in your browser</div>
+    <h1>Check the number before you publish it</h1>
+    <p class="lede">Three of the cheapest checks that catch an overstated eval claim, free and in-browser — nothing is sent anywhere. The same checks behind the <a href="index.html#proof">case studies</a> and the open-source <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>.</p>
+
+    <!-- 1 -->
+    <div class="calc">
+      <h2>1 · Does your subset win survive correction?</h2>
+      <p class="sub">Report the subset/metric/checkpoint where a model looks best and you’re reporting the max of many noisy tests. Correct for how many you could have picked.</p>
+      <div class="fields">
+        <div class="field"><label for="p1">Best-subset p-value</label><input id="p1" type="number" step="any" min="0" max="1" value="0.009"></div>
+        <div class="field"><label for="n1">Number of subsets tested</label><input id="n1" type="number" step="1" min="1" value="23"></div>
+        <div class="field"><label for="a1">Significance α</label><input id="a1" type="number" step="any" min="0" max="1" value="0.05"></div>
+      </div>
+      <div class="result" id="r1"></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="calc">
+      <h2>2 · Is the judge winning, or just biased?</h2>
+      <p class="sub">Count the verdicts a side won — the longer answer, the first-listed one, the judge’s own family — and test it against chance.</p>
+      <div class="fields">
+        <div class="field"><label for="w2">Verdicts won by that side</label><input id="w2" type="number" step="1" min="0" value="68"></div>
+        <div class="field"><label for="n2">Total verdicts</label><input id="n2" type="number" step="1" min="1" value="100"></div>
+        <div class="field"><label for="p2">Chance rate</label><input id="p2" type="number" step="any" min="0" max="1" value="0.5"></div>
+      </div>
+      <div class="result" id="r2"></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="calc">
+      <h2>3 · Does one point flip your slope?</h2>
+      <p class="sub">Paste your <span class="mono">x&nbsp;y</span> points (one per line). Fits a power-law exponent on log-log axes, then refits leaving each point out — and flags if dropping one crosses your threshold.</p>
+      <div class="fields">
+        <div class="field"><label for="xy3">Points (x y per line)</label><textarea id="xy3">1 1.0
+2 1.9
+3 2.7
+4 3.4
+5 4.0
+6 9.5</textarea></div>
+        <div class="field"><label for="t3">Threshold (e.g. 1)</label><input id="t3" type="number" step="any" value="1"></div>
+      </div>
+      <div class="result" id="r3"></div>
+    </div>
+
+    <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">When the number rides on a launch or a paper</div>
+    <h3>Have it audited independently first.</h3>
+    <p>Send me the claim you’re least sure about. I’ll tell you whether it holds — before a reviewer or a competitor does.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate on GitHub</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. All checks run locally in your browser.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const fmt = x => (x >= 0.001 && x < 1000) ? (+x).toPrecision(3).replace(/\.?0+$/,'') : (+x).toExponential(2);
+
+// --- math ---
+function sidak(p, n){ return 1 - Math.pow(1 - p, n); }
+function bonferroni(p, n){ return Math.min(1, p * n); }
+
+const LG_G = 7, LG_C = [0.99999999999980993,676.5203681218851,-1259.1392167224028,
+  771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,
+  9.9843695780195716e-6,1.5056327351493116e-7];
+function lgamma(x){
+  if (x < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * x)) - lgamma(1 - x);
+  x -= 1; let a = LG_C[0]; const t = x + LG_G + 0.5;
+  for (let i = 1; i < LG_G + 2; i++) a += LG_C[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+function erf(x){
+  const s = x < 0 ? -1 : 1; x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429*t - 1.453152027)*t) + 1.421413741)*t - 0.284496736)*t + 0.254829592)*t*Math.exp(-x*x);
+  return s * y;
+}
+function binomTwoSided(k, n, p0){
+  if (k < 0 || k > n || n < 1) return NaN;
+  if (n <= 5000){
+    const logpmf = i => lgamma(n+1) - lgamma(i+1) - lgamma(n-i+1) + i*Math.log(p0) + (n-i)*Math.log(1-p0);
+    const lk = logpmf(k), tol = lk + 1e-9;
+    let total = 0;
+    for (let i = 0; i <= n; i++){ const li = logpmf(i); if (li <= tol) total += Math.exp(li); }
+    return Math.min(1, total);
+  }
+  const mu = n*p0, sd = Math.sqrt(n*p0*(1-p0));
+  const z = (Math.abs(k - mu) - 0.5) / sd;
+  return Math.max(0, Math.min(1, 1 - erf(z / Math.SQRT2)));
+}
+function olsSlope(xs, ys){
+  const n = xs.length, mx = xs.reduce((a,b)=>a+b,0)/n, my = ys.reduce((a,b)=>a+b,0)/n;
+  let sxx = 0, sxy = 0, syy = 0;
+  for (let i=0;i<n;i++){ sxx += (xs[i]-mx)**2; sxy += (xs[i]-mx)*(ys[i]-my); syy += (ys[i]-my)**2; }
+  const slope = sxy/sxx, r2 = syy===0 ? 0 : (sxy*sxy)/(sxx*syy);
+  return [slope, r2];
+}
+
+// --- 1: correction ---
+function calc1(){
+  const p = parseFloat($('p1').value), n = parseInt($('n1').value), a = parseFloat($('a1').value);
+  const el = $('r1');
+  if (!(p>=0 && p<=1) || !(n>=1) || !(a>0 && a<1)){ el.innerHTML = '<span class="muted">enter a p-value (0–1), a subset count (≥1), and α.</span>'; return; }
+  const s = sidak(p, n), b = bonferroni(p, n);
+  const pass = s < a;
+  const expected = n * a;
+  el.innerHTML =
+    `Šidák: <span class="v ${pass?'r-pass':'r-fail'}">p = ${fmt(s)}</span> &nbsp;·&nbsp; Bonferroni: <span class="v">p = ${fmt(b)}</span><br>` +
+    `<span class="${pass?'r-pass':'r-fail'}">${pass ? 'SURVIVES' : 'does NOT survive'} correction at α = ${fmt(a)}.</span><br>` +
+    `<span class="muted">Between two identical models you'd expect ~${fmt(expected)} "significant" wins across ${n} subsets by chance.</span>`;
+}
+// --- 2: bias ---
+function calc2(){
+  const w = parseInt($('w2').value), n = parseInt($('n2').value), p0 = parseFloat($('p2').value);
+  const el = $('r2');
+  if (!(n>=1) || !(w>=0 && w<=n) || !(p0>0 && p0<1)){ el.innerHTML = '<span class="muted">enter wins (0–total), total (≥1), and a chance rate (0–1).</span>'; return; }
+  const rate = w/n, p = binomTwoSided(w, n, p0), biased = p < 0.05;
+  el.innerHTML =
+    `Rate: <span class="v">${(rate*100).toFixed(1)}%</span> &nbsp;·&nbsp; two-sided p = <span class="v ${biased?'r-fail':'r-pass'}">${fmt(p)}</span><br>` +
+    `<span class="${biased?'r-fail':'r-pass'}">${biased ? 'Significant bias vs. chance' : 'No significant departure from chance'} (α = 0.05).</span>`;
+}
+// --- 3: fragility ---
+function calc3(){
+  const raw = $('xy3').value, thr = parseFloat($('t3').value), el = $('r3');
+  const xs = [], ys = [];
+  raw.split('\n').forEach(line => {
+    const parts = line.trim().replace(/,/g,' ').split(/\s+/).map(Number);
+    if (parts.length >= 2 && parts.every(v => !isNaN(v))){ xs.push(parts[0]); ys.push(parts[1]); }
+  });
+  if (xs.length < 3){ el.innerHTML = '<span class="muted">enter at least 3 valid "x y" points.</span>'; return; }
+  if (xs.some(v=>v<=0) || ys.some(v=>v<=0)){ el.innerHTML = '<span class="muted">power-law fit needs strictly positive x and y.</span>'; return; }
+  const lx = xs.map(Math.log), ly = ys.map(Math.log);
+  const [full] = olsSlope(lx, ly);
+  let lo = Infinity, hi = -Infinity, worst = 0, crosses = false;
+  for (let i=0;i<xs.length;i++){
+    const sx = lx.filter((_,j)=>j!==i), sy = ly.filter((_,j)=>j!==i);
+    const [s] = olsSlope(sx, sy);
+    lo = Math.min(lo, s); hi = Math.max(hi, s);
+    if (isFinite(thr) && (s >= thr) !== (full >= thr)) crosses = true;
+  }
+  // most influential point
+  let maxd = -1;
+  for (let i=0;i<xs.length;i++){
+    const sx = lx.filter((_,j)=>j!==i), sy = ly.filter((_,j)=>j!==i);
+    const [s] = olsSlope(sx, sy);
+    if (Math.abs(s-full) > maxd){ maxd = Math.abs(s-full); worst = i+1; }
+  }
+  el.innerHTML =
+    `Exponent: <span class="v">${fmt(full)}</span> &nbsp;·&nbsp; leave-one-out range <span class="v">[${fmt(lo)}, ${fmt(hi)}]</span><br>` +
+    (isFinite(thr)
+      ? `<span class="${crosses?'r-fail':'r-pass'}">${crosses ? `FRAGILE — dropping one point crosses ${fmt(thr)}` : `Robust — stays on one side of ${fmt(thr)}`} (most influential: point ${worst}).</span>`
+      : `<span class="muted">most influential: point ${worst}.</span>`);
+}
+
+['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
+['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
+['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
+calc1(); calc2(); calc3();
+</script>
+</body>
+</html>
