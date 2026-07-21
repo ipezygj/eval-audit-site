@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What an LLM judge actually rewards — an MT-Bench audit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Computed on MT-Bench's own shipped GPT-4 judgments: the longer answer wins 68% of the time and the judge's own model family wins 71.5% — both at p≈0. A raw LLM-judge win rate is entangled with length and self-preference.">
+<meta property="og:title" content="What an LLM judge actually rewards — an MT-Bench audit">
+<meta property="og:description" content="The longer answer wins 68% of pairwise verdicts; the judge's own family 71.5%. Both p≈0.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · MT-Bench · reproducible</div>
+    <h1>The judge rewards length</h1>
+    <p class="lede">Grading language models is hard, so the field found a shortcut: let a strong model do the grading. It’s fast, cheap, and correlates reasonably with human preference. It is also, in a specific and measurable way, not grading what everyone thinks it’s grading.</p>
+
+    <p>MT-Bench is one of the most-cited such leaderboards. The implicit claim is the natural one: a higher win rate means better answers. I took the benchmark’s <em>own</em> published judgments — the file of GPT-4 verdicts it ships with, nearly three thousand head-to-head comparisons — and asked a simpler question than “which model is better”: <strong>when this judge picks a winner, what is it actually responding to?</strong></p>
+
+    <h2>Two things the judge loves that aren’t quality</h2>
+    <p><strong>It loves the longer answer.</strong> Across comparisons where the two answers differed in length, the longer one won <strong>68% of the time</strong> — not 52%, not 55%. That’s about eighteen standard deviations from the coin-flip you’d get if length didn’t matter; the probability by chance rounds to zero. Winners averaged ~1,080 characters to the losers’ ~950.</p>
+    <p><strong>It loves its own family.</strong> When a GPT-family answer met a non-GPT one, the GPT side won <strong>71.5%</strong> of the time. Narrow it to GPT-4 judging GPT-4’s own answers, and it picked itself in <strong>82 of 94</strong> head-to-heads — 87%. A model grading a contest that includes its own work is a conflict of interest, and here it’s firing at seventy-plus percent.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>What the judge tracks</th><th>Win rate</th><th>Significance</th></tr></thead>
+      <tbody>
+        <tr><td>Longer answer wins</td><td class="num tag-bad">68.0%</td><td class="num">z=18.3, p≈0</td></tr>
+        <tr><td>GPT-family vs non-GPT</td><td class="num tag-bad">71.5%</td><td class="num">z=22.8, p≈0</td></tr>
+        <tr><td>GPT-4 judging its own answers</td><td class="num tag-bad">87.2%</td><td class="num">82/94, length balanced 51.8%</td></tr>
+        <tr><td>Answer shown first wins</td><td class="num">52.6%</td><td class="num">p≈1e-4; 12.9% flip on swap</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2>What this does and doesn’t prove</h2>
+    <p>Being careful is the entire value of an audit. This does <strong>not</strong> prove that length <em>causes</em> the wins. There’s an honest confound: longer answers can also be <em>better</em> — more thorough, more complete. From this observational data alone I can’t fully separate the two. What it <em>does</em> prove is that the headline “quality” win-rate is entangled with a presentation variable the benchmark never controls for. It’s measuring quality <em>and</em> length, welded together, with no way for the reader to tell how much of the score is which.</p>
+
+    <div class="callout">
+      <span class="lbl">The sturdier half</span>
+      The self-preference finding survives the obvious confound: in those GPT-vs-non-GPT matchups, the GPT answer was the longer one only <strong>51.8%</strong> of the time — length was balanced. So the family preference isn’t just the length effect wearing a disguise. A model does, measurably, favor its own kind.
+    </div>
+
+    <h2>The honest takeaway</h2>
+    <p>None of this is an accusation of fraud, and none of it is even novel — the MT-Bench authors themselves flagged that LLM judges reward length. What the audit adds is <strong>the number, computed on their own file</strong>, so it can’t be waved away: if you quote a raw LLM-judge win rate, you are quoting a figure worth double-digit percentage points of length bias and a measurable dose of self-preference. The fixes are known and cheap — length-match the answers, use a disinterested judge or an ensemble, always run both orderings and report how often the verdict flips.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      MT-Bench public GPT-4 pairwise judgments (<code>gpt-4_pair.jsonl</code>), general templates, n=2,999.<br>
+      Longer wins 68.0% (z=18.3, p≈0); GPT-family 71.5% (z=22.8); GPT-4-on-GPT-4 87.2% (82/94, length balanced 51.8%);<br>
+      position-1 52.6% (p=1e-4); 12.9% of paired verdicts flip on swap.<br>
+      Correlation, not proven causation, for length; self-preference is length-controlled.<br>
+      Check a preference rate yourself: <code>evalgate bias --wins 68 --n 100</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you cite a judge win rate</div>
+    <h3>Is your judge winning, or just longer?</h3>
+    <p>I’ll certify the ranking, or show you the bias wearing its label — on your own eval, reproducibly.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. Chapter 2 of <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

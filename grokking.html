@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The exponent that came free — a grokking scaling-law audit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A reported 'super-linear' grokking lead-time exponent (α>1) is largely mechanical: it comes from the definition Δt = t_grok − t_onset, and for one task hinges on a single data point. A fair re-analysis of a secondary claim using the paper's own data.">
+<meta property="og:title" content="The exponent that came free — a grokking scaling-law audit">
+<meta property="og:description" content="A 'super-linear' scaling exponent that a constant substitution already produces, and one point can flip.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · grokking · reproducible</div>
+    <h1>The exponent that came free</h1>
+    <p class="lede">A recent paper reports that a warning lead-time grows <em>super-linearly</em> with a timescale — a power law with exponent above 1, read as a real dynamical scaling law. It’s a clean, quotable summary. It is also, in a specific sense, a fact about a definition rather than about the dynamics.</p>
+
+    <p>To be clear up front about scope: this re-analysis uses the paper’s <em>own</em> published tables, and it does <strong>not</strong> dispute the paper’s primary contribution — that a geometric defect rises before grokking. It examines one <em>secondary</em> claim: the characterization of the lead time Δt = c·t<sub>grok</sub><sup>α</sup> as super-linear (reported α = 1.180 for SCAN, 1.132 for Dyck). The exponent and R² reproduce exactly by OLS on the reported data, which confirms the method matches.</p>
+
+    <h2>1. The exponent is largely mechanical</h2>
+    <p>The lead time is defined as Δt = t<sub>grok</sub> − t<sub>onset</sub>. Across the reported runs, onset is a small fraction of t<sub>grok</sub> (lead fractions are 90%+ for most runs), so Δt ≈ t<sub>grok</sub>, and regressing Δt on t<sub>grok</sub> is close to regressing t<sub>grok</sub> on itself.</p>
+    <p>As a check, replace the true onset times with a <strong>constant</strong> — no dynamics at all — and refit. That already yields <strong>α = 1.47 (SCAN), 1.07 (Dyck)</strong>. So α > 1 is the baseline you get from the definition alone, before any signal behavior enters. In fact the measured SCAN α sits <em>below</em> its mechanical baseline, because the real onset times grow with t<sub>grok</sub> and pull α down toward 1.</p>
+
+    <h2>2. The Dyck exponent hinges on one point</h2>
+    <p>The Dyck values (α = 1.132, R² = 0.908) reproduce exactly only when all 15 runs are included — among them the single lowest-lead-fraction, smallest-scale run (lead fraction 16.7%). Remove that one point and the fit gives <strong>α = 0.967 (below 1)</strong> with a <em>higher</em> R² (0.978). By fit quality you would exclude it, and the exponent then falls below unity — reversing the super-linear reading.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Fit</th><th>Reported / full</th><th>Under the check</th></tr></thead>
+      <tbody>
+        <tr><td>SCAN exponent α</td><td class="num">1.180</td><td class="num tag-bad">1.47 from constant onset</td></tr>
+        <tr><td>Dyck exponent α</td><td class="num">1.132 (R²=0.908)</td><td class="num tag-bad">0.967, R²=0.978 (drop 1 pt)</td></tr>
+        <tr><td>SCAN onset vs t<sub>grok</sub></td><td colspan="2" class="num tag-good">t<sub>onset</sub> ~ t<sub>grok</sub><sup>0.276</sup>, CI [0.11, 0.38] — real sub-linear</td></tr>
+        <tr><td>Dyck onset vs t<sub>grok</sub></td><td colspan="2" class="num">t<sub>onset</sub> ~ t<sub>grok</sub><sup>0.762</sup>, CI [0.26, 1.43] — no robust scaling</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2>3. The defensible object is onset-vs-timescale</h2>
+    <p>Model the quantity the power law obscures — the onset time itself — against t<sub>grok</sub> directly, and a real, task-specific statement appears. For <strong>SCAN</strong>, onset time grows sub-linearly (exponent 0.276, CI excludes 1): slower-grokking runs get proportionally <em>earlier</em> warning. For <strong>Dyck</strong>, the CI includes 1 — no robust scaling, consistent with a roughly constant lead fraction. So SCAN supports a genuine sub-linear onset-scaling; Dyck does not support any scaling claim once the right variable is analyzed.</p>
+
+    <div class="callout">
+      <span class="lbl">Fairness</span>
+      The paper’s primary claim — that the defect precedes grokking — is <strong>untouched</strong> here; testing it needs the training runs, not the tables. And the paper is transparent: this re-analysis was possible only because its tables are complete, and it discloses the exponent’s sensitivity to learning-rate coverage itself. These are questions for the authors, not charges: given Δt = t<sub>grok</sub> − t<sub>onset</sub> with 90%+ lead fractions, how is α > 1 distinguished from the mechanical baseline — and would reporting onset-vs-timescale directly be the more faithful summary?
+    </div>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Source: the paper’s published Tables (arXiv:2602.16967), lead times per run.<br>
+      OLS on log(Δt) vs log(t<sub>grok</sub>) reproduces α and R² exactly.<br>
+      Constant-onset null → α=1.47 (SCAN), 1.07 (Dyck). Dyck all-15 α=1.132/R²=0.908 → drop lowest-lead run → α=0.967/R²=0.978.<br>
+      Onset vs t_grok: SCAN 0.276 [0.11,0.38]; Dyck 0.762 [0.26,1.43].<br>
+      Test fit fragility yourself: <code>evalgate loo points.txt --power-law --threshold 1.0</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you publish a scaling exponent</div>
+    <h3>Does your “law” survive a constant substitution?</h3>
+    <p>If a metric is a difference, a ratio, or a normalized quantity, part of the exponent may be free. I’ll tell you how much — before anyone else asks.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. Chapter 17 of <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
