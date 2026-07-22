@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About — Ilpo Väätäinen, independent eval-integrity auditor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="About the independent eval-integrity practice behind Measured, Not Believed: who runs it, the method, and why you don't have to take its word for anything — every audit is reproducible from your own data.">
+<meta property="og:title" content="About — the eval-integrity practice">
+<meta property="og:description" content="Who's behind the audits, the method, and why every finding is reproducible.">
+<meta property="og:type" content="profile">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/about.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← services</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">About</div>
+    <h1>Who’s behind the audits</h1>
+    <p class="lede">I’m Ilpo Väätäinen. I run an independent eval-integrity practice: I audit the numbers AI teams are about to stake their credibility on, and tell them which ones survive a second look. This page exists so you can decide whether to trust that — and my whole argument is that you shouldn’t have to.</p>
+
+    <h2>How I got here</h2>
+    <p>I didn’t come to this from a lab. I came to it from losing an argument with reality. I built a trading system, validated it on a careful backtest, and believed the backtest. Then I took it live — and the single cheapest measurement in the whole pipeline, a fourteen-cent order resting in a real order book, told me the backtest had been lying. Not wrong by a rounding error; wrong about the thing that mattered. The edge the numbers promised wasn’t there once real fees and a real queue had their say.</p>
+    <p>That gap — between a number that passes every test you thought to run and a number that’s actually <em>true</em> — turned out to be the same gap that sits under half the AI benchmark claims I read. So I started doing to eval numbers what the live market had done to my backtest: reproduce them, control them, and go measure the thing the summary skipped.</p>
+
+    <h2>What I do now</h2>
+    <p>Independent, reproducible audits of AI evaluation results — benchmark leaderboards, LLM-as-judge results, scaling-law claims. Before a launch, a paper, or a fundraise, I check whether the headline number holds, and hand back a plain-English report: certified, or revised, with the one-line statistical fix. I also wrote the book behind the practice, <a href="book.html">Measured, Not Believed</a>, and maintain the open-source <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a> checks so anyone can run the cheap version themselves.</p>
+
+    <h2>Why you don’t have to take my word for it</h2>
+    <p>Trust in this work isn’t a credential — it’s reproducibility. Three principles keep me honest, and they’re the ones I’d want applied to my own numbers:</p>
+    <ul>
+      <li><strong>Every finding is re-runnable.</strong> I audit from your released data with a deterministic method and hand you the commands. A number you can’t re-derive is a rumor, including mine.</li>
+      <li><strong>I certify real results as loudly as I revise weak ones.</strong> A tool that only ever finds fault is a cynic. Some claims survive correction — I say so, and strengthen them.</li>
+      <li><strong>I audit the framing, not the people.</strong> Findings target the one over-tightened sentence, not the work’s real contribution — and I state the limits of what an observational check can prove.</li>
+    </ul>
+    <p>The best proof is public. Three audits, computed on the papers’ own released data, reproducing exactly:</p>
+    <ul>
+      <li><a href="mtbench.html">An LLM judge that rewards length</a> — 68% longer-answer wins, 71.5% self-preference.</li>
+      <li><a href="rewardbench.html">A “best subset” win that evaporates under correction</a> — p=0.009 → 0.19.</li>
+      <li><a href="grokking.html">A “super-linear” exponent that came free from a definition</a> — and one point flips it.</li>
+    </ul>
+
+    <p style="color:var(--muted);font-size:.95rem">This is an independent practice, not a big firm — which is the point. You get the person who does the work, a reproducible method instead of a brand, and an audit that’s as willing to clear your number as to catch it.</p>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Work with me</div>
+    <h3>Send me the number you’re least sure about.</h3>
+    <p>I’ll tell you whether it holds — reproducibly, before anyone else looks.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="sample.html">See a sample report</a>
+      <a class="btn btn-ghost" href="book.html">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

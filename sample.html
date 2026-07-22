@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sample Eval Integrity Audit report — what a client receives</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A sample eval-integrity audit report: the exact structure a client receives — an executive verdict table, per-claim findings with the corrected statistics, and one-line fixes. Illustrative fictional engagement; real client reports are confidential.">
+<meta property="og:title" content="Sample Eval Integrity Audit report">
+<meta property="og:description" content="What a client actually receives: verdict table, per-claim findings, the fix for each.">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/sample.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<style>
+  .sample-banner{
+    background:var(--verdict); color:#fff; border-radius:9px; padding:12px 18px; margin:1.4rem 0 0;
+    font-family:ui-monospace,Consolas,monospace; font-size:.82rem; line-height:1.55;
+  }
+  .sample-banner b{letter-spacing:.06em}
+  .meta{
+    display:grid; grid-template-columns:auto 1fr; gap:6px 18px; margin:1.6rem 0;
+    font-family:ui-monospace,Consolas,monospace; font-size:.84rem; color:var(--ink);
+    border:1px solid var(--line); border-radius:9px; padding:16px 18px; background:var(--paper-2);
+  }
+  .meta dt{color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-size:.72rem}
+  .meta dd{margin:0}
+  .rev{color:var(--verdict); font-weight:600}
+  .cert{color:var(--accent); font-weight:600}
+  .finding-h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-top:2.2rem}
+  .finding-h .id{font-family:ui-monospace,Consolas,monospace; color:var(--muted); font-size:.8rem}
+  .pill{font-family:ui-monospace,Consolas,monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; padding:3px 9px; border-radius:5px; border:1px solid currentColor}
+  .pill.rev{color:var(--verdict)} .pill.cert{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← services</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Sample deliverable</div>
+    <h1>Eval Integrity Audit — sample report</h1>
+
+    <div class="sample-banner">
+      <b>SAMPLE — ILLUSTRATIVE.</b> This is a fictional engagement with invented inputs, shown to demonstrate the report structure a client receives. The statistics below are real arithmetic run on those fictional inputs. Real client reports are confidential and never published.
+    </div>
+
+    <p class="lede">Every engagement ends in one document like this: which claims hold, which don’t, and the one-line statistical fix for each that doesn’t. Nothing is hand-waved — each verdict is reproducible from your data.</p>
+
+    <dl class="meta">
+      <dt>Client</dt><dd>Reward-model company (fictional — “Acme RM”)</dd>
+      <dt>Engagement</dt><dd>Full Eval Audit — pre-launch leaderboard claims</dd>
+      <dt>Scope</dt><dd>3 headline claims from a draft launch post + model card</dd>
+      <dt>Turnaround</dt><dd>5 business days</dd>
+      <dt>Auditor</dt><dd>Ilpo Väätäinen — independent eval-integrity practice</dd>
+    </dl>
+
+    <h2>1 · Executive summary</h2>
+    <p>Of the three headline claims audited, <strong>one is certified as stated</strong>, and <strong>two require revision</strong> before publication — each is a specific, reproducible over-statement, not a judgment call.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Claim (as drafted)</th><th>Finding</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>“We lead on the Reasoning subset”</td><td class="num">raw p=0.012 → corrected 0.19</td><td class="rev">REVISE</td></tr>
+        <tr><td>B</td><td>“Our judge is a reliable human proxy (91% agreement)”</td><td class="num">longer answer wins 63% (p≈2e-7)</td><td class="rev">REVISE</td></tr>
+        <tr><td>C</td><td>“Model B leads on the Safety subset”</td><td class="num">raw p=0.0003 → corrected 0.005</td><td class="cert">CERTIFIED</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2>2 · Findings</h2>
+
+    <div class="finding-h"><span class="id">Finding A</span><span class="pill rev">Revise</span></div>
+    <h3 style="margin:.4rem 0 .3rem">“We lead on the Reasoning subset” is the best of 18 noisy tests.</h3>
+    <p>The leaderboard is scored across 18 subsets, and the draft post reports the single subset where Acme RM leads. That win looks significant on its own (raw p = 0.012), but it is the maximum of 18 comparisons. Corrected for the family it was chosen from (Šidák over 18 subsets), it lands at <strong>p = 0.19</strong> — above the 0.05 bar. Between two equally-good models at 18 subsets you expect ~0.9 “significant” subset wins from noise alone.</p>
+    <div class="callout"><span class="lbl">Recommendation</span> Drop the Reasoning-subset claim, or restate it as “within noise after correcting for 18 subsets.” If a subset lead is wanted for the post, use Finding C (Safety), which survives the same correction.</div>
+
+    <div class="finding-h"><span class="id">Finding B</span><span class="pill rev">Revise</span></div>
+    <h3 style="margin:.4rem 0 .3rem">The “91% human agreement” is entangled with answer length.</h3>
+    <p>The judge’s headline agreement number is real, but on the pairwise verdicts where the two answers differ in length, the judge picks the <em>longer</em> one <strong>63% of the time (252 / 400, p ≈ 2 × 10⁻⁷)</strong>. A large part of “agreement with humans” may be “agreement with length,” which the raw number can’t separate. This does not prove length <em>causes</em> the agreement — but a proxy claim can’t be read cleanly while a presentation variable moves the verdict this much.</p>
+    <div class="callout"><span class="lbl">Recommendation</span> Report agreement on length-matched pairs, or disclose the verbosity sensitivity alongside the 91%. Consider a length penalty or an ensemble judge for the production ranking.</div>
+
+    <div class="finding-h"><span class="id">Finding C</span><span class="pill cert">Certified</span></div>
+    <h3 style="margin:.4rem 0 .3rem">“Model B leads on the Safety subset” survives correction.</h3>
+    <p>This subset win holds up: raw p = 0.0003, and after the same 18-way Šidák correction it is <strong>p = 0.005</strong> — comfortably below 0.05. This is a genuine subset-level result and can be stated as published. Note the audit certifies it independently of the overall ranking; it earns the claim on its own evidence.</p>
+    <div class="callout"><span class="lbl">Recommendation</span> Publish as-is. Optionally add “significant after multiple-comparison correction (Šidák, K=18)” — it strengthens the claim and signals rigor.</div>
+
+    <h2>3 · Method &amp; scope</h2>
+    <p>Each claim was reproduced from the client’s released per-subset scores and pairwise judgments. Subset comparisons use a per-subset two-proportion test with Šidák and Bonferroni family-wise correction over the 18 subsets; the judge check is an exact binomial test on length-differing pairs. All computations are deterministic and were returned with the client’s report. This audit examined only the three claims in scope; it does not assess the models’ overall quality.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce (client’s data)</span><br>
+      A: <code>evalgate correct --p 0.012 --n 18</code> → does not survive<br>
+      B: <code>evalgate bias --wins 252 --n 400</code> → 63.0%, p≈2e-7, bias<br>
+      C: <code>evalgate correct --p 0.0003 --n 18</code> → survives
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Your report, on your numbers</div>
+    <h3>This is what a Full Eval Audit delivers.</h3>
+    <p>Send me the claims you’re about to publish. You get a report like this — certified or revised, with the fix — before anyone else looks.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="calculator.html">Try the free checks</a>
+      <a class="btn btn-ghost" href="index.html#proof">See the real case studies</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. Sample deliverable; fictional data.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
