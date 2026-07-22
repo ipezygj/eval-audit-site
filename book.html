@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Measured, Not Believed — a book on AI eval integrity and backtest honesty</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Measured, Not Believed: why AI benchmark scores and trading backtests overpromise, and how to catch them. Twenty chapters of real, reproducible audits — LLM-judge bias, multiple comparisons, mechanical scaling laws, and a live-traded post-mortem. Pay what you want.">
+<meta name="keywords" content="AI evaluation, benchmark integrity, LLM judge bias, reproducibility, multiple comparisons, scaling laws, trading backtest, statistics, MLOps, eval">
+<meta property="og:title" content="Measured, Not Believed — AI eval integrity and backtest honesty">
+<meta property="og:description" content="Why benchmark scores and backtests overpromise, and how to catch them. Twenty real, reproducible audits.">
+<meta property="og:type" content="book">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/book.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Measured, Not Believed",
+  "author": { "@type": "Person", "name": "Ilpo Väätäinen" },
+  "inLanguage": "en",
+  "bookFormat": "https://schema.org/EBook",
+  "url": "https://ipezygj.github.io/eval-audit-site/book.html",
+  "sameAs": "https://leanpub.com/measurednotbelieved",
+  "description": "Why AI benchmark scores and trading backtests overpromise, and how to catch them — twenty real, reproducible audits of the numbers people compute and then believe.",
+  "about": ["AI evaluation", "Machine learning benchmarks", "LLM-as-judge bias", "Statistical reproducibility", "Trading backtests"],
+  "offers": { "@type": "Offer", "url": "https://leanpub.com/measurednotbelieved", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "description": "Pay what you want" }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← audits &amp; tools</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">The book</div>
+    <h1>Measured, Not Believed</h1>
+    <p class="lede">Why AI benchmark scores and trading backtests overpromise — and how to catch them. Twenty chapters of real, reproducible audits of the numbers people compute and then believe.</p>
+
+    <p>A benchmark score is not a model’s quality. A backtest return is not a strategy’s profit. A win rate is not an edge. Each is a number produced by a procedure, standing in for a thing in the world it resembles but is not — and the entire craft, in AI evaluation and in trading alike, is holding onto that distinction under the constant pressure to forget it. This book is a field guide to the handful of ways that distinction breaks, each shown on a real, named number, each with the cheap check that catches it.</p>
+
+    <h2>What’s inside</h2>
+    <p>Part I turns the lens on AI evaluation — the leaderboards and LLM-judge results that decide which model “wins”:</p>
+    <ul>
+      <li><strong>The judge rewards length.</strong> An LLM judge that prefers the longer answer 68% of the time, and its own model family 71.5% — computed on the benchmark’s own file. (<a href="mtbench.html">read the audit</a>)</li>
+      <li><strong>The luckiest of 23 tries.</strong> A “we lead on subset X” win that evaporates once you correct for how many subsets it could have been picked from. (<a href="rewardbench.html">read the audit</a>)</li>
+      <li><strong>The exponent that came free.</strong> A “super-linear” scaling law that a constant substitution already produces, and one point can flip. (<a href="grokking.html">read the audit</a>)</li>
+      <li>Length as proven cause, not correlation; contamination and self-preference; and the toolkit that runs these checks.</li>
+    </ul>
+    <p>Part II turns the same discipline on money — a real trading system taken live, and what the backtest hid: fees that beat the edge, a queue that can’t be simulated, the false negative, and the regime that ended it. Part III is the method as a repeatable audit — reproduce, control, measure the thing the model skipped — applied in the wild to published papers, and turned back on the author’s own work.</p>
+
+    <div class="callout">
+      <span class="lbl">The one-sentence method</span>
+      Don’t believe the number — reproduce it (a number you can’t re-derive is a rumor), control it (name the baseline, run the reversal, strip the confound), and measure the thing it skipped. The check is almost always cheaper than the confidence you’re about to spend in its place.
+    </div>
+
+    <h2>Who it’s for</h2>
+    <p>Anyone who computes a number and then has to decide whether to believe it: ML researchers and eval-tooling teams shipping benchmark claims, quants and traders reading backtests, and technical readers who want to stop being fooled by a tidy summary statistic — including their own.</p>
+
+    <p style="color:var(--muted);font-size:.95rem">By Ilpo Väätäinen, who also runs an independent <a href="index.html">eval-integrity audit practice</a> and maintains the open-source <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a> checks. The book is the fuller story behind both.</p>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Pay what you want</div>
+    <h3>Read Measured, Not Believed</h3>
+    <p>Twenty audits, the method, and a live-traded post-mortem — name your price on Leanpub.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read on Leanpub →</a>
+      <a class="btn btn-ghost" href="index.html#book-audit">Book an audit</a>
+      <a class="btn btn-ghost" href="calculator.html">Free checks</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits &amp; the book <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
