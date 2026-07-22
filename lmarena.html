@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Is the #1 real? An independent LMArena audit — and why it passes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An independent Bradley-Terry audit of LMArena's public battle data. The #1 (gemini-2.5-pro) holds decisively — rank CI [1,1], P(#1)=1.00 over 98,088 battles. The same audit that flags SWE-bench's coin-flip top certifies this one. Resolving power is the whole story.">
+<meta property="og:title" content="Is the #1 real? An independent LMArena audit — and why it passes">
+<meta property="og:description" content="I audit whether leaderboard #1s are statistically real. On SWE-bench the top is a coin flip; on LMArena the #1 holds at rank CI [1,1] over ~98k battles. Same method, opposite verdict.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · LMArena (Chatbot Arena) · reproducible</div>
+    <h1>Is the #1 real?</h1>
+    <p class="lede">An eval-integrity audit that only ever debunks is a naysayer, not an auditor. The test of the method is whether it can also <em>certify</em> — say "this number holds" and show why. So I pointed it at the most-watched leaderboard in the field, the one whose #1 gets cited in every launch post: <strong>LMArena</strong>. The #1 holds. Decisively. And the reason it holds is the useful part.</p>
+
+    <p>I have been auditing whether leaderboard #1s are statistically real. On SWE-bench Lite/Verified the answer is often <em>no</em> — the top rank is a coin flip among a saturated tie, because the frontier submissions sit within a task or two of each other on a fixed, finite test set. LMArena is the natural counter-test: unlike a static benchmark it keeps accumulating human votes, and it already publishes confidence intervals. Does its #1 survive an independent recomputation?</p>
+
+    <h2>What I did</h2>
+    <p>I took the public arena battle data — <span class="mono">lmarena-ai/arena-human-preference-140k</span>: <span class="mono">model_a</span>, <span class="mono">model_b</span>, <span class="mono">winner</span> per human vote — kept the decisive votes, fit <strong>my own</strong> Bradley-Terry ranking, and bootstrapped over battles to get, for every model, a 95% rank confidence interval and P(this model is truly #1). No dependence on LMArena's published numbers. The fit and bootstrap are pure standard-library; only reading the parquet needs a data lib.</p>
+
+    <h2>Result: the #1 is not a coin flip</h2>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Audit slice</th><th>Decisive battles</th><th>Models</th><th>#1</th><th>Rank CI</th><th>P(#1 truly #1)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Full arena</strong></td>
+          <td class="num">98,088</td>
+          <td class="num">51</td>
+          <td>gemini-2.5-pro</td>
+          <td class="num">[1, 1]</td>
+          <td class="num tag-good">1.00</td>
+        </tr>
+        <tr>
+          <td><strong>Coding votes only</strong></td>
+          <td class="num">28,287</td>
+          <td class="num">52</td>
+          <td>gemini-2.5-pro</td>
+          <td class="num">[1, 2]</td>
+          <td class="num tag-good">0.96</td>
+        </tr>
+        <tr>
+          <td>One 19k shard</td>
+          <td class="num">13,872</td>
+          <td class="num">48</td>
+          <td>gemini-2.5-pro</td>
+          <td class="num">[1, 3]</td>
+          <td class="num">0.83</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>On the full ~98k decisive battles, gemini-2.5-pro is the top model in <strong>100% of bootstrap resamples</strong>, with a rank confidence interval of exactly <strong>[1, 1]</strong>. The runner-up (a gemini-2.5-pro preview build) sits at rank [2, 3], clearly below. The #1 holds when you restrict to coding votes — still first, P = 0.96. This is the opposite of a saturated tie: the lead is far larger than sampling noise.</p>
+
+    <h2>The point: a #1 is only as real as the resolving power behind it</h2>
+    <p>Here is the two-sided lesson, and it lives in that third row. On a single 19k-battle shard the <em>very same audit</em> gave gemini-2.5-pro only <strong>P = 0.83</strong> with a three-way tie at the top — it looked much less certain. Five times the battles collapse that ambiguity to a clean [1, 1]. Nothing changed about the models; the ranking just crossed from under-powered to resolved.</p>
+
+    <div class="callout">
+      <span class="lbl">The discriminating fact</span>
+      What makes LMArena's #1 defensible where SWE-bench's is not is <strong>not</strong> that one leaderboard is "better run." It's resolving power. SWE-bench's test set is fixed and finite, so more of the same instances can't separate a saturated top — the #1 stays a coin flip. LMArena keeps gathering paired human comparisons, so its top rank earns its resolution. Same audit, opposite verdict — and the verdict is dictated by the data's power, not by who I'd like to win.
+    </div>
+
+    <h2>Why a certify matters as much as a debunk</h2>
+    <p>If you are about to hire someone to check your evaluation, your real fear is that they will simply trash it — that "auditor" means "person who finds a reason to say no." This case is the answer. The honest display in both directions is the same object: <strong>a rank plus the confidence interval or tie-group around it.</strong> When the interval is wide, I say the ordinal isn't supported yet. When it's [1, 1], I say so, and show the 98,088 comparisons that make it so. LMArena's practice — publishing CIs, gathering enough battles — is exactly what makes its ordinal defensible, and the audit certifies it.</p>
+
+    <div class="callout" style="border-left-color:var(--muted)">
+      <span class="lbl">Caveats, so this is fair</span>
+      This is a snapshot of the released battle set and its model roster; the specific #1 reflects the models present, not a permanent claim. I dropped ties and "both bad" votes and fit a standard Bradley-Terry model (no ties term, no style/length controls); LMArena's production pipeline has more machinery. The finding is about the <em>resolution of the top rank</em>, which the simple model already answers. "P = 1.00" is over bootstrap resamples of these battles — it means the lead dwarfs sampling noise here, not a metaphysical certainty.
+    </div>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Data: <code>lmarena-ai/arena-human-preference-140k</code> (public). Read <code>model_a</code>/<code>model_b</code>/<code>winner</code>; build decisive battles <code>(winner_model, loser_model)</code>.<br>
+      Fit Bradley-Terry (MM iteration, pure-stdlib); bootstrap B resamples over battles for each model's rank CI and P(#1).<br>
+      Full set: 98,088 decisive battles, 51 models (≥300 games) → rank 1 <code>gemini-2.5-pro</code>, CI [1,1], P(#1)=1.00; runner-up rank [2,3].<br>
+      Coding-only: 28,287 battles → still #1, P=0.96. One 19k shard → P=0.83, 3-way tie. Deterministic given seed.
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you cite your own leaderboard #1</div>
+    <h3>Send me the ranking you're about to headline.</h3>
+    <p>I'll tell you whether the top rank is resolved or a tie — with the confidence interval to print next to it. If it holds, I'll certify it. Independent, reproducible, plain-English.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. A two-sided case from <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

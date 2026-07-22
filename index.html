@@ -168,8 +168,8 @@
 
   <section id="proof" class="wrap">
     <div class="eyebrow">Case files · public data, reproduced</div>
-    <h2 class="section-h">Three claims. Same disease.</h2>
-    <p class="section-sub">Each of these was recomputed from the paper's own released data. None disputes the primary contribution — every one targets the one summary sentence that overpromised. This is exactly the work I'd do on yours.</p>
+    <h2 class="section-h">Four leaderboards. Three overstated — one holds.</h2>
+    <p class="section-sub">Each was recomputed from public, released data. Three target the one summary sentence that overpromised; the fourth is the control — a #1 I tried to break and couldn't, so I certify it. An auditor who only ever says no isn't checking anything. This is exactly the work I'd do on yours.</p>
 
     <div class="files">
       <div class="file">
@@ -209,6 +209,19 @@
         </div>
         <span class="verdict">mechanical · fragile</span>
         <a class="file-more" href="grokking.html">Read the full write-up →</a>
+      </div>
+
+      <div class="file">
+        <div class="tag">LMArena · the control · certified</div>
+        <h3>The most-cited #1 in the field — I tried to break it and couldn't.</h3>
+        <p>An independent Bradley-Terry recomputation of the public arena battles, bootstrapped for rank confidence.</p>
+        <div class="readout">
+          <span class="k">gemini-2.5-pro over 98,088 battles</span>&nbsp; <span class="real">rank CI [1, 1]</span><br>
+          <span class="k">P(truly #1)</span>&nbsp; <span class="real">1.00</span> &nbsp;(0.96 on coding votes)<br>
+          <span class="k">one 19k shard</span>&nbsp; <span class="claim">P = 0.83, 3-way tie</span> — volume is the story
+        </div>
+        <span class="verdict">resolved · certified</span>
+        <a class="file-more" href="lmarena.html">Read the full write-up →</a>
       </div>
     </div>
   </section>
