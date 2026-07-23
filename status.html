@@ -1,0 +1,265 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?</title><meta name="description" content="An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1&#x27;s confidence over time. Currently 3 of 4 SWE-bench boards print a #1 the data can&#x27;t resolve."><link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/status.html"><meta property="og:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta property="og:description" content="Is each AI leaderboard #1 statistically real, or a coin flip? A live, reproducible audit."><meta property="og:type" content="website"><meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/status.html"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta name="twitter:description" content="Is each AI leaderboard #1 real, or a coin flip? A live, reproducible audit."><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128202;</text></svg>"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "Eval Confidence Status \u2014 AI leaderboard #1 confidence", "description": "An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1's confidence over time. Currently 3 of 4 SWE-bench boards print a #1 the data can't resolve.", "url": "https://ipezygj.github.io/eval-audit-site/status.html", "keywords": ["AI leaderboard", "SWE-bench", "LMArena", "benchmark confidence", "statistical significance", "is the #1 real", "eval integrity", "rank confidence interval"], "creator": {"@type": "Person", "name": "Ilpo V\u00e4\u00e4t\u00e4inen"}, "license": "https://creativecommons.org/licenses/by/4.0/", "isBasedOn": "https://github.com/SWE-bench/experiments", "dateModified": "2026-07-23", "variableMeasured": ["verdict (real / coin-flip)", "P(printed #1 is the true #1)", "significance group size", "resolvable tiers"], "measurementTechnique": "bootstrap rank confidence intervals; paired McNemar; split-half stability"}</script></head><body>
+<style>
+:root{
+  --paper:#f5f6f8; --ink:#12151b; --muted:#5a6472; --faint:#8a93a1;
+  --line:#e3e6ea; --panel:#ffffff; --panel2:#eef1f4;
+  --accent:#0f9aa6; --accent-2:#0b7883;
+  --real:#1f9d57; --coinflip:#dc4d38; --amb:#c98a1a; --stale:#8a93a1;
+  --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(16,22,34,.05),0 8px 24px rgba(16,22,34,.06);
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#0b0d12; --ink:#e8ebf0; --muted:#9aa4b2; --faint:#6b7482;
+  --line:#20242d; --panel:#12151c; --panel2:#171b23;
+  --accent:#2bc4d0; --accent-2:#1a9aa6;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#0b0d12; --ink:#e8ebf0; --muted:#9aa4b2; --faint:#6b7482;
+  --line:#20242d; --panel:#12151c; --panel2:#171b23;
+  --accent:#2bc4d0; --accent-2:#1a9aa6;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{
+  --paper:#f5f6f8; --ink:#12151b; --muted:#5a6472; --faint:#8a93a1;
+  --line:#e3e6ea; --panel:#ffffff; --panel2:#eef1f4;
+  --accent:#0f9aa6; --accent-2:#0b7883;
+  --shadow:0 1px 2px rgba(16,22,34,.05),0 8px 24px rgba(16,22,34,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;
+  -webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:1060px;margin:0 auto;padding:48px 28px 72px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);font-weight:600}
+h1{font-size:clamp(2rem,4.5vw,3.1rem);line-height:1.04;letter-spacing:-.02em;margin:.5rem 0 .1rem;
+  text-wrap:balance;font-weight:750}
+.thesis{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);max-width:60ch;text-wrap:pretty}
+.summary{display:flex;gap:14px;flex-wrap:wrap;margin:30px 0 6px}
+.metric{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--shadow)}
+.metric .n{font-family:var(--mono);font-size:2.4rem;font-weight:600;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.metric .n.bad{color:var(--coinflip)} .metric .n.good{color:var(--real)}
+.metric .l{font-size:.82rem;color:var(--muted);margin-top:8px;text-wrap:balance}
+h2{font-family:var(--mono);font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;margin:46px 0 16px;display:flex;align-items:center;gap:14px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--stale)}
+.card.real::before{background:var(--real)} .card.coinflip::before{background:var(--coinflip)}
+.card.amb::before{background:var(--amb)}
+.card header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.card h3{font-size:1.14rem;letter-spacing:-.01em;font-weight:680}
+.blurb{font-size:.8rem;color:var(--faint);margin-top:3px;text-wrap:balance}
+.pill{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;
+  padding:5px 10px 5px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;
+  border:1px solid transparent}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.pill.real{color:var(--real);background:color-mix(in srgb,var(--real) 12%,transparent);border-color:color-mix(in srgb,var(--real) 30%,transparent)}
+.pill.coinflip{color:var(--coinflip);background:color-mix(in srgb,var(--coinflip) 12%,transparent);border-color:color-mix(in srgb,var(--coinflip) 30%,transparent)}
+.pill.amb{color:var(--amb);background:color-mix(in srgb,var(--amb) 12%,transparent);border-color:color-mix(in srgb,var(--amb) 30%,transparent)}
+.pill.stale{color:var(--stale);background:color-mix(in srgb,var(--stale) 12%,transparent)}
+.pill.coinflip .dot{animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.5)}}
+.meter{position:relative;height:9px;border-radius:6px;background:var(--panel2);overflow:hidden;margin-top:4px}
+.meter-fill{position:absolute;top:0;left:0;height:100%;border-radius:6px}
+.meter-fill.real{background:linear-gradient(90deg,var(--real),color-mix(in srgb,var(--real) 60%,#fff))}
+.meter-fill.coinflip{background:linear-gradient(90deg,var(--coinflip),color-mix(in srgb,var(--coinflip) 55%,#fff))}
+.meter-fill.amb{background:linear-gradient(90deg,var(--amb),color-mix(in srgb,var(--amb) 55%,#fff))}
+.meter-tick{position:absolute;top:-2px;width:1px;height:13px;background:var(--faint);opacity:.6}
+.meter-cap{display:flex;justify-content:space-between;align-items:baseline;margin:7px 0 2px;
+  font-size:.74rem;color:var(--muted)}
+.meter-cap b{font-family:var(--mono);font-size:.98rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.spark{display:block;width:100%;height:34px;margin:12px 0 2px}
+.spark-thr{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
+.spark-line{stroke-width:1.6;color:var(--stale)}
+.spark-line.real{color:var(--real)} .spark-line.coinflip{color:var(--coinflip)} .spark-line.amb{color:var(--amb)}
+.spark-line{stroke:currentColor}
+.spark-area{opacity:.13} .spark-area.real{fill:var(--real)} .spark-area.coinflip{fill:var(--coinflip)} .spark-area.amb{fill:var(--amb)} .spark-area.stale{fill:var(--stale)}
+.spark-dot{color:var(--stale)} .spark-dot.real{color:var(--real)} .spark-dot.coinflip{color:var(--coinflip)} .spark-dot.amb{color:var(--amb)}
+.spark-dot{fill:currentColor}
+.spark-cap{font-family:var(--mono);font-size:.66rem;color:var(--faint);letter-spacing:.02em;margin-bottom:2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;margin-top:14px;
+  border-top:1px solid var(--line);padding-top:14px}
+.stat{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:.82rem}
+.stat .k{color:var(--muted)}
+.stat .val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.card-foot{margin-top:13px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.leader{font-size:.76rem;color:var(--faint)}
+.leader span{font-family:var(--mono);color:var(--muted)}
+.watch{font-family:var(--mono);font-size:.68rem;color:var(--accent);text-decoration:none;white-space:nowrap;
+  border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;padding:3px 9px}
+.watch:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.cta{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow)}
+.cta-row{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:560px){.cta-row{grid-template-columns:1fr}}
+.cta h3{font-size:1.05rem;margin-bottom:5px}
+.cta p{font-size:.9rem;color:var(--muted);margin-bottom:14px;text-wrap:pretty}
+.cta-btn{display:inline-block;font-family:var(--mono);font-size:.8rem;font-weight:600;text-decoration:none;
+  background:var(--accent);color:#fff;border-radius:8px;padding:9px 16px}
+.cta-btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.cta-btn:hover{filter:brightness(1.05)}
+.legend{display:flex;gap:22px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:4px}
+.legend b{color:var(--ink);font-weight:600}
+.legend .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:baseline}
+.std{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 28px;
+  box-shadow:var(--shadow);margin-top:4px}
+.std ol{margin:14px 0 0;padding-left:20px;display:grid;gap:11px}
+.std li{padding-left:6px}.std li b{color:var(--ink)}
+.std .lead{font-size:1.02rem;color:var(--muted);text-wrap:pretty}
+.foot{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:.8rem;
+  color:var(--muted);line-height:1.7}
+.foot b{color:var(--ink)} .foot a{color:var(--accent);text-decoration:none}
+.stamp{font-family:var(--mono);font-size:.72rem;color:var(--faint);letter-spacing:.02em}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (max-width:560px){.wrap{padding:34px 18px 56px}.stats{grid-template-columns:1fr}}
+.fade{animation:fade .6s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+<div class="wrap">
+  <div class="eyebrow">Eval Confidence Status</div>
+  <h1>Is the&nbsp;#1 real?</h1>
+  <p class="thesis">An independent, reproducible audit of the major public LLM leaderboards — is each
+  printed&nbsp;#1 a statistically real ranking, or a saturated coin flip? Same method certifies and debunks.</p>
+
+  <div class="summary">
+    <div class="metric"><div class="n">4</div><div class="l">SWE-bench boards audited</div></div>
+    <div class="metric"><div class="n bad">3</div><div class="l">print a&nbsp;#1 the data can't resolve</div></div>
+    <div class="metric"><div class="n good">2</div><div class="l">have a genuinely real&nbsp;#1</div></div>
+  </div>
+
+  <h2>Leaderboards</h2>
+  <div class="grid">
+    <article class="card real">
+      <header>
+        <div><h3>SWE-bench Test</h3><p class="blurb">1,424-task full split — the resolving-power control</p></div>
+        <span class="pill real"><i class="dot"></i>REAL #1</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 100 percent">
+        <div class="meter-fill real" style="width:100%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>100%</b></div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,4.0 47.3,11.0 52.8,11.9 58.4,3.0 63.9,3.0 69.5,3.0 75.0,3.0 80.5,3.0 86.1,7.3 91.6,3.0 97.2,3.0 102.7,3.0 108.2,3.0 113.8,3.0 119.3,3.0 124.8,3.0 130.4,3.0 135.9,3.0 141.5,3.0 147.0,3.0 147.0,31" class="spark-area real"/><polyline points="3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,4.0 47.3,11.0 52.8,11.9 58.4,3.0 63.9,3.0 69.5,3.0 75.0,3.0 80.5,3.0 86.1,7.3 91.6,3.0 97.2,3.0 102.7,3.0 108.2,3.0 113.8,3.0 119.3,3.0 124.8,3.0 130.4,3.0 135.9,3.0 141.5,3.0 147.0,3.0" class="spark-line real" fill="none"/><circle cx="147.0" cy="3.0" r="2.6" class="spark-dot real"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-02-28</div>
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">24 × 1424</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">1</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">100%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">17 / 24</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>sonar-foundation-agent_claude-opus-4-5</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Test&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card coinflip">
+      <header>
+        <div><h3>SWE-bench Verified</h3><p class="blurb">500-task human-validated split</p></div>
+        <span class="pill coinflip"><i class="dot"></i>COIN FLIP</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 36 percent">
+        <div class="meter-fill coinflip" style="width:36%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>36%</b></div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,5.4 47.3,10.9 52.8,16.9 58.4,3.6 63.9,18.8 69.5,5.0 75.0,12.3 80.5,3.6 86.1,10.8 91.6,15.2 97.2,15.9 102.7,3.5 108.2,13.6 113.8,12.4 119.3,18.2 124.8,15.9 130.4,7.8 135.9,8.7 141.5,13.3 147.0,21.8 147.0,31" class="spark-area coinflip"/><polyline points="3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,5.4 47.3,10.9 52.8,16.9 58.4,3.6 63.9,18.8 69.5,5.0 75.0,12.3 80.5,3.6 86.1,10.8 91.6,15.2 97.2,15.9 102.7,3.5 108.2,13.6 113.8,12.4 119.3,18.2 124.8,15.9 130.4,7.8 135.9,8.7 141.5,13.3 147.0,21.8" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="21.8" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-11-28</div>
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">134 × 468</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">3</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">3%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">15 / 134</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>sonar-foundation-agent_claude-opus-4-5</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Verified&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card coinflip">
+      <header>
+        <div><h3>SWE-bench Lite</h3><p class="blurb">300-task lightweight split</p></div>
+        <span class="pill coinflip"><i class="dot"></i>COIN FLIP</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 46 percent">
+        <div class="meter-fill coinflip" style="width:46%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>46%</b></div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.3 9.3,4.3 15.5,4.3 21.8,4.3 28.0,4.3 34.3,4.3 40.6,3.0 46.8,6.6 53.1,4.2 59.3,4.3 65.6,4.8 71.9,6.8 78.1,14.5 84.4,13.1 90.7,22.6 96.9,3.8 103.2,3.8 109.4,3.8 115.7,3.6 122.0,5.7 128.2,16.6 134.5,16.6 140.7,16.6 147.0,17.8 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.3 9.3,4.3 15.5,4.3 21.8,4.3 28.0,4.3 34.3,4.3 40.6,3.0 46.8,6.6 53.1,4.2 59.3,4.3 65.6,4.8 71.9,6.8 78.1,14.5 84.4,13.1 90.7,22.6 96.9,3.8 103.2,3.8 109.4,3.8 115.7,3.6 122.0,5.7 128.2,16.6 134.5,16.6 140.7,16.6 147.0,17.8" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="17.8" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-06-28</div>
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">84 × 265</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">0%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">8 / 84</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>ExpeRepair-v1_claude-4-sonnet-20250514</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Lite&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card coinflip">
+      <header>
+        <div><h3>SWE-bench Multimodal</h3><p class="blurb">visual-issue split</p></div>
+        <span class="pill coinflip"><i class="dot"></i>COIN FLIP</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 38 percent">
+        <div class="meter-fill coinflip" style="width:38%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>38%</b></div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.7 21.0,9.4 39.0,11.4 57.0,9.9 75.0,14.7 93.0,14.7 111.0,14.7 129.0,14.7 147.0,20.6 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.7 21.0,9.4 39.0,11.4 57.0,9.9 75.0,14.7 93.0,14.7 111.0,14.7 129.0,14.7 147.0,20.6" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="20.6" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2025-03-28 · flipped 2025-06-28</div>
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">12 × 248</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">0%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">3 / 12</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>GUIRepair_o3</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Multimodal&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card real">
+      <header>
+        <div><h3>LMArena (Chatbot Arena)</h3><p class="blurb">human pairwise votes, the most-watched LLM board</p></div>
+        <span class="pill real"><i class="dot"></i>REAL #1</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 100 percent">
+        <div class="meter-fill real" style="width:100%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>100%</b></div>
+      
+      <div class="stats"><div class="stat"><span class="k">comparisons</span><span class="val">98,088</span></div><div class="stat"><span class="k">intransitive triples</span><span class="val">2.3% (null 3.0%)</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>top model</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20LMArena%20%28Chatbot%20Arena%29&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article></div>
+
+  <h2>What the verdicts mean</h2>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--real)"></span><b>Real&nbsp;#1</b> — separates from&nbsp;#2 and survives random task splits</span>
+    <span><span class="sw" style="background:var(--coinflip)"></span><b>Coin flip</b> — several submissions statistically tied; the title flips on re-split</span>
+    <span><span class="sw" style="background:var(--amb)"></span><b>Unresolved</b> — only partly separated</span>
+  </div>
+
+  <h2>The Leaderboard Confidence Standard</h2>
+  <div class="std">
+    <p class="lead">A leaderboard prints an ordinal next to each row, and we read it like a stopwatch at a
+    finish line. On a saturated board that ordinal is often an accident of which tasks were in the set.
+    The fix costs nothing — four lines any leaderboard can adopt:</p>
+    <ol>
+      <li><b>Show a rank confidence interval</b>, not a bare ordinal — the 95% CI of each row's rank under a bootstrap over the evaluation units.</li>
+      <li><b>Mark the significance group tied for&nbsp;#1</b> (paired McNemar on the shared items) instead of a single crowned&nbsp;#1.</li>
+      <li><b>Report the resolving power</b> — how many statistically-distinguishable tiers the board actually supports.</li>
+      <li><b>Only print a lone&nbsp;#1 when it survives a split-half re-test.</b> Where it does — like SWE-bench Test — say so loudly; it's earned.</li>
+    </ol>
+  </div>
+
+  <h2>Watch a leaderboard, or audit one</h2>
+  <div class="cta">
+    <div class="cta-row">
+      <div>
+        <h3>Leaderboard Monitor</h3>
+        <p>Pick a benchmark and I'll watch it — you get an alert the moment its&nbsp;#1 flips between
+        real and coin-flip, plus a monthly confidence check. The board above, kept honest for you.</p>
+        <a class="cta-btn" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20subscription&body=I%27d%20like%20to%20watch%20a%20leaderboard.%20Board%3A%20____.%20Alert%20channel%20%28email%2Ftelegram%29%3A%20____.">Get alerts &#8594;</a>
+      </div>
+      <div>
+        <h3>Full confidence report</h3>
+        <p>A one-off, reproducible audit of any leaderboard — every rank confidence interval, the tie
+        group, the resolving power — as a citeable PDF for a paper, a launch, or diligence.</p>
+        <a class="cta-btn ghost" href="mailto:ipezygj2@gmail.com?subject=Confidence%20report%20request&body=I%27d%20like%20a%20full%20confidence%20report%20for%20this%20leaderboard%3A%20____.">Request a report &#8594;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>Method.</b> Bootstrap rank confidence intervals over the evaluation units; paired McNemar for the
+    top significance group; 50× split-half stability; Bradley-Terry + Condorcet for pairwise data. Pure
+    standard-library Python, fixed seeds, reproducible from the public per-instance results. Verdicts are
+    computed from the numbers, never asserted.<br><br>
+    <b>Ilpo Väätäinen</b> — independent measurement &amp; eval-integrity audits ·
+    <a href="mailto:ipezygj2@gmail.com">ipezygj2@gmail.com</a> ·
+    <a href="https://leanpub.com/measurednotbelieved">Measured, Not Believed</a><br>
+    <span class="stamp">Last audited 2026-07-23 10:56 UTC · recomputed on schedule from live data</span>
+  </div>
+</div></body></html>
