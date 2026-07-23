@@ -106,6 +106,12 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
 .cta-adds{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px}
 .cta-adds li{font-size:.84rem;color:var(--muted);padding-left:20px;position:relative}
 .cta-adds li::before{content:"";position:absolute;left:2px;top:.5em;width:6px;height:6px;border-radius:2px;background:var(--accent);opacity:.55}
+.embed{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 28px;box-shadow:var(--shadow)}
+.embed p{font-size:.9rem;color:var(--muted);margin:0 0 12px}
+.embed pre{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+  overflow-x:auto;margin:0 0 12px}
+.embed code{font-family:var(--mono);font-size:.74rem;color:var(--ink);white-space:pre}
+.embed-api a{color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:.85rem}
 .legend{display:flex;gap:22px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:4px}
 .legend b{color:var(--ink);font-weight:600}
 .legend .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:baseline}
@@ -148,7 +154,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
         <div class="meter-tick" style="left:50%"></div>
       </div>
       <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>100%</b></div>
-      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,4.0 47.3,11.0 52.8,11.9 58.4,3.0 63.9,3.0 69.5,3.0 75.0,3.0 80.5,3.0 86.1,7.3 91.6,3.0 97.2,3.0 102.7,3.0 108.2,3.0 113.8,3.0 119.3,3.0 124.8,3.0 130.4,3.0 135.9,3.0 141.5,3.0 147.0,3.0 147.0,31" class="spark-area real"/><polyline points="3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,4.0 47.3,11.0 52.8,11.9 58.4,3.0 63.9,3.0 69.5,3.0 75.0,3.0 80.5,3.0 86.1,7.3 91.6,3.0 97.2,3.0 102.7,3.0 108.2,3.0 113.8,3.0 119.3,3.0 124.8,3.0 130.4,3.0 135.9,3.0 141.5,3.0 147.0,3.0" class="spark-line real" fill="none"/><circle cx="147.0" cy="3.0" r="2.6" class="spark-dot real"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-02-28</div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.3,3.0 13.7,3.0 19.0,3.0 24.3,3.0 29.7,3.0 35.0,3.0 40.3,4.0 45.7,11.0 51.0,11.9 56.3,3.0 61.7,3.0 67.0,3.0 72.3,3.0 77.7,3.0 83.0,7.3 88.3,3.0 93.7,3.0 99.0,3.0 104.3,3.0 109.7,3.0 115.0,3.0 120.3,3.0 125.7,3.0 131.0,3.0 136.3,3.0 141.7,3.0 147.0,3.0 147.0,31" class="spark-area real"/><polyline points="3.0,3.0 8.3,3.0 13.7,3.0 19.0,3.0 24.3,3.0 29.7,3.0 35.0,3.0 40.3,4.0 45.7,11.0 51.0,11.9 56.3,3.0 61.7,3.0 67.0,3.0 72.3,3.0 77.7,3.0 83.0,7.3 88.3,3.0 93.7,3.0 99.0,3.0 104.3,3.0 109.7,3.0 115.0,3.0 120.3,3.0 125.7,3.0 131.0,3.0 136.3,3.0 141.7,3.0 147.0,3.0" class="spark-line real" fill="none"/><circle cx="147.0" cy="3.0" r="2.6" class="spark-dot real"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-02-28</div>
       <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">24 × 1424</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">1</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">100%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">17 / 24</span></div></div>
       <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>sonar-foundation-agent_claude-opus-4-5</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Test&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article>
@@ -164,7 +170,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
         <div class="meter-tick" style="left:50%"></div>
       </div>
       <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>36%</b></div>
-      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,5.4 47.3,10.9 52.8,16.9 58.4,3.6 63.9,18.8 69.5,5.0 75.0,12.3 80.5,3.6 86.1,10.8 91.6,15.2 97.2,15.9 102.7,3.5 108.2,13.6 113.8,12.4 119.3,18.2 124.8,15.9 130.4,7.8 135.9,8.7 141.5,13.3 147.0,21.8 147.0,31" class="spark-area coinflip"/><polyline points="3.0,3.0 8.5,3.0 14.1,3.0 19.6,3.0 25.2,3.0 30.7,3.0 36.2,3.0 41.8,5.4 47.3,10.9 52.8,16.9 58.4,3.6 63.9,18.8 69.5,5.0 75.0,12.3 80.5,3.6 86.1,10.8 91.6,15.2 97.2,15.9 102.7,3.5 108.2,13.6 113.8,12.4 119.3,18.2 124.8,15.9 130.4,7.8 135.9,8.7 141.5,13.3 147.0,21.8" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="21.8" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-11-28</div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,3.0 8.3,3.0 13.7,3.0 19.0,3.0 24.3,3.0 29.7,3.0 35.0,3.0 40.3,5.4 45.7,10.9 51.0,16.9 56.3,3.6 61.7,18.8 67.0,5.0 72.3,12.3 77.7,3.6 83.0,10.8 88.3,15.2 93.7,15.9 99.0,3.5 104.3,13.6 109.7,12.4 115.0,18.2 120.3,15.9 125.7,7.8 131.0,8.7 136.3,13.3 141.7,21.8 147.0,20.9 147.0,31" class="spark-area coinflip"/><polyline points="3.0,3.0 8.3,3.0 13.7,3.0 19.0,3.0 24.3,3.0 29.7,3.0 35.0,3.0 40.3,5.4 45.7,10.9 51.0,16.9 56.3,3.6 61.7,18.8 67.0,5.0 72.3,12.3 77.7,3.6 83.0,10.8 88.3,15.2 93.7,15.9 99.0,3.5 104.3,13.6 109.7,12.4 115.0,18.2 120.3,15.9 125.7,7.8 131.0,8.7 136.3,13.3 141.7,21.8 147.0,20.9" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="20.9" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-11-28</div>
       <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">134 × 468</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">3</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">3%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">15 / 134</span></div></div>
       <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>sonar-foundation-agent_claude-opus-4-5</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Verified&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article>
@@ -180,7 +186,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
         <div class="meter-tick" style="left:50%"></div>
       </div>
       <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>46%</b></div>
-      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.3 9.3,4.3 15.5,4.3 21.8,4.3 28.0,4.3 34.3,4.3 40.6,3.0 46.8,6.6 53.1,4.2 59.3,4.3 65.6,4.8 71.9,6.8 78.1,14.5 84.4,13.1 90.7,22.6 96.9,3.8 103.2,3.8 109.4,3.8 115.7,3.6 122.0,5.7 128.2,16.6 134.5,16.6 140.7,16.6 147.0,17.8 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.3 9.3,4.3 15.5,4.3 21.8,4.3 28.0,4.3 34.3,4.3 40.6,3.0 46.8,6.6 53.1,4.2 59.3,4.3 65.6,4.8 71.9,6.8 78.1,14.5 84.4,13.1 90.7,22.6 96.9,3.8 103.2,3.8 109.4,3.8 115.7,3.6 122.0,5.7 128.2,16.6 134.5,16.6 140.7,16.6 147.0,17.8" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="17.8" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-06-28</div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.3 9.0,4.3 15.0,4.3 21.0,4.3 27.0,4.3 33.0,4.3 39.0,3.0 45.0,6.6 51.0,4.2 57.0,4.3 63.0,4.8 69.0,6.8 75.0,14.5 81.0,13.1 87.0,22.6 93.0,3.8 99.0,3.8 105.0,3.8 111.0,3.6 117.0,5.7 123.0,16.6 129.0,16.6 135.0,16.6 141.0,17.8 147.0,18.2 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.3 9.0,4.3 15.0,4.3 21.0,4.3 27.0,4.3 33.0,4.3 39.0,3.0 45.0,6.6 51.0,4.2 57.0,4.3 63.0,4.8 69.0,6.8 75.0,14.5 81.0,13.1 87.0,22.6 93.0,3.8 99.0,3.8 105.0,3.8 111.0,3.6 117.0,5.7 123.0,16.6 129.0,16.6 135.0,16.6 141.0,17.8 147.0,18.2" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="18.2" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2023-10-28 · flipped 2025-06-28</div>
       <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">84 × 265</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">0%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">8 / 84</span></div></div>
       <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>ExpeRepair-v1_claude-4-sonnet-20250514</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Lite&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article>
@@ -196,7 +202,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
         <div class="meter-tick" style="left:50%"></div>
       </div>
       <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>38%</b></div>
-      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.7 21.0,9.4 39.0,11.4 57.0,9.9 75.0,14.7 93.0,14.7 111.0,14.7 129.0,14.7 147.0,20.6 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.7 21.0,9.4 39.0,11.4 57.0,9.9 75.0,14.7 93.0,14.7 111.0,14.7 129.0,14.7 147.0,20.6" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="20.6" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2025-03-28 · flipped 2025-06-28</div>
+      <svg class="spark" viewBox="0 0 150 34" width="150" height="34" preserveAspectRatio="none" aria-hidden="true"><line x1="3" y1="17.0" x2="147" y2="17.0" class="spark-thr"/><polygon points="3.0,31 3.0,4.7 19.0,9.4 35.0,11.4 51.0,9.9 67.0,14.7 83.0,14.7 99.0,14.7 115.0,14.7 131.0,20.6 147.0,20.5 147.0,31" class="spark-area coinflip"/><polyline points="3.0,4.7 19.0,9.4 35.0,11.4 51.0,9.9 67.0,14.7 83.0,14.7 99.0,14.7 115.0,14.7 131.0,20.6 147.0,20.5" class="spark-line coinflip" fill="none"/><circle cx="147.0" cy="20.5" r="2.6" class="spark-dot coinflip"/></svg><div class="spark-cap">P(#1) since 2025-03-28 · flipped 2025-06-28</div>
       <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">12 × 248</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">0%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">3 / 12</span></div></div>
       <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>GUIRepair_o3</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Multimodal&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article>
@@ -262,6 +268,17 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
     </div>
   </div>
 
+  <h2>Embed a badge</h2>
+  <div class="embed">
+    <p>Put the confidence verdict on your model's README or paper — a live badge that updates when the
+    ranking does. One per board, plus a summary:</p>
+    <p><img src="https://ipezygj.github.io/eval-audit-site/badges/summary.svg" alt="eval confidence summary badge" style="vertical-align:middle">&nbsp;
+       <img src="https://ipezygj.github.io/eval-audit-site/badges/swe-bench-lite.svg" alt="SWE-bench Lite confidence badge" style="vertical-align:middle"></p>
+    <pre><code>[![SWE-bench Lite confidence](https://ipezygj.github.io/eval-audit-site/badges/swe-bench-lite.svg)](https://ipezygj.github.io/eval-audit-site/status.html)</code></pre>
+    <p class="embed-api">Or consume the verdicts as JSON:
+       <a href="https://ipezygj.github.io/eval-audit-site/status.json">status.json</a> — a public API for agents and tools.</p>
+  </div>
+
   <div class="foot">
     <b>Method.</b> Bootstrap rank confidence intervals over the evaluation units; paired McNemar for the
     top significance group; 50× split-half stability; Bradley-Terry + Condorcet for pairwise data. Pure
@@ -270,6 +287,6 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
     <b>Ilpo Väätäinen</b> — independent measurement &amp; eval-integrity audits ·
     <a href="mailto:ipezygj2@gmail.com">ipezygj2@gmail.com</a> ·
     <a href="https://leanpub.com/measurednotbelieved">Measured, Not Believed</a><br>
-    <span class="stamp">Last audited 2026-07-23 10:56 UTC · recomputed on schedule from live data</span>
+    <span class="stamp">Last audited 2026-07-23 16:00 UTC · recomputed on schedule from live data</span>
   </div>
 </div></body></html>

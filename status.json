@@ -1,0 +1,57 @@
+{
+  "generated": "2026-07-23 16:00 UTC",
+  "source": "https://ipezygj.github.io/eval-audit-site/status.html",
+  "method": "bootstrap rank CIs; paired McNemar; split-half stability",
+  "summary": {
+    "swebench_boards": 4,
+    "swebench_coinflips": 3,
+    "real_top_ranks": 2
+  },
+  "leaderboards": [
+    {
+      "board": "SWE-bench Test",
+      "verdict": "ROBUST-#1",
+      "resolved": true,
+      "p_top_is_1": 1.0,
+      "n_tied": 1,
+      "leader": "sonar-foundation-agent_claude-opus-4-5",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-test.svg"
+    },
+    {
+      "board": "SWE-bench Verified",
+      "verdict": "COIN-FLIP-#1",
+      "resolved": false,
+      "p_top_is_1": 0.361,
+      "n_tied": 3,
+      "leader": "sonar-foundation-agent_claude-opus-4-5",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-verified.svg"
+    },
+    {
+      "board": "SWE-bench Lite",
+      "verdict": "COIN-FLIP-#1",
+      "resolved": false,
+      "p_top_is_1": 0.457,
+      "n_tied": 4,
+      "leader": "ExpeRepair-v1_claude-4-sonnet-20250514",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-lite.svg"
+    },
+    {
+      "board": "SWE-bench Multimodal",
+      "verdict": "COIN-FLIP-#1",
+      "resolved": false,
+      "p_top_is_1": 0.376,
+      "n_tied": 4,
+      "leader": "GUIRepair_o3",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-multimodal.svg"
+    },
+    {
+      "board": "LMArena (Chatbot Arena)",
+      "verdict": "ROBUST-#1",
+      "resolved": true,
+      "p_top_is_1": 1.0,
+      "n_tied": 1,
+      "leader": "top model",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/lmarena--chatbot-arena.svg"
+    }
+  ]
+}
