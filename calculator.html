@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <title>Free eval checks — correct a subset win, test a judge, check a fit</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Three free in-browser statistical checks for AI eval claims: multiple-comparison correction for a best-of-N subset win, a binomial test for judge/verbosity bias, and leave-one-out fragility for a fitted exponent. Runs entirely in your browser.">
+<meta name="description" content="Four free in-browser statistical checks for AI eval claims: multiple-comparison correction for a best-of-N subset win, a binomial test for judge/verbosity bias, leave-one-out fragility for a fitted exponent, and minimum-detectable-effect / power for a model gap. Runs entirely in your browser.">
 <meta property="og:title" content="Free eval checks — before you publish the number">
-<meta property="og:description" content="Correct a subset win, test a judge for bias, check whether one point flips your slope. Free, in-browser.">
+<meta property="og:description" content="Correct a subset win, test a judge for bias, check whether one point flips your slope, and whether your test set can even resolve the gap. Free, in-browser.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="article.css">
@@ -48,7 +48,7 @@
   <article>
     <div class="eyebrow">Free tools · runs in your browser</div>
     <h1>Check the number before you publish it</h1>
-    <p class="lede">Three of the cheapest checks that catch an overstated eval claim, free and in-browser — nothing is sent anywhere. The same checks behind the <a href="index.html#proof">case studies</a> and the open-source <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>.</p>
+    <p class="lede">Four of the cheapest checks that catch an overstated eval claim, free and in-browser — nothing is sent anywhere. The same checks behind the <a href="index.html#proof">case studies</a> and the open-source <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>.</p>
 
     <!-- 1 -->
     <div class="calc">
@@ -88,6 +88,19 @@
         <div class="field"><label for="t3">Threshold (e.g. 1)</label><input id="t3" type="number" step="any" value="1"></div>
       </div>
       <div class="result" id="r3"></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="calc">
+      <h2>4 · Can your test set tell the models apart?</h2>
+      <p class="sub">Two models on a fixed test set. This gives the two-proportion significance of the gap and the <em>minimum detectable effect</em> — the smallest gap this sample could reliably see. Below the MDE, the ranking is a coin flip.</p>
+      <div class="fields">
+        <div class="field"><label for="n4">Items per model</label><input id="n4" type="number" step="1" min="1" value="200"></div>
+        <div class="field"><label for="pa4">Model A accuracy</label><input id="pa4" type="number" step="any" min="0" max="1" value="0.85"></div>
+        <div class="field"><label for="pb4">Model B accuracy</label><input id="pb4" type="number" step="any" min="0" max="1" value="0.83"></div>
+        <div class="field"><label for="pw4">Target power</label><input id="pw4" type="number" step="any" min="0" max="1" value="0.8"></div>
+      </div>
+      <div class="result" id="r4"></div>
     </div>
 
     <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
@@ -156,6 +169,18 @@ function olsSlope(xs, ys){
   const slope = sxy/sxx, r2 = syy===0 ? 0 : (sxy*sxy)/(sxx*syy);
   return [slope, r2];
 }
+// inverse standard-normal CDF (Acklam) — same as evalgate._probit
+function probit(p){
+  const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+  const b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+  const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+  const d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+  const plow=0.02425, phigh=1-plow; let q, r;
+  if (p<plow){ q=Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+  if (p<=phigh){ q=p-0.5; r=q*q; return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1); }
+  q=Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+}
+function mde(n, pBase, alpha, power){ return (probit(1-alpha/2)+probit(power))*Math.sqrt(2*pBase*(1-pBase)/n); }
 
 // --- 1: correction ---
 function calc1(){
@@ -213,10 +238,26 @@ function calc3(){
       : `<span class="muted">most influential: point ${worst}.</span>`);
 }
 
+// --- 4: power / minimum detectable effect ---
+function calc4(){
+  const n = parseInt($('n4').value), pa = parseFloat($('pa4').value), pb = parseFloat($('pb4').value), pw = parseFloat($('pw4').value);
+  const el = $('r4');
+  if (!(n>=1) || !(pa>=0&&pa<=1) || !(pb>=0&&pb<=1) || !(pw>0&&pw<1)){ el.innerHTML = '<span class="muted">enter items/model (≥1), two accuracies (0–1), and a power (0–1).</span>'; return; }
+  const diff = pa - pb, pbar = (pa+pb)/2;
+  const se = (pbar>0&&pbar<1) ? Math.sqrt(2*pbar*(1-pbar)/n) : 0;
+  const p = se===0 ? (diff!==0?0:1) : Math.max(0, Math.min(1, 1 - erf(Math.abs(diff)/se/Math.SQRT2)));
+  const m = mde(n, (pbar>0&&pbar<1)?pbar:0.5, 0.05, pw);
+  const sig = p < 0.05, resolvable = Math.abs(diff) >= m;
+  el.innerHTML =
+    `Gap: <span class="v">${(diff*100).toFixed(1)} pp</span> &nbsp;·&nbsp; two-proportion p = <span class="v ${sig?'r-pass':'r-fail'}">${fmt(p)}</span> &nbsp;·&nbsp; MDE at ${(pw*100).toFixed(0)}% power = <span class="v">${(m*100).toFixed(1)} pp</span><br>` +
+    `<span class="${resolvable?'r-pass':'r-fail'}">${resolvable ? 'RESOLVED — the gap exceeds what this sample could miss' : 'UNDERPOWERED — the gap is below the MDE; the ranking is a coin flip'}.</span>`;
+}
+
 ['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
 ['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
 ['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
-calc1(); calc2(); calc3();
+['n4','pa4','pb4','pw4'].forEach(id=>$(id).addEventListener('input',calc4));
+calc1(); calc2(); calc3(); calc4();
 </script>
 </body>
 </html>
