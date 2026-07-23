@@ -1,11 +1,11 @@
 {
-  "generated": "2026-07-23 16:00 UTC",
+  "generated": "2026-07-23 16:49 UTC",
   "source": "https://ipezygj.github.io/eval-audit-site/status.html",
   "method": "bootstrap rank CIs; paired McNemar; split-half stability",
   "summary": {
-    "swebench_boards": 4,
-    "swebench_coinflips": 3,
-    "real_top_ranks": 2
+    "swebench_boards": 6,
+    "swebench_coinflips": 5,
+    "real_top_ranks": 3
   },
   "leaderboards": [
     {
@@ -45,13 +45,40 @@
       "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-multimodal.svg"
     },
     {
+      "board": "SWE-bench Multilingual",
+      "verdict": "COIN-FLIP-#1",
+      "resolved": false,
+      "p_top_is_1": 0.512,
+      "n_tied": 4,
+      "leader": "mini-v2.0.0a0_gemini-3-flash",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-multilingual.svg"
+    },
+    {
+      "board": "SWE-bench Bash-only",
+      "verdict": "COIN-FLIP-#1",
+      "resolved": false,
+      "p_top_is_1": 0.574,
+      "n_tied": 4,
+      "leader": "mini-v2.0.0_claude-4-5-opus-high",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-bash-only.svg"
+    },
+    {
       "board": "LMArena (Chatbot Arena)",
       "verdict": "ROBUST-#1",
       "resolved": true,
-      "p_top_is_1": 1.0,
+      "p_top_is_1": 0.993,
       "n_tied": 1,
-      "leader": "top model",
+      "leader": "gemini-2.5-pro",
       "badge": "https://ipezygj.github.io/eval-audit-site/badges/lmarena--chatbot-arena.svg"
+    },
+    {
+      "board": "LMArena (coding)",
+      "verdict": "ROBUST-#1",
+      "resolved": true,
+      "p_top_is_1": 0.973,
+      "n_tied": 1,
+      "leader": "gemini-2.5-pro",
+      "badge": "https://ipezygj.github.io/eval-audit-site/badges/lmarena--coding.svg"
     }
   ]
 }

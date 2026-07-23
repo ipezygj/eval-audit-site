@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?</title><meta name="description" content="An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1&#x27;s confidence over time. Currently 3 of 4 SWE-bench boards print a #1 the data can&#x27;t resolve."><link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/status.html"><meta property="og:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta property="og:description" content="Is each AI leaderboard #1 statistically real, or a coin flip? A live, reproducible audit."><meta property="og:type" content="website"><meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/status.html"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta name="twitter:description" content="Is each AI leaderboard #1 real, or a coin flip? A live, reproducible audit."><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128202;</text></svg>"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "Eval Confidence Status \u2014 AI leaderboard #1 confidence", "description": "An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1's confidence over time. Currently 3 of 4 SWE-bench boards print a #1 the data can't resolve.", "url": "https://ipezygj.github.io/eval-audit-site/status.html", "keywords": ["AI leaderboard", "SWE-bench", "LMArena", "benchmark confidence", "statistical significance", "is the #1 real", "eval integrity", "rank confidence interval"], "creator": {"@type": "Person", "name": "Ilpo V\u00e4\u00e4t\u00e4inen"}, "license": "https://creativecommons.org/licenses/by/4.0/", "isBasedOn": "https://github.com/SWE-bench/experiments", "dateModified": "2026-07-23", "variableMeasured": ["verdict (real / coin-flip)", "P(printed #1 is the true #1)", "significance group size", "resolvable tiers"], "measurementTechnique": "bootstrap rank confidence intervals; paired McNemar; split-half stability"}</script></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?</title><meta name="description" content="An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1&#x27;s confidence over time. Currently 5 of 6 SWE-bench boards print a #1 the data can&#x27;t resolve."><link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/status.html"><meta property="og:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta property="og:description" content="Is each AI leaderboard #1 statistically real, or a coin flip? A live, reproducible audit."><meta property="og:type" content="website"><meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/status.html"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Live Eval Confidence Status — is each AI leaderboard&#x27;s #1 real?"><meta name="twitter:description" content="Is each AI leaderboard #1 real, or a coin flip? A live, reproducible audit."><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128202;</text></svg>"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "Eval Confidence Status \u2014 AI leaderboard #1 confidence", "description": "An independent, reproducible audit of the major public AI leaderboards: is each printed #1 statistically real or a saturated coin flip? SWE-bench Test/Verified/Lite/Multimodal and LMArena, with each #1's confidence over time. Currently 5 of 6 SWE-bench boards print a #1 the data can't resolve.", "url": "https://ipezygj.github.io/eval-audit-site/status.html", "keywords": ["AI leaderboard", "SWE-bench", "LMArena", "benchmark confidence", "statistical significance", "is the #1 real", "eval integrity", "rank confidence interval"], "creator": {"@type": "Person", "name": "Ilpo V\u00e4\u00e4t\u00e4inen"}, "license": "https://creativecommons.org/licenses/by/4.0/", "isBasedOn": "https://github.com/SWE-bench/experiments", "dateModified": "2026-07-23", "variableMeasured": ["verdict (real / coin-flip)", "P(printed #1 is the true #1)", "significance group size", "resolvable tiers"], "measurementTechnique": "bootstrap rank confidence intervals; paired McNemar; split-half stability"}</script></head><body>
 <style>
 :root{
   --paper:#f5f6f8; --ink:#12151b; --muted:#5a6472; --faint:#8a93a1;
@@ -136,9 +136,9 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
   printed&nbsp;#1 a statistically real ranking, or a saturated coin flip? Same method certifies and debunks.</p>
 
   <div class="summary">
-    <div class="metric"><div class="n">4</div><div class="l">SWE-bench boards audited</div></div>
-    <div class="metric"><div class="n bad">3</div><div class="l">print a&nbsp;#1 the data can't resolve</div></div>
-    <div class="metric"><div class="n good">2</div><div class="l">have a genuinely real&nbsp;#1</div></div>
+    <div class="metric"><div class="n">6</div><div class="l">SWE-bench boards audited</div></div>
+    <div class="metric"><div class="n bad">5</div><div class="l">print a&nbsp;#1 the data can't resolve</div></div>
+    <div class="metric"><div class="n good">3</div><div class="l">have a genuinely real&nbsp;#1</div></div>
   </div>
 
   <h2>Leaderboards</h2>
@@ -207,20 +207,68 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
       <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>GUIRepair_o3</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Multimodal&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article>
 
+    <article class="card coinflip">
+      <header>
+        <div><h3>SWE-bench Multilingual</h3><p class="blurb">multi-language repository split</p></div>
+        <span class="pill coinflip"><i class="dot"></i>COIN FLIP</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 51 percent">
+        <div class="meter-fill coinflip" style="width:51%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>51%</b></div>
+      
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">13 × 270</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">0%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">3 / 13</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>mini-v2.0.0a0_gemini-3-flash</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Multilingual&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card coinflip">
+      <header>
+        <div><h3>SWE-bench Bash-only</h3><p class="blurb">shell / terminal task split</p></div>
+        <span class="pill coinflip"><i class="dot"></i>COIN FLIP</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 57 percent">
+        <div class="meter-fill coinflip" style="width:57%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>57%</b></div>
+      
+      <div class="stats"><div class="stat"><span class="k">submissions × items</span><span class="val">40 × 451</span></div><div class="stat"><span class="k">tied for #1</span><span class="val">4</span></div><div class="stat"><span class="k">#1 survives split</span><span class="val">17%</span></div><div class="stat"><span class="k">resolvable tiers</span><span class="val">11 / 40</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>mini-v2.0.0_claude-4-5-opus-high</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20SWE-bench%20Bash-only&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
     <article class="card real">
       <header>
         <div><h3>LMArena (Chatbot Arena)</h3><p class="blurb">human pairwise votes, the most-watched LLM board</p></div>
         <span class="pill real"><i class="dot"></i>REAL #1</span>
       </header>
       
-      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 100 percent">
-        <div class="meter-fill real" style="width:100%"></div>
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 99 percent">
+        <div class="meter-fill real" style="width:99%"></div>
         <div class="meter-tick" style="left:50%"></div>
       </div>
-      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>100%</b></div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>99%</b></div>
       
-      <div class="stats"><div class="stat"><span class="k">comparisons</span><span class="val">98,088</span></div><div class="stat"><span class="k">intransitive triples</span><span class="val">2.3% (null 3.0%)</span></div></div>
-      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>top model</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20LMArena%20%28Chatbot%20Arena%29&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+      <div class="stats"><div class="stat"><span class="k">comparisons</span><span class="val">98,348</span></div><div class="stat"><span class="k">intransitive triples</span><span class="val">2.3% (null 3.7%)</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>gemini-2.5-pro</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20LMArena%20%28Chatbot%20Arena%29&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
+    </article>
+
+    <article class="card real">
+      <header>
+        <div><h3>LMArena (coding)</h3><p class="blurb">the coding-prompt subset of the human vote arena</p></div>
+        <span class="pill real"><i class="dot"></i>REAL #1</span>
+      </header>
+      
+      <div class="meter" role="img" aria-label="P(printed #1 is the true #1): 97 percent">
+        <div class="meter-fill real" style="width:97%"></div>
+        <div class="meter-tick" style="left:50%"></div>
+      </div>
+      <div class="meter-cap"><span>P(printed #1 is the true #1)</span><b>97%</b></div>
+      
+      <div class="stats"><div class="stat"><span class="k">comparisons</span><span class="val">28,287</span></div><div class="stat"><span class="k">intransitive triples</span><span class="val">6.1% (null 7.4%)</span></div></div>
+      <div class="card-foot"><div class="leader">current&nbsp;#1&nbsp;· <span>gemini-2.5-pro</span></div><a class="watch" href="mailto:ipezygj2@gmail.com?subject=Leaderboard%20Monitor%20%E2%80%94%20LMArena%20%28coding%29&body=I%20want%20an%20alert%20the%20moment%20this%20%231%20changes.">&#128276; watch this board</a></div>
     </article></div>
 
   <h2>What the verdicts mean</h2>
@@ -287,6 +335,6 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
     <b>Ilpo Väätäinen</b> — independent measurement &amp; eval-integrity audits ·
     <a href="mailto:ipezygj2@gmail.com">ipezygj2@gmail.com</a> ·
     <a href="https://leanpub.com/measurednotbelieved">Measured, Not Believed</a><br>
-    <span class="stamp">Last audited 2026-07-23 16:00 UTC · recomputed on schedule from live data</span>
+    <span class="stamp">Last audited 2026-07-23 16:49 UTC · recomputed on schedule from live data</span>
   </div>
 </div></body></html>
