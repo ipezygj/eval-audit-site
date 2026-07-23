@@ -103,6 +103,9 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
   background:var(--accent);color:#fff;border-radius:8px;padding:9px 16px}
 .cta-btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
 .cta-btn:hover{filter:brightness(1.05)}
+.cta-adds{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px}
+.cta-adds li{font-size:.84rem;color:var(--muted);padding-left:20px;position:relative}
+.cta-adds li::before{content:"";position:absolute;left:2px;top:.5em;width:6px;height:6px;border-radius:2px;background:var(--accent);opacity:.55}
 .legend{display:flex;gap:22px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:4px}
 .legend b{color:var(--ink);font-weight:600}
 .legend .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:baseline}
@@ -245,8 +248,15 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
       </div>
       <div>
         <h3>Full confidence report</h3>
-        <p>A one-off, reproducible audit of any leaderboard — every rank confidence interval, the tie
-        group, the resolving power — as a citeable PDF for a paper, a launch, or diligence.</p>
+        <p>This page is the free summary. The full report — for a public board or <b>your own</b> —
+        adds what a headline can't show, as a citeable PDF for a paper, launch, or diligence:</p>
+        <ul class="cta-adds">
+          <li>a 95% confidence interval on <b>every</b> submission's rank &amp; score</li>
+          <li>the exact significance group, with paired-test p-values</li>
+          <li>reliability, frontier resolving-power &amp; the latent-skill breakdown</li>
+          <li>the winner's-curse correction and per-finding remediation</li>
+          <li>the reproducible code behind every number</li>
+        </ul>
         <a class="cta-btn ghost" href="mailto:ipezygj2@gmail.com?subject=Confidence%20report%20request&body=I%27d%20like%20a%20full%20confidence%20report%20for%20this%20leaderboard%3A%20____.">Request a report &#8594;</a>
       </div>
     </div>
