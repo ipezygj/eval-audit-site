@@ -327,6 +327,20 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
        <a href="https://ipezygj.github.io/eval-audit-site/status.json">status.json</a> — a public API for agents and tools.</p>
   </div>
 
+  <h2>For AI agents</h2>
+  <div class="embed">
+    <p>Building an agent? It can fact-check an eval number <b>itself</b>, before repeating it. Add the
+    free <a href="https://github.com/ipezygj/evalgate">evalgate MCP server</a> and it will call the
+    checks when it's about to say "model X is #1 on &lt;benchmark&gt;" — including
+    <code style="font-family:var(--mono);font-size:.8rem">leaderboard_status</code>, which reads the
+    live verdict above without recomputing.</p>
+    <p class="embed-api">
+      <a href="https://ipezygj.github.io/eval-audit-site/llms.txt">llms.txt</a> &nbsp;·&nbsp;
+      <a href="https://ipezygj.github.io/eval-audit-site/status.json">status.json API</a> &nbsp;·&nbsp;
+      <a href="https://github.com/ipezygj/evalgate">evalgate (MCP + pip)</a>
+    </p>
+  </div>
+
   <div class="foot">
     <b>Method.</b> Bootstrap rank confidence intervals over the evaluation units; paired McNemar for the
     top significance group; 50× split-half stability; Bradley-Terry + Condorcet for pairwise data. Pure
