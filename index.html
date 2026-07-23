@@ -168,8 +168,8 @@
 
   <section id="proof" class="wrap">
     <div class="eyebrow">Case files · public data, reproduced</div>
-    <h2 class="section-h">Four leaderboards. Three overstated — one holds.</h2>
-    <p class="section-sub">Each was recomputed from public, released data. Three target the one summary sentence that overpromised; the fourth is the control — a #1 I tried to break and couldn't, so I certify it. An auditor who only ever says no isn't checking anything. This is exactly the work I'd do on yours.</p>
+    <h2 class="section-h">Five audits. Four numbers that overstated — one that held.</h2>
+    <p class="section-sub">Each was recomputed from public, released data. Four target the one summary sentence that overpromised — a judge's bias, a lucky subset, a mechanical "law", an order effect. The fifth is the control: a #1 I tried to break and couldn't, so I certify it. An auditor who only ever says no isn't checking anything. This is exactly the work I'd do on yours.</p>
 
     <div class="files">
       <div class="file">
@@ -222,6 +222,19 @@
         </div>
         <span class="verdict">resolved · certified</span>
         <a class="file-more" href="lmarena.html">Read the full write-up →</a>
+      </div>
+
+      <div class="file">
+        <div class="tag">LMArena · human-vote order bias</div>
+        <h3>The model shown second wins more — and it isn't the better model.</h3>
+        <p>An order-bias check on the same public human votes, controlled within each matchup.</p>
+        <div class="readout">
+          <span class="k">second-shown model wins</span>&nbsp; <span class="claim">50.62%</span> &nbsp;vs 49.38% (98k votes)<br>
+          <span class="k">within-matchup, controlled for strength</span>&nbsp; <span class="real">+1.25 pp</span>, p ≈ 9×10⁻⁵<br>
+          <span class="k">verdict</span>&nbsp; real recency bias — randomization launders it, but only if you randomize
+        </div>
+        <span class="verdict">order effect · real</span>
+        <a class="file-more" href="lmarena-position.html">Read the full write-up →</a>
       </div>
     </div>
   </section>

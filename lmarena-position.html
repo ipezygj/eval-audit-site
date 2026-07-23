@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The model shown second wins more — an order bias in LMArena's human votes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An independent audit of LMArena's public human votes finds a real order bias: the model shown second wins 1.25 percentage points more often, confirmed within-matchup (p≈9e-5, 98k votes). Even the gold-standard human vote has a measurable bias.">
+<meta property="og:title" content="The model shown second wins more — an order bias in LMArena's human votes">
+<meta property="og:description" content="Even human preference — the thing we validate AI judges against — has a measurable order bias: +1.25 points for the second-shown model, confirmed within-matchup.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · LMArena (Chatbot Arena) · reproducible</div>
+    <h1>The model shown second wins more</h1>
+    <p class="lede">Human preference is the gold standard. It's what we use to <em>check</em> whether an AI judge is any good. So it's worth asking the uncomfortable question about the human vote itself: is it fair to both sides? On the most-watched LLM leaderboard, the answer is <strong>almost — but not quite.</strong> The model shown <em>second</em> wins a little more often, and it isn't because it's the better model.</p>
+
+    <p>LMArena ranks models from blind, side-by-side human votes: you see two answers, A and B, and pick the one you prefer. The order is randomized, so over enough votes any left/right quirk should wash out. I checked whether it actually does, using the public battle data (<span class="mono">lmarena-ai/arena-human-preference-140k</span>).</p>
+
+    <h2>The second-shown model wins 1.25 points more</h2>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measure</th><th>Decisive votes</th><th>Position A wins</th><th>Position B (second) wins</th><th>p</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Raw</strong></td>
+          <td class="num">98,348</td>
+          <td class="num">49.38%</td>
+          <td class="num tag-bad">50.62%</td>
+          <td class="num">9.8 × 10⁻⁵</td>
+        </tr>
+        <tr>
+          <td><strong>Within-matchup (controlled)</strong></td>
+          <td class="num">98,332</td>
+          <td class="num">49.38%</td>
+          <td class="num tag-bad">50.62%</td>
+          <td class="num">9.0 × 10⁻⁵</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Across ~98,000 decisive votes, the model in the second slot wins <strong>50.62%</strong> of the time versus <strong>49.38%</strong> for the first — a <strong>1.25 percentage-point</strong> edge, with a p-value near <span class="mono">10⁻⁴</span>. Small, but far too consistent to be chance at this scale.</p>
+
+    <h2>It's the position, not the model</h2>
+    <p>The obvious objection: maybe the stronger models just happen to land in the second slot more often. If so, this is about model strength, not order. So I controlled for it the clean way — the <strong>within-matchup</strong> test.</p>
+
+    <div class="callout">
+      <span class="lbl">The discriminating fact</span>
+      For every pair of models that met in <strong>both</strong> orders (X-vs-Y <em>and</em> Y-vs-X — 1,197 such matchups), I compared how often a model won from the first slot versus the second slot <em>against the very same opponent</em>. Strength cancels out: it's the same two models, only the order changes. The second-slot advantage survives essentially unchanged — <strong>+1.25 points</strong>, same p-value. It's the <em>position</em> talking, not the model. In plain terms: people lean a little toward the last thing they read.
+    </div>
+
+    <h2>Does this break the leaderboard? No — and that's the interesting part</h2>
+    <p>Here is the honest, two-sided reading. Because LMArena randomizes A/B, each model spends about equal time in both slots, so the bias mostly <em>averages out</em> in the aggregate ranking. (In a separate audit I found the arena's #1 holds up decisively — so this doesn't overturn it.) The bias is real but largely <strong>laundered by the randomization</strong>.</p>
+    <p>What it does mean:</p>
+    <ul>
+      <li>Any ranking built on human votes that <strong>doesn't</strong> randomize order, or doesn't average both orders, silently inherits a ~1-point thumb on the scale.</li>
+      <li>For models with few or lopsided battles, the averaging is incomplete — a close call between two near-tied models can be decided by presentation, not quality.</li>
+      <li>It's a clean caution for the booming practice of <strong>LLM-as-judge</strong>: AI judges have a well-known, much larger position bias — and here we see that even the human gold standard we compare them to isn't immune.</li>
+    </ul>
+
+    <div class="callout" style="border-left-color:var(--muted)">
+      <span class="lbl">Caveats, so this is fair</span>
+      This is a snapshot of the released battle set. I dropped ties and "both bad" votes and measured raw win-position; I did not model per-user or per-prompt effects. The finding is about the <em>direction and size of the order effect</em>, which the simple within-matchup control already isolates. "Position B" is the second answer as recorded in the data; if the public dump preserves display order, this is a display-order (recency) effect.
+    </div>
+
+    <h2>The fix is one design choice</h2>
+    <p>Randomize order <em>and</em> average both presentations before you score — or, better, show each matchup both ways and combine. It costs nothing and removes the thumb from the scale. The general rule is the one this whole series keeps arriving at: the measurement has its own biases, and you only find them by measuring the measurement.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Data: <code>lmarena-ai/arena-human-preference-140k</code> (public) — columns <code>model_a</code>, <code>model_b</code>, <code>winner</code>.<br>
+      Keep decisive votes (drop <code>tie</code>/<code>both_bad</code>): 98,348. Position-B win rate = 50.62% (z = −3.90, p = 9.8e−5).<br>
+      Within-matchup control: for each unordered pair present in both orders (1,197 pairs), pool wins by slot — B = 50.62%, +1.25 pp, p = 9.0e−5. Pure-stdlib, deterministic.
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you trust a preference score</div>
+    <h3>Is your eval fair to both sides?</h3>
+    <p>Order effects, judge self-preference, length bias — I check the number for the biases hiding inside it, from your own released data. Independent, reproducible, plain-English.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits. From <em>Measured, Not Believed</em>.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
