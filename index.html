@@ -189,6 +189,32 @@
       </div>
 
       <div class="file">
+        <div class="tag">Base rates · clinical &amp; security</div>
+        <h3>0.978 AUC on the benchmark. About 12% precision in the clinic.</h3>
+        <p>The same model, reprojected from a balanced test set to the prevalence an operator actually faces.</p>
+        <div class="readout">
+          <span class="k">benchmark</span>&nbsp; <span class="claim">AUC 0.978</span> on a balanced set<br>
+          <span class="k">at 1% prevalence</span>&nbsp; <span class="real">≈12% precision</span> — 7 of 8 alarms false<br>
+          <span class="k">at 0.1%</span>&nbsp; <span class="real">≈1%</span>, deterministic from Bayes
+        </div>
+        <span class="verdict">different world, same model</span>
+        <a class="file-more" href="basefail.html">Read the full write-up →</a>
+      </div>
+
+      <div class="file">
+        <div class="tag">MTEB · ProteinGym · SWE-bench</div>
+        <h3>The ranking is one column. The data has up to six dimensions.</h3>
+        <p>Parallel analysis on the model × item matrix, testing whether "better" is really a direction.</p>
+        <div class="readout">
+          <span class="k">MTEB</span>&nbsp; <span class="real">k ≈ 6</span> independent axes<br>
+          <span class="k">ProteinGym</span>&nbsp; <span class="real">k ≈ 3</span> — second axis has a nameable mechanism<br>
+          <span class="k">SWE-bench</span>&nbsp; <span class="real">k ≈ 2</span>, each gated by a permutation null
+        </div>
+        <span class="verdict">averaged away</span>
+        <a class="file-more" href="dimensions.html">Read the full write-up →</a>
+      </div>
+
+      <div class="file">
         <div class="tag">RewardBench · 23 subsets</div>
         <h3>"We lead on subset X" was the luckiest of 23 noisy tests.</h3>
         <p>A "best-subset" win, corrected for how many subsets it could have been picked from.</p>

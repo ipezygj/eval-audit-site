@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>0.978 AUC, 12% precision — the number your benchmark never reports</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A benchmark score is measured on a balanced test set. Deployment is not balanced. Reprojected to the prevalence an operator actually faces, a 0.978-AUC predictor delivers about 12% precision at 1% prevalence — and near 1% at 0.1%. Same model, same skill, different world.">
+<meta property="og:title" content="0.978 AUC, 12% precision — the number your benchmark never reports">
+<meta property="og:description" content="Anywhere the interesting class is rare, the benchmark number and the deployment number are different numbers.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · base rates · reproducible</div>
+    <h1>0.978 AUC, 12% precision</h1>
+    <p class="lede">Both numbers describe the same model on the same day. Neither is a mistake, and the gap between them is the most expensive thing I know about benchmarks — because almost nobody prices it in.</p>
+
+    <p>A benchmark hands a model a balanced problem: roughly as many positives as negatives, curated and labelled. Area under the ROC curve asks a question suited to exactly that world — <em>draw one of each; how often do you rank them correctly?</em> Nearly always, it turns out. It is a genuinely good model.</p>
+    <p>Then you take it somewhere the interesting class is rare. The model keeps its skill. The world changes underneath it.</p>
+
+    <h2>Where the collapse comes from</h2>
+    <p>Precision — the share of your alarms that are real — is not a property of the model alone. It is a property of the model <em>and</em> how often the thing occurs. Bayes' rule, in the only form that matters here:</p>
+    <p class="mono" style="text-align:center;margin:18px 0">precision = TPR·π ⁄ (TPR·π + FPR·(1−π))</p>
+    <p>where <span class="mono">π</span> is prevalence. The term that kills you is <span class="mono">FPR·(1−π)</span>. When positives are rare, <span class="mono">1−π</span> is nearly everyone, so even a small false-positive rate is applied to a very large population — and that flood of false alarms can easily exceed the entire population of true ones.</p>
+
+    <h2>A real predictor, reprojected</h2>
+    <p>Taking the leading model on a public clinical variant-effect benchmark at its published operating characteristics, and holding the model completely fixed:</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Setting</th><th>Prevalence</th><th>Precision of a positive call</th><th>What that means</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Benchmark</strong></td>
+          <td class="num">~50% (balanced)</td>
+          <td class="num tag-good">high — AUC 0.978</td>
+          <td>state of the art, honestly</td>
+        </tr>
+        <tr>
+          <td><strong>Clinic</strong></td>
+          <td class="num">1%</td>
+          <td class="num tag-bad">≈ 12%</td>
+          <td>~7 of every 8 alarms are false</td>
+        </tr>
+        <tr>
+          <td><strong>Screening programme</strong></td>
+          <td class="num">0.1%</td>
+          <td class="num tag-bad">≈ 1%</td>
+          <td>~99 of every 100 alarms are false</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Nothing in the leaderboard warns you. The ranking does not change. The model does not degrade. What changes is the base rate — and the base rate never appears in the metric that gets published, quoted and funded.</p>
+
+    <h2>This is not a genomics problem</h2>
+    <p>It is the shape of every screening claim in machine learning. Fraud detection. Security triage. Content moderation. Insider-threat scoring. Defect finding. Anywhere the interesting class is rare, a benchmark score describes a world with a suspiciously convenient class balance, and deployment does not live there.</p>
+    <p>I have been on the wrong end of it with my own work: a bug-finding pipeline that looked excellent on a held-out set and was close to useless against a real codebase — because real codebases are mostly not vulnerable, and the pipeline's small false-positive rate met a very large number of clean files.</p>
+
+    <h2>The fix costs one line</h2>
+    <p>Before you quote the score, state the prevalence you expect in the field and recompute what fraction of your alarms will be real at that prevalence. It belongs in the abstract, beside the headline number — not in a supplementary table where nobody meets it.</p>
+    <p>And if the answer is uncomfortable, that is the finding. A detector that fires mostly on innocents is not a bad model; it is a good model deployed at a base rate its threshold was never chosen for. That is fixable — by moving the threshold, by triaging in stages, by narrowing who gets screened — but only once someone computes the number.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Take any published detector's TPR and FPR at its stated operating point.<br>
+      Apply Bayes: precision = TPR·π / (TPR·π + FPR·(1−π)) for the prevalence you actually face.<br>
+      Clinical variant-effect benchmark, leading predictor: AUC 0.978 → ≈12% precision at π=0.01, ≈1% at π=0.001.<br>
+      Deterministic — no sampling, no fitting, no room for interpretation.<br>
+      Run it yourself: <a href="calculator.html">the in-browser calculator</a> · <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you publish a screening claim</div>
+    <h3>Tell me the prevalence you'll actually face.</h3>
+    <p>I'll tell you what your headline number becomes there — clinical, security, fraud or moderation. Independent, reproducible, plain-English.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

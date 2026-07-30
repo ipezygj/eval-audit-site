@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Your leaderboard is not one-dimensional — and you can measure how many it has</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A ranking makes one promise: that better is a direction. Parallel analysis on the model-by-item matrix tests it. MTEB behaves like 6 dimensions, ProteinGym like 3, SWE-bench like 2 — so a single 'best model' rank is a 1-D shadow of a k-D object.">
+<meta property="og:title" content="Your leaderboard is not one-dimensional">
+<meta property="og:description" content="Averaging is not neutral. It presumes the thing you are averaging is one thing.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · leaderboard dimensionality · reproducible</div>
+    <h1>Your leaderboard is not one-dimensional</h1>
+    <p class="lede">A ranking is a column of names, and a column of names makes exactly one promise: that <em>better</em> is a direction. Sometimes it isn't — and unlike most things in evaluation, this one is testable.</p>
+
+    <p>We rank models the way we rank runners. Rank one beats rank two, which beats rank three, and the whole comparison reduces to a single line you can walk up. That reduction does enormous work, and it is almost never tested.</p>
+
+    <h2>The test</h2>
+    <p>Take the full matrix — every model against every test item, not the averaged column everyone quotes — and ask how many independent directions of variation actually live in it. Extract the eigenvalues of the correlation structure and compare each against a <strong>parallel-analysis null</strong>: the same matrix shape, with the structure destroyed by permutation. A dimension counts only if it beats what shuffled data produces by chance.</p>
+    <p>If the answer is one, the ranking is honest: models differ by a single quantity you can reasonably call capability. If the answer is two or three, the column has been flattening real structure — somewhere in that data, model A beats model B on one kind of problem and loses on another, consistently, and the average dissolved the distinction.</p>
+
+    <h2>What public leaderboards actually contain</h2>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Leaderboard</th><th>Dimensions surviving the permutation null</th><th>What the single ranking hides</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MTEB</strong> (text embeddings)</td><td class="num tag-bad">k ≈ 6</td><td>six largely independent competences averaged into one column</td></tr>
+        <tr><td><strong>ProteinGym</strong> (variant effect)</td><td class="num tag-bad">k ≈ 3</td><td>a second axis with a nameable chemical mechanism</td></tr>
+        <tr><td><strong>SWE-bench</strong> (code agents)</td><td class="num tag-bad">k ≈ 2</td><td>models good at different classes of repository task</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>The ProteinGym case is the instructive one, because the second dimension was not noise — it had a mechanism you could name. The top-ranked model handled one chemical distinction poorly and a lower-ranked model handled it well. Two models sitting several places apart in the published order were, in truth, good at different things. Anyone picking the top of that list for a task living in the second dimension chose the wrong tool, with the leaderboard's full endorsement.</p>
+
+    <h2>Why this is not a small point</h2>
+    <p>Averaging is not neutral. It presumes the thing you are averaging is one thing. When it is two, the average lands somewhere between them, describing neither and recommending the wrong one — and it does so with more apparent authority than either honest sub-score would have carried.</p>
+    <p>This is also why saturated leaderboards feel unstable. When a ranking compresses several axes, small shifts in the item mix reweight those axes and the order rotates, which reads as progress and is actually recomposition.</p>
+
+    <h2>What a leaderboard should print</h2>
+    <p>One extra line under the ranking: <strong>how many dimensions this data actually has.</strong> If it is one, say so and rank away — you have earned the column. If it is more, publish the axes, because the useful advice was never “use the winner.” It was “use this one for that kind of problem, and that one for this kind” — a more helpful sentence than a rank has ever been able to say.</p>
+    <p>The test is cheap and runs on data you have already collected. The reason nobody runs it is that we never noticed we were assuming the answer.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Input: the model × item score matrix (not the averaged leaderboard column).<br>
+      Method: eigenvalue decomposition of the correlation matrix, each component gated against a<br>
+      permutation (parallel-analysis) null; count only the leading contiguous survivors.<br>
+      Guard: heteroscedastic benchmarks inflate the null — check it, or you will read a false k=0.<br>
+      Results: MTEB k≈6 · ProteinGym k≈3 · SWE-bench k≈2.<br>
+      Tooling: <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you publish a ranking</div>
+    <h3>Send me your model × item matrix.</h3>
+    <p>I'll tell you whether the order survives its own data, and how many axes it is really hiding — models, vendors or candidates.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
