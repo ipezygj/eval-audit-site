@@ -70,12 +70,14 @@ def _head_metadata(pages):
     for page in pages:
         t = page.read_text(encoding="utf-8", errors="replace")
         want = SITE if page.name == "index.html" else SITE + page.name
-        for tag, needle in (("canonical", f'rel="canonical" href="{want}"'),
-                            ("og:url", f'property="og:url" content="{want}"'),
-                            ("og:image", f'property="og:image" content="{SITE}og-card.png"'),
-                            ("twitter:card", 'name="twitter:card" content="summary_large_image"')):
+        for tag, value, needle in (
+                ("canonical", want, f'rel="canonical" href="{want}"'),
+                ("og:url", want, f'property="og:url" content="{want}"'),
+                ("og:image", SITE + "og-card.png", f'property="og:image" content="{SITE}og-card.png"'),
+                ("twitter:card", "summary_large_image",
+                 'name="twitter:card" content="summary_large_image"')):
             if needle not in t:
-                out.append(f"{page.name}: missing or wrong {tag} (expected {want})")
+                out.append(f"{page.name}: missing or wrong {tag} (expected {value})")
     return out
 
 
