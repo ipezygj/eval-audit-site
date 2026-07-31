@@ -317,6 +317,17 @@ function gauss(){
   return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
 }
 
+// Pure and deterministic, so CI can compare it against evalgate.leaderboard.selection_audit.
+// Only the margin lives here; the resampling stays in the handler, where a fixed seed would
+// be a lie about what a rerun does.
+function curseMargin(scores, se){
+  let best = 0;
+  for (let i = 1; i < scores.length; i++) if (scores[i] > scores[best]) best = i;
+  const sorted = scores.slice().sort((a,b)=>b-a);
+  const gap = sorted[0] - sorted[1];
+  return {best, gap, gapSe: se > 0 ? gap/se : Infinity};
+}
+
 function calc6(){
   const el = $('r6');
   const scores = $('s6').value.split(/[,\s]+/).filter(x=>x.length).map(Number);
@@ -324,11 +335,7 @@ function calc6(){
   if (scores.length < 2 || scores.some(isNaN) || !(se >= 0)){
     el.innerHTML = '<span class="muted">enter at least two numeric scores and a non-negative standard error.</span>'; return;
   }
-  let best = 0;
-  for (let i = 1; i < scores.length; i++) if (scores[i] > scores[best]) best = i;
-  const sorted = scores.slice().sort((a,b)=>b-a);
-  const gap = sorted[0] - sorted[1];
-  const gapSe = se > 0 ? gap/se : Infinity;
+  const {best, gap, gapSe} = curseMargin(scores, se);
 
   const TRIALS = 4000, K = Math.min(5, scores.length);
   let wrong = 0, inflation = 0, inTop = 0;

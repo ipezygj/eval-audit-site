@@ -46,6 +46,15 @@ KEYS = [
     ["x", "x", "y"],
 ]
 
+# (scores, se) -> the margin half of the winner's-curse check. The resampling half is
+# random by design and is verified by rendering the page instead.
+MARGINS = [
+    ([70.3, 70.3, 69.8, 69.1], 2.1),   # an exact tie at the top
+    ([80.0, 60.0, 55.0], 1.0),          # a leader many SEs clear
+    ([74.6, 74.2, 73.9], 1.1),          # the sample report's internal board
+    ([50.0, 50.0], 0.0),                # no error bar at all: margin is infinite
+]
+
 
 def _script() -> str:
     html = (ROOT / "calculator.html").read_text(encoding="utf-8")
@@ -62,6 +71,9 @@ def _js_results(show: bool) -> dict:
     harness += ("__out['constantBaseline']=[" + ",".join(
         "(k => {const r = constantBaseline(k); return [r.best, r.floor, r.chance];})(%s)" % json.dumps(k)
         for k in KEYS) + "];\n")
+    harness += ("__out['curseMargin']=[" + ",".join(
+        "(a => {const r = curseMargin(a[0], a[1]); return [r.gap, r.gapSe === Infinity ? 'inf' : r.gapSe];})(%s)"
+        % json.dumps([s, se]) for s, se in MARGINS) + "];\n")
     harness += "console.log(JSON.stringify(__out));\n"
     with tempfile.TemporaryDirectory() as tmp:
         f = Path(tmp) / "harness.mjs"
@@ -89,6 +101,11 @@ def _py_results(show: bool) -> dict:
         "mde": [C.min_detectable_effect(n, p) for n, p, _, _ in CASES["mde"]],
     }
     from evalgate import leaderboard as L
+    if hasattr(L, "selection_audit"):
+        out["curseMargin"] = []
+        for s, se in MARGINS:
+            a = L.selection_audit(s, se, trials=1)
+            out["curseMargin"].append([a.gap, "inf" if a.gap_in_se == float("inf") else a.gap_in_se])
     if hasattr(L, "constant_baseline"):
         out["constantBaseline"] = [[(a := L.constant_baseline(k)).answer, a.score, a.chance]
                                    for k in KEYS]
@@ -111,6 +128,14 @@ def main() -> int:
     js, py = _js_results(show), _py_results(show)
 
     bad = []
+    # A pair one side never produced is not agreement — it is a comparison that did not
+    # happen. This harness claimed 37 agreeing values while 8 of them were never compared,
+    # because a silent string replacement had dropped the JS half.
+    for name in set(js) | set(py):
+        if bool(js.get(name)) != bool(py.get(name)):
+            bad.append(f"{name}: present on only one side "
+                       f"(browser={'yes' if js.get(name) else 'no'}, "
+                       f"evalgate={'yes' if py.get(name) else 'no'}) — nothing was compared")
     for name in CASES:
         for args, a, b in zip(CASES[name], js[name], py[name]):
             if a is None or abs(a - b) > TOL:
@@ -130,7 +155,17 @@ def main() -> int:
             if abs(round(x, 6) - round(y, 6)) > 1e-9:
                 bad.append(f"{label} {field}: browser {x!r} vs evalgate {y!r}")
 
-    total = sum(len(v) for v in CASES.values()) + 3 * len(py.get("constantBaseline", []))
+    for i, ((s, se), a, b) in enumerate(zip(MARGINS, js.get("curseMargin", []),
+                                            py.get("curseMargin", []))):
+        label = f"curseMargin[{i}] ({len(s)} scores, se={se})"
+        for field, x, y in zip(("gap", "gap_in_se"), a, b):
+            same = (x == y) if isinstance(x, str) or isinstance(y, str) else abs(round(x, 4) - round(y, 4)) <= 1e-9
+            if not same:
+                bad.append(f"{label} {field}: browser {x!r} vs evalgate {y!r}")
+
+    total = (sum(len(v) for v in CASES.values())
+             + 3 * len(py.get("constantBaseline", []))
+             + 2 * len(py.get("curseMargin", [])))
     if bad:
         print(f"\nDIVERGED ({len(bad)} of {total}):")
         for line in bad:
