@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A fixed answer outranks most of this leaderboard — HELM classic MMLU college chemistry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Answering D on every question scores 0.4100 on HELM classic's MMLU college_chemistry table, above the 0.2633 board median and above 22 of the 29 published runs. Eleven runs fall below chance. The same key on a second board beats only 13% — so the skewed key is the benchmark, and 'beats the board' is the roster.">
+<meta property="og:title" content="A fixed answer outranks most of this leaderboard">
+<meta property="og:description" content="Answering D on every question, without reading anything, scores above 22 of 29 published models.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A4%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/helm.html">
+<meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/helm.html">
+<meta property="og:image" content="https://ipezygj.github.io/eval-audit-site/og-helm.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ipezygj.github.io/eval-audit-site/og-helm.png">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · HELM classic, MMLU college chemistry · reproducible</div>
+    <h1>A fixed answer outranks most of this leaderboard</h1>
+    <p class="lede">Answer <strong>D</strong> to every question. Read nothing, know nothing, run no model. That scores 0.4100 on this published table — above the board median of 0.2633, and above 22 of the 29 ranked runs.</p>
+
+    <p>The table is real, the arithmetic behind it is correct, and this is not a story about anyone making a mistake. It is a story about what a ranking measures when the thing being ranked is barely above the floor.</p>
+
+    <h2>Where 0.4100 comes from</h2>
+    <p>Multiple-choice answer keys are not uniform. They are written by people, and people do not distribute correct options evenly. Recovering this key item by item from the runs' own correct predictions — then confirming it against HELM's published gold references on <strong>1,926 items with zero mismatches</strong> — gives a key in which <strong>D is correct on 41 of the 100 test items</strong>.</p>
+    <p>So the constant answerer scores 0.4100. It is not a trick or an exploit; it is what the key hands to anyone who guesses the same letter every time.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Entry</th><th>Accuracy</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>#1 · text-davinci-002</td><td class="num">0.4733</td><td>the only entry clearly above the constant</td></tr>
+        <tr><td><strong>Fixed answer: always D</strong></td><td class="num tag-bad">0.4100</td><td>reads nothing</td></tr>
+        <tr><td>Board median, 29 runs</td><td class="num">0.2633</td><td>below the constant</td></tr>
+        <tr><td>Chance, 4 options</td><td class="num">0.2500</td><td>11 of the 29 runs fall below this</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Testing each paired gap by bootstrap over items, the fixed answer beats <strong>22 of the 29 runs</strong> by a margin whose 95% interval excludes zero. Eleven runs score below what a coin flip over four options would earn. Only the top of this table is measuring subject knowledge; the rest of the ordering is measuring something else.</p>
+
+    <h2>The bound that makes it a finding rather than a headline</h2>
+    <p>The obvious next sentence — "MMLU is broken" — is not supported, and the same measurement says so. The identical key was recovered independently on <strong>Open LLM Leaderboard v1</strong>, which runs MMLU through a different harness and publishes the gold index directly. It puts the fixed answer at 0.4100 on this subject too, <em>agreeing to four decimals</em>.</p>
+    <p>But there, against 152 later models with a median of 0.4600, that same fixed answer beats only 20 of them — <strong>13%, not 76%</strong>. Across 59 Open LLM tasks it beats a median of 5.9% of the board and never more than 17.8%, and on none of them does the board median fall below it.</p>
+    <p>That is the whole result in one line. <strong>The skewed key is a property of the benchmark. Being beaten by it is a property of the roster.</strong> HELM classic's table is a snapshot of 2022-era models on a hard subject, and most of them were near the floor — which is exactly when a constant baseline stops being a joke and starts being a ranking.</p>
+
+    <h2>What was checked before anything was questioned</h2>
+    <p>An audit that cannot reproduce the numbers it criticises has no standing. Before questioning anything, every figure was rebuilt from HELM's own per-instance files: <strong>297 runs across 8 scenarios</strong> — MMLU, BoolQ, BLiMP, CommonSense, BBQ, LegalSupport, LSAT, TruthfulQA — with median and maximum error <strong>0.000000</strong>, and 0 of 297 exceeding 0.0005. On the second board, 614 published figures reproduced to a maximum error of 0.00000000. HELM's artifacts are sound and this audit says nothing against their arithmetic.</p>
+    <p>Three reconstruction choices could each have produced this finding on their own, so each wrong one was priced rather than assumed. Reading a metric named in the summary but absent per-instance shifts results by a median 0.753. Taking one trial instead of the published three-trial mean costs a median 0.0133 and up to 0.1467. Skipping the split filter quietly mixes 11 validation items into a 100-item test set. Any of those would have manufactured a scandal out of a bookkeeping error.</p>
+
+    <h2>What a leaderboard should print</h2>
+    <p>One row, above the models: <strong>the best constant baseline for this task.</strong> Not chance — the actual best fixed answer under the actual key. Every entry below that line is not measuring the skill the table is named after, and a reader deserves to see where the line falls before reading the ordering.</p>
+    <p>It costs one pass over the answer key, and it turns a ranking into a ranking with a floor.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Input: HELM's published per-instance files for the scenario, plus the run summaries.<br>
+      Method: recover the key from correct predictions, confirm against published gold references,<br>
+      score the constant answerer, and bootstrap each paired gap over items.<br>
+      Controls: 297 runs reproduced to 0.000000 first; the same key re-measured on a second,<br>
+      independent board (Open LLM v1, 614 figures to 0.00000000), which bounds the claim.<br>
+      Tooling: <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before your table gets read as a ranking</div>
+    <h3>What is the best constant baseline on your benchmark?</h3>
+    <p>I'll compute it, tell you which of your entries it beats, and reproduce your published numbers first so the answer is arguable on the merits.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

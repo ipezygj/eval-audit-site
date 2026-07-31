@@ -60,7 +60,7 @@ def _mojibake(pages):
 
 # case studies arrive with their own number on the preview; everything else shares the brand card
 PAGE_CARDS = {"curse.html": "og-curse.png", "basefail.html": "og-basefail.png",
-              "dimensions.html": "og-dimensions.png"}
+              "dimensions.html": "og-dimensions.png", "helm.html": "og-helm.png"}
 
 
 def _card_for(name: str) -> str:
