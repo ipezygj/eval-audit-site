@@ -58,6 +58,25 @@ def _mojibake(pages):
     return out
 
 
+def _head_metadata(pages):
+    """Every page must declare where it canonically lives, and where a share links to.
+
+    GitHub Pages happily serves the same page under more than one URL, and a search
+    engine that cannot tell which is authoritative splits the ranking between them.
+    og:url is the other half: without it a link posted to LinkedIn or X can preview
+    as the wrong page, which is the one moment the funnel depends on.
+    """
+    out = []
+    for page in pages:
+        t = page.read_text(encoding="utf-8", errors="replace")
+        want = SITE if page.name == "index.html" else SITE + page.name
+        for tag, needle in (("canonical", f'rel="canonical" href="{want}"'),
+                            ("og:url", f'property="og:url" content="{want}"')):
+            if needle not in t:
+                out.append(f"{page.name}: missing or wrong {tag} (expected {want})")
+    return out
+
+
 def _api_claims():
     """llms.txt advertises the status API to agents. Hold it to what the API serves.
 
@@ -147,7 +166,7 @@ def main() -> int:
                 missing[raw].append(page.name)
 
     garbled = _mojibake(pages)
-    stale_claims = _api_claims() + _counted_claims()
+    stale_claims = _api_claims() + _counted_claims() + _head_metadata(pages)
 
     print(f"{len(pages)} pages, {len(external)} external links")
 
