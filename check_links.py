@@ -39,6 +39,25 @@ def _targets(page: Path):
             yield raw, url, True
 
 
+def _mojibake(pages):
+    """Find UTF-8 that was decoded as latin-1 somewhere upstream.
+
+    The tell is a stray Â/Ã/â immediately followed by another high character —
+    an em dash arriving as â€". Real accented prose does not produce that pair,
+    so this does not fire on Väätäinen. Found live on three Glama listings,
+    where the corrupted description is the first thing a visitor reads.
+    """
+    SUSPECT = {0x00E2, 0x00C3, 0x00C2, 0x20AC, 0x2122}
+    out = []
+    for page in pages:
+        t = page.read_text(encoding="utf-8", errors="replace")
+        for i, c in enumerate(t):
+            if ord(c) in SUSPECT and i + 1 < len(t) and ord(t[i + 1]) > 0x7F:
+                out.append((page.name, t[max(0, i - 25):i + 15].replace("\n", " ")))
+                break
+    return out
+
+
 def main() -> int:
     missing: dict[str, list[str]] = defaultdict(list)
     external: dict[str, list[str]] = defaultdict(list)
@@ -55,6 +74,8 @@ def main() -> int:
             if not (ROOT / path).exists():
                 missing[raw].append(page.name)
 
+    garbled = _mojibake(pages)
+
     print(f"{len(pages)} pages, {len(external)} external links")
 
     if "--list" in sys.argv:
@@ -65,9 +86,16 @@ def main() -> int:
         print(f"\nBROKEN ({len(missing)}):")
         for url, srcs in sorted(missing.items()):
             print(f"  {url}  <- {', '.join(sorted(set(srcs)))}")
+
+    if garbled:
+        print(f"\nGARBLED TEXT ({len(garbled)}):")
+        for name, ctx in garbled:
+            print(f"  {name}: ...{ctx}...")
+
+    if missing or garbled:
         return 1
 
-    print("no broken internal links")
+    print("no broken internal links, no garbled text")
     return 0
 
 
