@@ -159,7 +159,12 @@ def main() -> int:
                                             py.get("curseMargin", []))):
         label = f"curseMargin[{i}] ({len(s)} scores, se={se})"
         for field, x, y in zip(("gap", "gap_in_se"), a, b):
-            same = (x == y) if isinstance(x, str) or isinstance(y, str) else abs(round(x, 4) - round(y, 4)) <= 1e-9
+            if x is None or y is None:            # NaN crosses JSON as null; a value that is
+                same = False                      # not a number is a failure, not a crash
+            elif isinstance(x, str) or isinstance(y, str):
+                same = x == y
+            else:
+                same = abs(round(x, 4) - round(y, 4)) <= 1e-9
             if not same:
                 bad.append(f"{label} {field}: browser {x!r} vs evalgate {y!r}")
 
