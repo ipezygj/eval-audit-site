@@ -70,6 +70,7 @@
         <tr><td>A</td><td>“We lead on the Reasoning subset”</td><td class="num">raw p=0.012 → corrected 0.19</td><td class="rev">REVISE</td></tr>
         <tr><td>B</td><td>“Our judge is a reliable human proxy (91% agreement)”</td><td class="num">longer answer wins 63% (p≈2e-7)</td><td class="rev">REVISE</td></tr>
         <tr><td>C</td><td>“Model B leads on the Safety subset”</td><td class="num">raw p=0.0003 → corrected 0.005</td><td class="cert">CERTIFIED</td></tr>
+        <tr><td>D</td><td>“Acme RM is #1 on our internal board”</td><td class="num">a rerun crowns another model 60.7% of the time</td><td class="rev">REVISE</td></tr>
       </tbody>
     </table>
     </div>
@@ -91,8 +92,13 @@
     <p>This subset win holds up: raw p = 0.0003, and after the same 18-way Šidák correction it is <strong>p = 0.005</strong> — comfortably below 0.05. This is a genuine subset-level result and can be stated as published. Note the audit certifies it independently of the overall ranking; it earns the claim on its own evidence.</p>
     <div class="callout"><span class="lbl">Recommendation</span> Publish as-is. Optionally add “significant after multiple-comparison correction (Šidák, K=18)” — it strengthens the claim and signals rigor.</div>
 
+    <div class="finding-h"><span class="id">Finding D</span><span class="pill rev">Revise</span></div>
+    <h3 style="margin:.4rem 0 .3rem">The internal #1 is a margin of 0.36 standard errors over 12 variants.</h3>
+    <p>Acme RM leads the internal board by <strong>0.4 points</strong> with a per-model standard error of <strong>1.1</strong> — a margin of 0.36 SE. Resampling every variant from its own error bar 20,000 times and re-ranking, the announced leader fails to be the true leader <strong>60.7% of the time</strong>. The winning score is also inflated: across those reruns the crowned model scores <strong>1.23 points</strong> above its own true level, because the number reported is the maximum of twelve noisy draws and the maximum of noise is not zero. Nobody mismeasured anything; this is what selecting a maximum does. The truly best variant is still in the printed top five 93.9% of the time, so the board is informative — the <em>lone</em> #1 is what it cannot support.</p>
+    <div class="callout"><span class="lbl">Recommendation</span> Report the top group, not the top row: “Acme RM is among the leading variants (tied within measurement error with V-7 and V-3).” If a single number is needed, quote the score minus the selection inflation, and print the leader's gap in units of its own standard error next to the ranking — it costs nothing and makes the claim self-checking.</div>
+
     <h2>3 · Method &amp; scope</h2>
-    <p>Each claim was reproduced from the client’s released per-subset scores and pairwise judgments. Subset comparisons use a per-subset two-proportion test with Šidák and Bonferroni family-wise correction over the 18 subsets; the judge check is an exact binomial test on length-differing pairs. All computations are deterministic and were returned with the client’s report. This audit examined only the three claims in scope; it does not assess the models’ overall quality.</p>
+    <p>Each claim was reproduced from the client’s released per-subset scores and pairwise judgments. Subset comparisons use a per-subset two-proportion test with Šidák and Bonferroni family-wise correction over the 18 subsets; the judge check is an exact binomial test on length-differing pairs. All computations are deterministic and were returned with the client’s report. Finding D resamples every variant from its own standard error 20,000 times with a fixed seed and re-ranks, reporting how often the announced leader loses and by how much the winning score is inflated. This audit examined only the four claims in scope; it does not assess the models’ overall quality.</p>
 
     <div class="repro">
       <span class="lbl">Reproduce (client’s data)</span><br>
