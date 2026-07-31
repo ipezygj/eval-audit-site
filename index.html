@@ -178,8 +178,8 @@
 
   <section id="proof" class="wrap">
     <div class="eyebrow">Case files · public data, reproduced</div>
-    <h2 class="section-h">Nine audits. Eight numbers that overstated — one that held.</h2>
-    <p class="section-sub">Each was recomputed from public, released data. Eight target the one summary sentence that overpromised — a judge's bias, a lucky subset, a mechanical "law", an order effect, a base rate, a hidden second dimension, a crown won by luck. The ninth is the control: a #1 I tried to break and couldn't, so I certify it. An auditor who only ever says no isn't checking anything. This is exactly the work I'd do on yours.</p>
+    <h2 class="section-h">Ten audits. Nine numbers that overstated — one that held.</h2>
+    <p class="section-sub">Each was recomputed from public, released data. Nine target the one summary sentence that overpromised — a judge's bias, a lucky subset, a mechanical "law", an order effect, a base rate, a hidden second dimension, a crown won by luck. The tenth is the control: a #1 I tried to break and couldn't, so I certify it. An auditor who only ever says no isn't checking anything. This is exactly the work I'd do on yours.</p>
 
     <div class="files">
       <div class="file">
@@ -245,6 +245,19 @@
         </div>
         <span class="verdict">the roster, not the benchmark</span>
         <a class="file-more" href="helm.html">Read the full write-up →</a>
+      </div>
+
+      <div class="file">
+        <div class="tag">Open LLM Leaderboard v2 · reported upstream</div>
+        <h3>423 published records carry a standard error of exactly zero.</h3>
+        <p>An error bar of 0.0 beside a score that is neither 0 nor 1 claims a rerun would return the identical number.</p>
+        <div class="readout">
+          <span class="k">affected</span>&nbsp; <span class="claim">107 of 420</span> models sampled<br>
+          <span class="k">control</span>&nbsp; <span class="real">13,904</span> rows reproduce exactly, MATH does not<br>
+          <span class="k">filed</span>&nbsp; lm-evaluation-harness <span class="real">#3966</span>
+        </div>
+        <span class="verdict">false precision, still published</span>
+        <a class="file-more" href="zerostderr.html">Read the full write-up →</a>
       </div>
 
       <div class="file">

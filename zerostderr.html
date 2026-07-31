@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A standard error of exactly zero — 423 published records on the Open LLM Leaderboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="423 published records across 107 of 420 sampled models carry a standard error of exactly 0.0 on a score strictly between 0 and 1. All of them are MATH exact_match. The same formula reproduces every other task family exactly, which is what makes it a finding rather than a reconstruction error. Reported upstream as lm-evaluation-harness#3966.">
+<meta property="og:title" content="A standard error of exactly zero">
+<meta property="og:description" content="423 published records claim perfect certainty about a score that is not 0 or 1.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9E%96%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/zerostderr.html">
+<meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/zerostderr.html">
+<meta property="og:image" content="https://ipezygj.github.io/eval-audit-site/og-zerostderr.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ipezygj.github.io/eval-audit-site/og-zerostderr.png">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · Open LLM Leaderboard v2 · reported upstream</div>
+    <h1>A standard error of exactly zero</h1>
+    <p class="lede">423 published records claim perfect certainty about a score that is neither 0 nor 1. A standard error can legitimately be zero only when every item agreed. These did not.</p>
+
+    <p>An error bar of exactly <code>0.0</code> beside a score of, say, 0.3125 is not a small error bar. It is a statement that the measurement carries no uncertainty at all — that rerunning on a different sample of items would return the identical number. For a score strictly between 0 and 1, that cannot be true.</p>
+
+    <h2>How many, and where</h2>
+    <p>Sampling the latest results file for <strong>420 models</strong> from the leaderboard's own results repository, with no fetch failures: <strong>107 models — 25.5% — publish at least one such record</strong>, 423 records in total. Twenty-three of those models have all seven of their MATH subtasks affected. A further 51 aggregate rows inherit the zero from the subtasks beneath them.</p>
+    <p>Every one of the 423 is a <code>leaderboard_math</code> <code>exact_match</code> figure. No other task family produces a single one.</p>
+
+    <h2>The control is the reason this is a finding</h2>
+    <p>An audit claiming a benchmark's error bars are wrong has to rule out the obvious alternative first: that the auditor reconstructed them wrongly. So the same formula — <code>sqrt(p(1-p)/(n-1))</code> — was applied to every task family in the same files, and asked to reproduce the <em>published</em> standard errors exactly.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Task family</th><th>Reproduced exactly</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>BBH</td><td class="num tag-good">10,080 / 10,080</td><td>zero off</td></tr>
+        <tr><td>GPQA</td><td class="num tag-good">1,260 / 1,260</td><td>zero off</td></tr>
+        <tr><td>MuSR</td><td class="num tag-good">1,260 / 1,260</td><td>zero off</td></tr>
+        <tr><td>IFEval</td><td class="num tag-good">840 / 840</td><td>zero off</td></tr>
+        <tr><td>MMLU-Pro</td><td class="num tag-good">420 / 420</td><td>zero off</td></tr>
+        <tr><td>ARC</td><td class="num tag-good">44 / 44</td><td>zero off</td></tr>
+        <tr><td><strong>MATH</strong></td><td class="num tag-bad">1,061 / 2,940</td><td>1,879 do not match</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Thirteen thousand nine hundred and four rows reproduce to the digit, and not one of them does so under the alternative denominator <code>sqrt(p(1-p)/n)</code> — so the formula is pinned, not fitted. The reconstruction is right everywhere it can be checked. MATH is where it stops agreeing, and that is the finding rather than the method's failure.</p>
+
+    <h2>It appears to have stopped</h2>
+    <p>Grouping every dated result file by run month, the affected share runs between 17% and 37% from mid-2024 through January 2025, falls to 11.7% in February 2025, and reaches <strong>0 of 23 runs in March 2025</strong>. The last affected run is dated 2025-02-06. If the rate were still around 25%, seeing zero in 23 runs would be roughly a 0.1% event — so this reads as a real change rather than thin data, though 23 runs is not many and I would treat the date as approximate.</p>
+    <p>That is good news with a tail. The fix, if it was one, does not travel backwards: <strong>the 423 published records still carry <code>0.0</code></strong>. Anything consuming those files today — a meta-analysis, a model-selection script, a paper's error bars, a filter that drops rows with high uncertainty — reads them as exact.</p>
+
+    <h2>Reported, not just published</h2>
+    <p>This was filed with the harness maintainers as <a href="https://github.com/EleutherAI/lm-evaluation-harness/issues/3966" target="_blank" rel="noopener">lm-evaluation-harness#3966</a>, with the widened sample and the month-by-month breakdown, before it appeared here. An audit that only ever becomes a blog post is a complaint; the useful version goes to the people who can fix it.</p>
+
+    <h2>What to do with a zero</h2>
+    <p>If you consume published leaderboard files, treat <code>stderr == 0</code> on a score in the open interval as <strong>missing, not certain</strong>. It is a one-line filter and it is the difference between propagating an unknown and propagating a false precision. If you publish them, recompute rather than pass through, and emit no value at all where you cannot compute one — a blank is honest, and a zero is a claim.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Input: the leaderboard's own published results files, latest per model (420 models, 0 failures).<br>
+      Method: recompute each row's standard error as sqrt(p(1-p)/(n-1)) and compare with the<br>
+      published figure; count rows where a score in (0,1) is published with stderr exactly 0.<br>
+      Control: 13,904 rows across six task families reproduce exactly, and none under the n<br>
+      denominator — so the formula is pinned before MATH is questioned.<br>
+      Tooling: <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">If your pipeline consumes published eval files</div>
+    <h3>Do your error bars survive being recomputed?</h3>
+    <p>I reproduce them from the same files, tell you which ones do not, and give you the filter that keeps a false precision out of your results.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
