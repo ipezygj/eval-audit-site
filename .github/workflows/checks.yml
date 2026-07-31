@@ -34,6 +34,14 @@ jobs:
         run: |
           python -m pip install --quiet "eval-integrity @ git+https://github.com/ipezygj/evalgate"
           python check_calc_parity.py
+      - name: the calculator still computes in a real browser
+        # Weekly, not per push: this installs a browser. The failure it catches — one
+        # throwing card blanking all eight — is silent, so it is worth the minutes.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+          python check_calc_render.py
       - name: production still serves what the repo says
         # Schedule only: on a push, Pages has not deployed that commit yet, so this
         # would be asking the wrong question and failing for the right reason.
