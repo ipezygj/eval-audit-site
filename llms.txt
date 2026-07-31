@@ -61,6 +61,11 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
   selection on noise. On 5 of 7 public boards the announced leader is more likely wrong than right
   (SWE-bench Verified 72.1%), and the winning score is inflated +0.97 to +2.66 points. Control board
   returns 0.0%.
+- [Change one defensible choice, and the #1 changes](https://ipezygj.github.io/eval-audit-site/choices.html):
+  across 44 board/choice pairs on five leaderboards, the top entry survives a different but equally
+  defensible aggregation in only 19; the full top-3 in 8, the full top-5 in 9. The sharpest case
+  changes no measurement at all - reporting one of three identical HELM runs instead of their mean
+  reshuffles half the top ten on 2 of 5 subjects.
 - [A standard error of exactly zero](https://ipezygj.github.io/eval-audit-site/zerostderr.html):
   423 published Open LLM Leaderboard v2 records give a score strictly between 0 and 1 a standard
   error of exactly 0.0 — all MATH exact_match, 107 of 420 models sampled. The same formula

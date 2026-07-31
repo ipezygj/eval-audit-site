@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Change one defensible arithmetic choice, and the #1 changes — 44 board/choice pairs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Across 44 board/choice pairs on five public leaderboards, the top-ranked entry survives a different but equally defensible aggregation choice in only 19. The full top three survives in 8, the full top five in 9. The sharpest case changes no measurement at all — reporting one of three identical runs instead of their mean.">
+<meta property="og:title" content="Change one defensible arithmetic choice, and the #1 changes">
+<meta property="og:description" content="The top entry survives a different, equally defensible aggregation in 19 of 44 cases.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%80%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/choices.html">
+<meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/choices.html">
+<meta property="og:image" content="https://ipezygj.github.io/eval-audit-site/og-choices.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ipezygj.github.io/eval-audit-site/og-choices.png">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · five leaderboards, 44 board/choice pairs · reproducible</div>
+    <h1>Change one defensible choice, and the #1 changes</h1>
+    <p class="lede">Not a bug, not a wrong number, not a disputed metric. A second reasonable way to aggregate the same released data — and across 44 such pairs, the top-ranked entry survives in only <strong>19</strong>.</p>
+
+    <p>Every leaderboard makes choices before it can print a column. Which of several scoring variants to report. Whether to average repeated runs or quote one. How to combine subjects into an overall. Each choice is defensible, each has a defensible alternative, and the alternative is almost never shown.</p>
+
+    <h2>What survives</h2>
+    <p>For each pair — one board, one choice with a defensible alternative — the ranking was recomputed from the same released data under the other choice, and compared.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>What was checked</th><th>Survives the alternative</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>The #1 entry</td><td class="num tag-bad">19 of 44</td><td>fewer than half</td></tr>
+        <tr><td>The full top three</td><td class="num tag-bad">8 of 44</td><td>as a set, unchanged</td></tr>
+        <tr><td>The full top five</td><td class="num tag-bad">9 of 44</td><td>as a set, unchanged</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>The pairs come from HELM classic (35), ProteinGym (4), AlpacaEval 2 (3), BigCodeBench and Open LLM v2 (one each), over fields ranging from six entries to 223.</p>
+
+    <h2>The sharpest case changes no measurement at all</h2>
+    <p>HELM runs some scenarios three times and publishes all three. Reporting <em>one</em> of those runs instead of their mean is not a different metric, a different model, or a different dataset — it is the same numbers, aggregated one defensible way instead of another. On two of five subjects, that alone reshuffles half the top ten.</p>
+    <p>Nothing was mismeasured. The ordering simply was not determined by the measurement in the first place.</p>
+
+    <h2>Two corrections I had to make to my own note</h2>
+    <p>An audit of other people's arithmetic earns nothing if its own goes unchecked, so both of these are stated rather than quietly fixed.</p>
+    <p>First, <strong>30 of the 44 pairs compare six entries, not the eleven an earlier version claimed.</strong> Small fields churn more easily, so this matters.</p>
+    <p>Second, and more usefully: the same earlier note asserted those small-field pairs were <em>inflating</em> the top-five column. They are not. Full top-five survival is <strong>6 of 30</strong> among the six-entry pairs against <strong>3 of 14</strong> among the rest — 20% against 21%. The effect is real at every field size, and the convenient explanation for it was wrong.</p>
+
+    <h2>What a leaderboard should print</h2>
+    <p>Name the choice, and show one alternative. Not every alternative — one, chosen honestly, recomputed from the same data. If the ranking holds, that is a strong claim cheaply made. If it does not, the reader has learned the single most important thing about the table: that its order is a property of the aggregation as much as of the models.</p>
+    <p>A ranking that has never been recomputed under a different defensible choice has not been tested. It has been printed.</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Input: each board's released per-unit results, plus a second defensible aggregation.<br>
+      Method: recompute the ranking under the alternative and compare the #1, the top-3 set<br>
+      and the top-5 set; 44 board/choice pairs over five boards.<br>
+      Discipline: every input verified independently first (HELM 297 runs to 0.000000,<br>
+      Open LLM 198 comparisons to 0.000e+00, ProteinGym 9,588 cells to 0.0005); an<br>
+      error-based shortcut was available and refused — these are CHOICES, not mistakes.<br>
+      Tooling: <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before your ranking is quoted as a fact</div>
+    <h3>Does your order survive a second defensible choice?</h3>
+    <p>I recompute it from your own released data under one honest alternative, and tell you what moves — including the case where nothing does, which is worth publishing.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>

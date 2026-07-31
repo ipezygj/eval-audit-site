@@ -60,7 +60,7 @@ def _mojibake(pages):
 
 # case studies arrive with their own number on the preview; everything else shares the brand card
 PAGE_CARDS = {"curse.html": "og-curse.png", "basefail.html": "og-basefail.png",
-              "dimensions.html": "og-dimensions.png", "helm.html": "og-helm.png", "zerostderr.html": "og-zerostderr.png"}
+              "dimensions.html": "og-dimensions.png", "helm.html": "og-helm.png", "zerostderr.html": "og-zerostderr.png", "choices.html": "og-choices.png"}
 
 
 def _card_for(name: str) -> str:
@@ -122,8 +122,11 @@ def _api_claims():
     return out
 
 
-_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
-          "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+# up to twenty, because the corpus passed ten and the guard reported a false failure
+# rather than a missing word — a lookup that silently returns None reads as a mismatch
+_WORDS = {w: i + 1 for i, w in enumerate(
+    "one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
+    "fifteen sixteen seventeen eighteen nineteen twenty".split())}
 
 
 def _counted_claims():
