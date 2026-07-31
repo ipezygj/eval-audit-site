@@ -113,6 +113,14 @@ def _counted_claims():
     elif _WORDS.get(m.group(1).lower()) != cards:
         out.append(f"index.html says {m.group(1)!r} audits, the page shows {cards} case files")
 
+    # the method section numbers its probes 01..NN; the heading must agree with them
+    probes = len(re.findall(r'class="n">\s*(\d\d)\s*·', text))
+    m = re.search(r"section-h\">(\w+) questions I ask", text)
+    if not m:
+        out.append("index.html no longer says how many questions the method asks")
+    elif _WORDS.get(m.group(1).lower()) != probes:
+        out.append(f"index.html says {m.group(1)!r} questions, the method section numbers {probes}")
+
     if calc.exists():
         checks = calc.read_text(encoding="utf-8").count('class="calc"')
         for m in re.finditer(r"all (\w+) checks|(\w+) of the\s+checks I run", text):
