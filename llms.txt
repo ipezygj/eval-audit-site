@@ -31,6 +31,10 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
   the significance group, resolvable tiers, split-half stability.
 - `audit_preferences(battles)` — Bradley-Terry + Condorcet for pairwise/arena votes.
 - `check_dimensions(results)` — does one number hide more than one skill?
+- `audit_swebench(split)` — the LIVE verdict for a named SWE-bench split (test / verified / lite /
+  multimodal). Fetches the public per-instance results itself, so there is nothing to paste.
+- `check_deployment_precision(tpr, fpr, prevalence)` — what a detector's precision becomes where
+  the target is rare. A benchmark measures on a balanced set; deployment usually is not.
 - `check_published_error_bars(rows)` — recompute a leaderboard's published standard errors from
   its own scores and item counts. Separates the impossible (stderr 0 beside a score strictly
   between 0 and 1) from the merely mismatched, and says UNPINNED if the denominator convention
