@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The announced #1 is probably not the best model — measured on seven leaderboards</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Selection on noise means the winner of a close race is usually the luckiest entrant, not the best one. Measured: on five of seven public leaderboards the announced #1 is more likely wrong than right — up to 72.1% on SWE-bench Verified — and the winning score is inflated by up to 2.66 points.">
+<meta property="og:title" content="The announced #1 is probably not the best model">
+<meta property="og:description" content="You do not pick the best model. You pick the model with the best luck.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← all audits</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <div class="eyebrow">Case study · seven public leaderboards · structural, not a defect</div>
+    <h1>The announced #1 is probably not the best model</h1>
+    <p class="lede">Not because anyone cheated, mismeasured, or overfit. Because of what the word <em>winner</em> means when the race is close and every time is measured with error.</p>
+
+    <p>Every other audit on this site names something a board could fix. This one does not. It is a property of ranking itself, and it applies to a leaderboard that is perfectly run.</p>
+
+    <h2>Why the winner is the luckiest, not the best</h2>
+    <p>Each model's published score is its true ability plus a measurement error — a different test split, a flaky harness, a lucky seed. Now sort by that sum and crown the top. Sorting does not separate the two parts; it picks whoever has the largest <em>total</em>. Among models close together in ability, the one that rises is disproportionately the one whose error happened to be positive.</p>
+    <p>Two consequences follow, and both are measurable. The announced leader is often not the true leader. And the winning score is inflated — not by the winner's error alone, but by the expected maximum of all the errors that were competing, which grows with the number of entrants.</p>
+
+    <h2>What it measures out to</h2>
+    <p>Seven public leaderboards, each simulated 20,000 times by resampling every model's score from its own standard error and re-running the ranking. "P(wrong #1)" is how often the announced leader failed to be the true leader. "Inflation" is how many points the winning score overstates the winner's true ability.</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Leaderboard</th><th>Gap ÷ SE</th><th>P(wrong #1)</th><th>Inflation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>SWE-bench Verified <span class="mono">(180 models)</span></td><td class="num">0.00</td><td class="num tag-bad">72.1%</td><td class="num">+2.41</td></tr>
+        <tr><td>SWE-bench Multimodal <span class="mono">(22)</span></td><td class="num">0.00</td><td class="num tag-bad">69.4%</td><td class="num">+2.28</td></tr>
+        <tr><td>SWE-bench bash-only <span class="mono">(48)</span></td><td class="num">0.53</td><td class="num tag-bad">64.3%</td><td class="num">+2.36</td></tr>
+        <tr><td>SWE-bench Lite <span class="mono">(84)</span></td><td class="num">0.12</td><td class="num tag-bad">59.6%</td><td class="num">+2.66</td></tr>
+        <tr><td>AlpacaEval 2 <span class="mono">(222)</span></td><td class="num">0.19</td><td class="num tag-bad">53.1%</td><td class="num">+0.97</td></tr>
+        <tr><td>Aider polyglot <span class="mono">(69)</span></td><td class="num">0.60</td><td class="num">43.3%</td><td class="num">+1.81</td></tr>
+        <tr><td>SWE-bench Test <span class="mono">(24)</span></td><td class="num">8.03</td><td class="num tag-good">0.0%</td><td class="num">+0.00</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>On five of the seven, the announced #1 is <strong>more likely wrong than right</strong>. On SWE-bench Verified there is only an 80.2% chance the true best model is anywhere in the printed top five. On SWE-bench Verified and Multimodal the top two are not merely close — the published gap is <strong>exactly zero</strong>, and the order between them was decided by whichever row the sort happened to place first.</p>
+
+    <h2>One number predicts all of it</h2>
+    <p>Look at the first column. The leader's margin, expressed in units of the leader's own standard error, orders the table almost perfectly: Spearman ρ = −0.88 against P(wrong #1), exact permutation p = 0.015 over all 5,040 orderings of these seven boards. A board separated by eight standard errors is safe. A board separated by a fifth of one is a coin flip wearing a crown.</p>
+    <p>That ratio costs nothing to compute and no leaderboard prints it.</p>
+
+    <h2>The control that returns zero</h2>
+    <p>A method that finds a curse everywhere has found nothing. SWE-bench Test was not planted as a control — it is simply the board whose leader is 8.03 standard errors clear — and the same simulator returns <strong>0.0% and +0.00</strong> on it. The machinery is capable of saying "this #1 is real," and on that board it does.</p>
+    <p>The simulator was also checked against closed form before it was pointed at any real board: zero noise returns exactly zero; twenty identical models at σ = 5 return +9.32 against an analytic +9.35; two identical models return +2.88 against σ/√π = 2.82. SWE-bench Multilingual was excluded because its denominator could not be pinned down, not because of what it showed.</p>
+
+    <h2>What a leaderboard should print</h2>
+    <p>Two lines, neither of which requires new data. <strong>The leader's gap in units of its own standard error</strong> — below about one, say plainly that the top is unresolved. And a <strong>shrunk winning score</strong>, discounted for the selection that produced it, so the number that gets quoted in a press release is the one the model will reproduce next month.</p>
+    <p>Until then, the honest reading of a close leaderboard is not "model X is best." It is "these five are indistinguishable, and one of them got to stand at the front."</p>
+
+    <div class="repro">
+      <span class="lbl">Reproduce</span><br>
+      Input: each board's published per-model scores and n (SE recovered by GRIM or read from per-instance files).<br>
+      Method: 20,000 resamples per board — draw each model's score from its own SE, re-rank, count how<br>
+      often the announced leader loses, and average the winner's overstatement.<br>
+      Controls: closed-form validation before use; one unplanted board returning 0.0%.<br>
+      Excluded: SWE-bench Multilingual — n could not be pinned.<br>
+      Tooling: <code>github.com/ipezygj/evalgate</code>
+    </div>
+  </article>
+
+  <div class="cta">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Before you announce a #1</div>
+    <h3>Send me your board and its error bars.</h3>
+    <p>I'll tell you how often your announced leader would lose a rerun, and how much of its winning score is selection rather than skill.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="index.html#book-audit">Book an audit →</a>
+      <a class="btn btn-ghost" href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">Try evalgate (open source)</a>
+      <a class="btn btn-ghost" href="https://leanpub.com/measurednotbelieved" target="_blank" rel="noopener">Read the book</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — independent eval-integrity audits.</div>
+    <div class="mono" style="margin-top:6px">reproducible · adversarial · plain-English · the number lied, verify it</div>
+  </div>
+</footer>
+
+</body>
+</html>
