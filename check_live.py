@@ -75,6 +75,10 @@ def main() -> int:
     cards = sorted({m for p in ROOT.glob("*.html")
                     for m in re.findall(r'property="og:image" content="([^"]+)"',
                                         p.read_text(encoding="utf-8"))})
+    # a card list that came back empty would sail through the loop below
+    if not cards:
+        print("no og:image found on any page — the card check measured nothing")
+        return 1
     for url in cards:
         code, _ = _fetch(url, head=True)
         if code != 200:

@@ -182,6 +182,14 @@ def main() -> int:
             if not (ROOT / path).exists():
                 missing[raw].append(page.name)
 
+    # An empty page set makes every loop below vacuously true: no broken link, no
+    # mojibake, no bad metadata, exit 0. Say how many were measured, and refuse a
+    # number that cannot be right — the site has not had fewer than ten pages since
+    # it launched, so a small count means the glob broke, not that pages vanished.
+    if len(pages) < 10:
+        print(f"only {len(pages)} pages found in {ROOT} — nothing was really checked")
+        return 1
+
     garbled = _mojibake(pages)
     stale_claims = _api_claims() + _counted_claims() + _head_metadata(pages)
 
