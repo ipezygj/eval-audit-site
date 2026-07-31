@@ -101,6 +101,9 @@ def _py_results(show: bool) -> dict:
         "mde": [C.min_detectable_effect(n, p) for n, p, _, _ in CASES["mde"]],
     }
     from evalgate import leaderboard as L
+    out["__unavailable__"] = [n for n, attr in (("curseMargin", "selection_audit"),
+                                                ("constantBaseline", "constant_baseline"))
+                              if not hasattr(L, attr)]
     if hasattr(L, "selection_audit"):
         out["curseMargin"] = []
         for s, se in MARGINS:
@@ -131,7 +134,10 @@ def main() -> int:
     # A pair one side never produced is not agreement — it is a comparison that did not
     # happen. This harness claimed 37 agreeing values while 8 of them were never compared,
     # because a silent string replacement had dropped the JS half.
-    for name in set(js) | set(py):
+    # A pair the installed evalgate genuinely does not have yet is "not measured", and is
+    # reported as such below. A pair that vanished for any OTHER reason is a broken harness.
+    unavailable = set(py.get("__unavailable__", []))
+    for name in (set(js) | set(py)) - {"__unavailable__"} - unavailable:
         if bool(js.get(name)) != bool(py.get(name)):
             bad.append(f"{name}: present on only one side "
                        f"(browser={'yes' if js.get(name) else 'no'}, "
@@ -143,8 +149,8 @@ def main() -> int:
 
     # constant_baseline ships in evalgate 0.6.0. An older installed copy cannot be compared,
     # and saying so is honest where silently passing would claim a check that never ran.
-    if "constantBaseline" not in py:
-        print("installed evalgate predates constant_baseline — that pair NOT measured")
+    for name in sorted(unavailable):
+        print(f"installed evalgate has no {name} yet — that pair NOT measured")
     for i, (key, a, b) in enumerate(zip(KEYS, js.get("constantBaseline", []),
                                         py.get("constantBaseline", []))):
         label = f"constantBaseline[{i}] ({len(key)} items)"   # index too: two keys are 100 items long
@@ -167,6 +173,9 @@ def main() -> int:
                 same = abs(round(x, 4) - round(y, 4)) <= 1e-9
             if not same:
                 bad.append(f"{label} {field}: browser {x!r} vs evalgate {y!r}")
+
+    if unavailable:
+        print(f"({len(unavailable)} pair(s) skipped — install evalgate from source to measure them)")
 
     total = (sum(len(v) for v in CASES.values())
              + 3 * len(py.get("constantBaseline", []))
