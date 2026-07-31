@@ -31,6 +31,9 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
   the significance group, resolvable tiers, split-half stability.
 - `audit_preferences(battles)` — Bradley-Terry + Condorcet for pairwise/arena votes.
 - `check_dimensions(results)` — does one number hide more than one skill?
+- `check_constant_baseline(answer_key, scores)` — the FLOOR a multiple-choice benchmark is really
+  read against: the most common correct label, what answering it to everything scores, and how many
+  published entries fall below it. Not 1/n_options — keys are not uniform.
 - `check_winners_curse(scores, standard_error)` — is the announced #1 the best model or the
   luckiest? Needs only published scores and error bars, so it runs on someone else's board.
   Returns P(a rerun crowns someone else), the winning score's inflation, and the leader's

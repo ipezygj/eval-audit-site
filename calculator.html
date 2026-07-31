@@ -132,6 +132,16 @@
       <div class="result" id="r6"></div>
     </div>
 
+    <div class="calc">
+      <h2>7 · What is the floor your benchmark is read against?</h2>
+      <p class="sub">Multiple-choice answer keys are written by people, and people do not spread the correct option evenly — so the floor is not one-over-the-options. Paste the correct label for each item (letters, words, anything, separated by commas or spaces) and, if you have them, the published accuracies as 0–1.</p>
+      <div class="fields">
+        <div class="field" style="flex:2 1 320px"><label for="k7">Answer key</label><input id="k7" type="text" value="D D D D A A B B C D A B D C D D A B D D"></div>
+        <div class="field" style="flex:1 1 220px"><label for="s7">Published accuracies (optional)</label><input id="s7" type="text" value="0.47, 0.30, 0.28, 0.24, 0.22"></div>
+      </div>
+      <div class="result" id="r7"></div>
+    </div>
+
     <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
   </article>
 
@@ -345,13 +355,41 @@ function calc6(){
     `<span class="muted">Chance the truly best model is anywhere in the printed top ${K}: ${(top*100).toFixed(1)}%. Nobody cheated — this is what selecting a maximum does.</span>`;
 }
 
+function calc7(){
+  const el = $('r7');
+  const key = $('k7').value.split(/[,\s]+/).filter(x=>x.length);
+  if (key.length < 2){ el.innerHTML = '<span class="muted">paste at least two answer labels.</span>'; return; }
+  const counts = {};
+  key.forEach(k => counts[k] = (counts[k]||0) + 1);
+  // deterministic tie-break, so the same key always names the same label
+  const labels = Object.keys(counts).sort((a,b) => counts[b]-counts[a] || (a<b?-1:1));
+  const best = labels[0], floor = counts[best]/key.length, chance = 1/labels.length;
+
+  const scores = $('s7').value.split(/[,\s]+/).filter(x=>x.length).map(Number).filter(x=>!isNaN(x));
+  let tail = '';
+  if (scores.length){
+    const beaten = scores.filter(x => x < floor).length;
+    const under = scores.filter(x => x < chance).length;
+    const bad = beaten/scores.length >= 0.5;
+    tail = `<br><span class="${bad?'r-fail':'r-pass'}">The constant outscores ${beaten} of ${scores.length} entries` +
+           `${under? `, and ${under} score below even uniform guessing` : ''}.</span> ` +
+           `${bad ? 'Most of that ordering is not measuring the skill the table is named after.' : 'The board sits above its own floor.'}`;
+  }
+  el.innerHTML =
+    `Best constant answer: <span class="v">${best}</span> &nbsp;·&nbsp; scores ` +
+    `<span class="v ${floor>chance+0.02?'r-fail':'r-pass'}">${(floor*100).toFixed(1)}%</span> reading nothing ` +
+    `&nbsp;·&nbsp; uniform guessing would score <span class="v">${(chance*100).toFixed(1)}%</span>${tail}` +
+    `<br><span class="muted">Print this as a row above the models. Not chance — this number.</span>`;
+}
+
 ['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
 ['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
 ['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
 ['n4','pa4','pb4','pw4'].forEach(id=>$(id).addEventListener('input',calc4));
 ['tpr5','fpr5','pv5'].forEach(id=>$(id).addEventListener('input',calc5));
 ['s6','se6'].forEach(id=>$(id).addEventListener('input',calc6));
-calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
+['k7','s7'].forEach(id=>$(id).addEventListener('input',calc7));
+calc1(); calc2(); calc3(); calc4(); calc5(); calc6(); calc7();
 </script>
 </body>
 </html>
