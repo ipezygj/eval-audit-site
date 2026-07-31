@@ -89,6 +89,39 @@ def _api_claims():
     return out
 
 
+_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+          "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+
+def _counted_claims():
+    """The front page counts things on other pages. Make it recount them.
+
+    "Eight audits", "all six checks" — every one of those numbers is a promise about
+    a different file, and adding a case study or a calculator card silently makes the
+    older sentence wrong. Nobody edits a page to break these; they break by growth.
+    """
+    index, calc = ROOT / "index.html", ROOT / "calculator.html"
+    if not index.exists():
+        return []
+    text = index.read_text(encoding="utf-8")
+    out = []
+
+    cards = text.count('class="file"')
+    m = re.search(r"section-h\">(\w+) audits\.", text)
+    if not m:
+        out.append("index.html no longer says how many audits it shows")
+    elif _WORDS.get(m.group(1).lower()) != cards:
+        out.append(f"index.html says {m.group(1)!r} audits, the page shows {cards} case files")
+
+    if calc.exists():
+        checks = calc.read_text(encoding="utf-8").count('class="calc"')
+        for m in re.finditer(r"all (\w+) checks|(\w+) of the\s+checks I run", text):
+            word = (m.group(1) or m.group(2) or "").lower()
+            if _WORDS.get(word) != checks:
+                out.append(f"index.html says {word!r} browser checks, calculator.html has {checks}")
+    return out
+
+
 def main() -> int:
     missing: dict[str, list[str]] = defaultdict(list)
     external: dict[str, list[str]] = defaultdict(list)
@@ -106,7 +139,7 @@ def main() -> int:
                 missing[raw].append(page.name)
 
     garbled = _mojibake(pages)
-    stale_claims = _api_claims()
+    stale_claims = _api_claims() + _counted_claims()
 
     print(f"{len(pages)} pages, {len(external)} external links")
 
@@ -132,7 +165,7 @@ def main() -> int:
     if missing or garbled or stale_claims:
         return 1
 
-    print("no broken internal links, no garbled text, API claims match status.json")
+    print("links resolve, text is clean, and every counted claim recounts")
     return 0
 
 
