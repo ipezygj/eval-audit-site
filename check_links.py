@@ -58,6 +58,15 @@ def _mojibake(pages):
     return out
 
 
+# case studies arrive with their own number on the preview; everything else shares the brand card
+PAGE_CARDS = {"curse.html": "og-curse.png", "basefail.html": "og-basefail.png",
+              "dimensions.html": "og-dimensions.png"}
+
+
+def _card_for(name: str) -> str:
+    return PAGE_CARDS.get(name, "og-card.png")
+
+
 def _head_metadata(pages):
     """Every page must declare where it canonically lives, and where a share links to.
 
@@ -73,7 +82,8 @@ def _head_metadata(pages):
         for tag, value, needle in (
                 ("canonical", want, f'rel="canonical" href="{want}"'),
                 ("og:url", want, f'property="og:url" content="{want}"'),
-                ("og:image", SITE + "og-card.png", f'property="og:image" content="{SITE}og-card.png"'),
+                ("og:image", SITE + _card_for(page.name),
+                 f'property="og:image" content="{SITE}{_card_for(page.name)}"'),
                 ("twitter:card", "summary_large_image",
                  'name="twitter:card" content="summary_large_image"')):
             if needle not in t:
