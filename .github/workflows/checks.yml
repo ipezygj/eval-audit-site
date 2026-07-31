@@ -27,3 +27,7 @@ jobs:
           python-version: "3.12"
       - name: links, encoding, and API claims
         run: python check_links.py
+      - name: the browser calculator still agrees with evalgate
+        run: |
+          python -m pip install --quiet eval-integrity
+          python check_calc_parity.py
