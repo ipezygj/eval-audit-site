@@ -58,6 +58,37 @@ def _mojibake(pages):
     return out
 
 
+def _api_claims():
+    """llms.txt advertises the status API to agents. Hold it to what the API serves.
+
+    An agent reads that file to decide whether this endpoint answers its question.
+    "for 8 public boards" plus a list of names is a promise, and a board added or
+    renamed in the generator would break it silently — the JSON stays valid and
+    the prose quietly stops being true.
+    """
+    api, doc = ROOT / "status.json", ROOT / "llms.txt"
+    if not (api.exists() and doc.exists()):
+        return []
+    import json
+    boards = [b["board"] for b in json.loads(api.read_text(encoding="utf-8"))["leaderboards"]]
+    text = doc.read_text(encoding="utf-8")
+    out = []
+
+    m = re.search(r"for (\d+) public boards", text)
+    if not m:
+        out.append("llms.txt no longer states how many boards the API covers")
+    elif int(m.group(1)) != len(boards):
+        out.append(f"llms.txt says {m.group(1)} public boards, status.json serves {len(boards)}")
+
+    # every board must be findable in the prose by its distinguishing word
+    flat = re.sub(r"[^a-z0-9]+", " ", text.lower())
+    for b in boards:
+        word = re.sub(r"[^a-z0-9]+", " ", b.lower()).split()[-1]
+        if word not in flat.split():
+            out.append(f"status.json serves {b!r}, llms.txt never mentions {word!r}")
+    return out
+
+
 def main() -> int:
     missing: dict[str, list[str]] = defaultdict(list)
     external: dict[str, list[str]] = defaultdict(list)
@@ -75,6 +106,7 @@ def main() -> int:
                 missing[raw].append(page.name)
 
     garbled = _mojibake(pages)
+    stale_claims = _api_claims()
 
     print(f"{len(pages)} pages, {len(external)} external links")
 
@@ -92,10 +124,15 @@ def main() -> int:
         for name, ctx in garbled:
             print(f"  {name}: ...{ctx}...")
 
-    if missing or garbled:
+    if stale_claims:
+        print(f"\nSTALE CLAIMS ({len(stale_claims)}):")
+        for c in stale_claims:
+            print(f"  {c}")
+
+    if missing or garbled or stale_claims:
         return 1
 
-    print("no broken internal links, no garbled text")
+    print("no broken internal links, no garbled text, API claims match status.json")
     return 0
 
 
