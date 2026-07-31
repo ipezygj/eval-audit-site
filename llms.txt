@@ -31,6 +31,10 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
   the significance group, resolvable tiers, split-half stability.
 - `audit_preferences(battles)` — Bradley-Terry + Condorcet for pairwise/arena votes.
 - `check_dimensions(results)` — does one number hide more than one skill?
+- `check_published_error_bars(rows)` — recompute a leaderboard's published standard errors from
+  its own scores and item counts. Separates the impossible (stderr 0 beside a score strictly
+  between 0 and 1) from the merely mismatched, and says UNPINNED if the denominator convention
+  is wrong rather than reporting a benchmark-wide discrepancy.
 - `check_constant_baseline(answer_key, scores)` — the FLOOR a multiple-choice benchmark is really
   read against: the most common correct label, what answering it to everything scores, and how many
   published entries fall below it. Not 1/n_options — keys are not uniform.

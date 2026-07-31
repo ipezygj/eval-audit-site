@@ -142,6 +142,16 @@
       <div class="result" id="r7"></div>
     </div>
 
+    <div class="calc">
+      <h2>8 · Do your published error bars survive recomputation?</h2>
+      <p class="sub">A standard error is implied by the score and the number of items, so it can be checked rather than trusted. Paste one row per line as <code>label, score, n, published stderr</code> — score as 0–1. A stderr of exactly 0 next to a score that is neither 0 nor 1 says a rerun would return the identical number.</p>
+      <div class="fields">
+        <div class="field" style="flex:3 1 420px"><label for="r8">Rows</label><input id="r8" type="text" value="bbh 0.5 100 0.050252; math 0.3125 64 0; gpqa 0.25 50 0.061859"></div>
+        <div class="field"><label for="d8">Denominator</label><input id="d8" type="text" value="n-1"></div>
+      </div>
+      <div class="result" id="r8out"></div>
+    </div>
+
     <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
   </article>
 
@@ -396,6 +406,53 @@ function calc7(){
     `<br><span class="muted">Print this as a row above the models. Not chance — this number.</span>`;
 }
 
+// Pure: CI compares this against evalgate.leaderboard.stderr_audit.
+function stderrCheck(rows, denom){
+  const out = {zeros: [], mismatched: [], reproduced: 0};
+  rows.forEach(([label, p, n, se]) => {
+    const d = denom === 'n' ? n : n - 1;
+    const want = Math.sqrt(p * (1 - p) / d);
+    if (se === 0 && p > 0 && p < 1) out.zeros.push(label);
+    else if (Math.abs(se - want) <= 5e-7) out.reproduced++;
+    else out.mismatched.push([label, se, want]);
+  });
+  return out;
+}
+
+function calc8(){
+  const el = $('r8out');
+  // a plain separator, not a regex: the field is one line, and an escaped newline inside a
+  // regex literal is exactly the kind of thing that survives review and breaks the page
+  const rows = $('r8').value.split(';').map(s => s.trim()).filter(s => s.length).map(s => {
+    const f = s.split(/[,\s]+/).filter(x => x.length);
+    return [f.slice(0, f.length - 3).join(' ') || '?', Number(f.at(-3)), Number(f.at(-2)), Number(f.at(-1))];
+  });
+  const bad = rows.filter(r => !(r[1] >= 0 && r[1] <= 1) || !(r[2] >= 2) || isNaN(r[3]));
+  if (!rows.length || bad.length){
+    el.innerHTML = '<span class="muted">one row per line: label, score (0–1), n (≥2), published stderr.</span>'; return;
+  }
+  const denom = $('d8').value.trim() === 'n' ? 'n' : 'n-1';
+  const r = stderrCheck(rows, denom);
+  let head, cls;
+  if (r.zeros.length){
+    cls = 'r-fail';
+    head = `<span class="v r-fail">${r.zeros.length}</span> row(s) publish a standard error of exactly 0 for a score strictly between 0 and 1: <span class="v">${r.zeros.join(', ')}</span>`;
+  } else if (r.mismatched.length && r.reproduced === 0){
+    cls = 'r-fail';
+    head = `No row matches under <span class="v">${denom}</span> — try the other denominator before reading anything into this.`;
+  } else if (r.mismatched.length){
+    cls = 'r-fail';
+    head = `<span class="v r-fail">${r.mismatched.length}</span> row(s) disagree with what the score and n imply; ${r.reproduced} reproduce.`;
+  } else {
+    cls = 'r-pass';
+    head = `All <span class="v r-pass">${r.reproduced}</span> rows match sqrt(p(1-p)/${denom}).`;
+  }
+  el.innerHTML = head + `<br><span class="${cls}">` +
+    (r.zeros.length ? 'Treat those as missing, not certain — a blank is honest and a zero is a claim.'
+                    : r.mismatched.length ? 'Ask what those rows were computed from.'
+                    : 'Error bars are consistent with the scores.') + '</span>';
+}
+
 ['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
 ['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
 ['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
@@ -403,7 +460,8 @@ function calc7(){
 ['tpr5','fpr5','pv5'].forEach(id=>$(id).addEventListener('input',calc5));
 ['s6','se6'].forEach(id=>$(id).addEventListener('input',calc6));
 ['k7','s7'].forEach(id=>$(id).addEventListener('input',calc7));
-calc1(); calc2(); calc3(); calc4(); calc5(); calc6(); calc7();
+['r8','d8'].forEach(id=>$(id).addEventListener('input',calc8));
+calc1(); calc2(); calc3(); calc4(); calc5(); calc6(); calc7(); calc8();
 </script>
 </body>
 </html>
