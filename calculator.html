@@ -115,6 +115,16 @@
       <div class="result" id="r5"></div>
     </div>
 
+    <div class="calc">
+      <h2>6 · Is your #1 the best model, or the luckiest?</h2>
+      <p class="sub">Sorting selects on score, and a score is ability plus measurement error — so among close models the one that rises is disproportionately the one whose error pointed up. Paste the published scores (comma-separated, any units) and the standard error, in the same units. Nothing else is needed, so this works on someone else's board.</p>
+      <div class="fields">
+        <div class="field" style="flex:2 1 320px"><label for="s6">Published scores</label><input id="s6" type="text" value="70.3, 70.3, 69.8, 69.1, 68.4, 67.9"></div>
+        <div class="field"><label for="se6">Standard error</label><input id="se6" type="number" step="any" min="0" value="2.1"></div>
+      </div>
+      <div class="result" id="r6"></div>
+    </div>
+
     <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
   </article>
 
@@ -282,12 +292,59 @@ function calc5(){
     `<span class="muted">The model didn't change; the base rate did. That drop of ${(drop*100).toFixed(1)} pp appears nowhere in the benchmark score.</span>`;
 }
 
+// Box-Muller: two uniforms in, one standard normal out. No library, runs in the page.
+function gauss(){
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+}
+
+function calc6(){
+  const el = $('r6');
+  const scores = $('s6').value.split(/[,\s]+/).filter(x=>x.length).map(Number);
+  const se = parseFloat($('se6').value);
+  if (scores.length < 2 || scores.some(isNaN) || !(se >= 0)){
+    el.innerHTML = '<span class="muted">enter at least two numeric scores and a non-negative standard error.</span>'; return;
+  }
+  let best = 0;
+  for (let i = 1; i < scores.length; i++) if (scores[i] > scores[best]) best = i;
+  const sorted = scores.slice().sort((a,b)=>b-a);
+  const gap = sorted[0] - sorted[1];
+  const gapSe = se > 0 ? gap/se : Infinity;
+
+  const TRIALS = 4000, K = Math.min(5, scores.length);
+  let wrong = 0, inflation = 0, inTop = 0;
+  for (let t = 0; t < TRIALS; t++){
+    let win = 0, obs = new Array(scores.length);
+    for (let i = 0; i < scores.length; i++){
+      obs[i] = scores[i] + (se > 0 ? gauss()*se : 0);
+      if (obs[i] > obs[win]) win = i;
+    }
+    if (win !== best) wrong++;
+    inflation += obs[win] - scores[win];
+    const order = obs.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]).slice(0,K);
+    if (order.some(pair => pair[1] === best)) inTop++;
+  }
+  const pWrong = wrong/TRIALS, inf = inflation/TRIALS, top = inTop/TRIALS;
+  // A tie sits at exactly 50%, so sampling alone would flip this verdict; let the margin
+  // decide instead — a leader inside one standard error is not resolved either way.
+  const bad = pWrong >= 0.5 || gapSe < 1;
+  el.innerHTML =
+    `A rerun crowns a different model <span class="v ${bad?'r-fail':'r-pass'}">${(pWrong*100).toFixed(1)}%</span> of the time ` +
+    `&nbsp;·&nbsp; leader's gap is <span class="v">${gapSe===Infinity?'∞':gapSe.toFixed(2)}</span> of its own SE<br>` +
+    `<span class="${bad?'r-fail':'r-pass'}">${bad ? 'The leader is inside its own error bar — report a tie group, not a lone #1.' : 'The leader usually survives a rerun.'}</span> ` +
+    `The winning score is inflated by about <span class="v">${inf.toFixed(2)}</span> points by having been selected as the maximum.<br>` +
+    `<span class="muted">Chance the truly best model is anywhere in the printed top ${K}: ${(top*100).toFixed(1)}%. Nobody cheated — this is what selecting a maximum does.</span>`;
+}
+
 ['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
 ['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
 ['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
 ['n4','pa4','pb4','pw4'].forEach(id=>$(id).addEventListener('input',calc4));
 ['tpr5','fpr5','pv5'].forEach(id=>$(id).addEventListener('input',calc5));
-calc1(); calc2(); calc3(); calc4(); calc5();
+['s6','se6'].forEach(id=>$(id).addEventListener('input',calc6));
+calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
 </script>
 </body>
 </html>
