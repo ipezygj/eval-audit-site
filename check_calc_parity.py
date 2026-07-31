@@ -38,6 +38,14 @@ CASES = {
     "mde": [(200, 0.85, 0.05, 0.8), (18, 0.94, 0.05, 0.8)],
 }
 
+# constantBaseline returns an object, so it is compared field by field
+KEYS = [
+    ["D"] * 41 + ["A"] * 22 + ["B"] * 22 + ["C"] * 15,   # the HELM shape
+    ["A", "B", "C", "D"] * 25,                            # uniform: floor must equal chance
+    ["B", "A", "B", "A"],                                 # a tie, which must break the same way
+    ["x", "x", "y"],
+]
+
 
 def _script() -> str:
     html = (ROOT / "calculator.html").read_text(encoding="utf-8")
@@ -51,6 +59,9 @@ def _js_results(show: bool) -> dict:
     harness = _script() + "\nconst __out={};\n"
     for fn, args in CASES.items():
         harness += f"__out[{fn!r}]=[" + ",".join(f"{fn}({','.join(map(repr, a))})" for a in args) + "];\n"
+    harness += ("__out['constantBaseline']=[" + ",".join(
+        "(k => {const r = constantBaseline(k); return [r.best, r.floor, r.chance];})(%s)" % json.dumps(k)
+        for k in KEYS) + "];\n")
     harness += "console.log(JSON.stringify(__out));\n"
     with tempfile.TemporaryDirectory() as tmp:
         f = Path(tmp) / "harness.mjs"
@@ -77,6 +88,10 @@ def _py_results(show: bool) -> dict:
         "probit": [C._probit(p) for (p,) in CASES["probit"]],
         "mde": [C.min_detectable_effect(n, p) for n, p, _, _ in CASES["mde"]],
     }
+    from evalgate import leaderboard as L
+    if hasattr(L, "constant_baseline"):
+        out["constantBaseline"] = [[(a := L.constant_baseline(k)).answer, a.score, a.chance]
+                                   for k in KEYS]
     if show:
         print("  py :", json.dumps(out)[:300])
     return out
@@ -101,7 +116,21 @@ def main() -> int:
             if a is None or abs(a - b) > TOL:
                 bad.append(f"{name}{args}: browser {a!r} vs evalgate {b!r}")
 
-    total = sum(len(v) for v in CASES.values())
+    # constant_baseline ships in evalgate 0.6.0. An older installed copy cannot be compared,
+    # and saying so is honest where silently passing would claim a check that never ran.
+    if "constantBaseline" not in py:
+        print("installed evalgate predates constant_baseline — that pair NOT measured")
+    for i, (key, a, b) in enumerate(zip(KEYS, js.get("constantBaseline", []),
+                                        py.get("constantBaseline", []))):
+        label = f"constantBaseline[{i}] ({len(key)} items)"   # index too: two keys are 100 items long
+        if a[0] != b[0]:
+            bad.append(f"{label}: browser answers {a[0]!r}, evalgate answers {b[0]!r}")
+        for field, x, y in zip(("floor", "chance"), a[1:], b[1:]):
+            # evalgate rounds its reported score to 6 dp; compare at that resolution
+            if abs(round(x, 6) - round(y, 6)) > 1e-9:
+                bad.append(f"{label} {field}: browser {x!r} vs evalgate {y!r}")
+
+    total = sum(len(v) for v in CASES.values()) + 3 * len(py.get("constantBaseline", []))
     if bad:
         print(f"\nDIVERGED ({len(bad)} of {total}):")
         for line in bad:

@@ -355,15 +355,22 @@ function calc6(){
     `<span class="muted">Chance the truly best model is anywhere in the printed top ${K}: ${(top*100).toFixed(1)}%. Nobody cheated — this is what selecting a maximum does.</span>`;
 }
 
+// Pure, so it can be compared against evalgate.leaderboard.constant_baseline in CI.
+// The tie-break is deterministic on purpose: a floor that moved with key order would
+// name a different answer for the same data on two runs.
+function constantBaseline(key){
+  const counts = {};
+  key.forEach(k => counts[k] = (counts[k]||0) + 1);
+  const labels = Object.keys(counts).sort((a,b) => counts[b]-counts[a] || (a<b?-1:1));
+  const best = labels[0];
+  return {best, floor: counts[best]/key.length, chance: 1/labels.length, nLabels: labels.length};
+}
+
 function calc7(){
   const el = $('r7');
   const key = $('k7').value.split(/[,\s]+/).filter(x=>x.length);
   if (key.length < 2){ el.innerHTML = '<span class="muted">paste at least two answer labels.</span>'; return; }
-  const counts = {};
-  key.forEach(k => counts[k] = (counts[k]||0) + 1);
-  // deterministic tie-break, so the same key always names the same label
-  const labels = Object.keys(counts).sort((a,b) => counts[b]-counts[a] || (a<b?-1:1));
-  const best = labels[0], floor = counts[best]/key.length, chance = 1/labels.length;
+  const {best, floor, chance} = constantBaseline(key);
 
   const scores = $('s7').value.split(/[,\s]+/).filter(x=>x.length).map(Number).filter(x=>!isNaN(x));
   let tail = '';
