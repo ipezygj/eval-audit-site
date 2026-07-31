@@ -54,6 +54,11 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
   selection on noise. On 5 of 7 public boards the announced leader is more likely wrong than right
   (SWE-bench Verified 72.1%), and the winning score is inflated +0.97 to +2.66 points. Control board
   returns 0.0%.
+- [A fixed answer outranks most of this leaderboard](https://ipezygj.github.io/eval-audit-site/helm.html):
+  the answer key is not uniform. Answering D to everything scores 0.4100 on HELM classic's MMLU
+  college_chemistry, above the 0.2633 board median and above 22 of 29 published runs; 11 fall below
+  chance. Bounded: the same key beats only 13% of a later 152-model board, so the skewed key is the
+  benchmark and being beaten by it is the roster.
 - [A benchmark number is not a deployment number](https://ipezygj.github.io/eval-audit-site/basefail.html):
   AUC 0.978 becomes ~12% precision at 1% prevalence, ~1% at 0.1%. Reproject any screening claim onto
   the base rate it will actually meet.
