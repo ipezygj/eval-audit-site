@@ -103,6 +103,18 @@
       <div class="result" id="r4"></div>
     </div>
 
+    <!-- 5 -->
+    <div class="calc">
+      <h2>5 · What does your precision become in deployment?</h2>
+      <p class="sub">A benchmark measures on a roughly balanced set. Deployment usually isn't. Precision is a property of the model <em>and</em> how often the target actually occurs — so give the operating point you'll ship (not an AUC, which doesn't pin down a threshold) and the prevalence you'll really face.</p>
+      <div class="fields">
+        <div class="field"><label for="tpr5">True-positive rate</label><input id="tpr5" type="number" step="any" min="0" max="1" value="0.95"></div>
+        <div class="field"><label for="fpr5">False-positive rate</label><input id="fpr5" type="number" step="any" min="0" max="1" value="0.05"></div>
+        <div class="field"><label for="pv5">Deployment prevalence</label><input id="pv5" type="number" step="any" min="0" max="1" value="0.01"></div>
+      </div>
+      <div class="result" id="r5"></div>
+    </div>
+
     <p class="toolnote">These run the same math as <a href="https://github.com/ipezygj/evalgate" target="_blank" rel="noopener">evalgate</a>. They’re the cheap DIY version — the value of an audit is running <em>all</em> of them, adversarially, on a number you’re too close to.</p>
   </article>
 
@@ -253,11 +265,29 @@ function calc4(){
     `<span class="${resolvable?'r-pass':'r-fail'}">${resolvable ? 'RESOLVED — the gap exceeds what this sample could miss' : 'UNDERPOWERED — the gap is below the MDE; the ranking is a coin flip'}.</span>`;
 }
 
+// --- 5: base rate / deployment precision ---
+function calc5(){
+  const tpr = parseFloat($('tpr5').value), fpr = parseFloat($('fpr5').value), pv = parseFloat($('pv5').value);
+  const el = $('r5');
+  if (!(tpr>=0&&tpr<=1) || !(fpr>=0&&fpr<=1) || !(pv>0&&pv<1)){ el.innerHTML = '<span class="muted">enter a TPR and FPR (0–1) and a prevalence strictly between 0 and 1.</span>'; return; }
+  const hits = tpr*pv, falses = fpr*(1-pv), flagged = hits + falses;
+  const prec = flagged>0 ? hits/flagged : 0;
+  const bench = (tpr+fpr)>0 ? tpr/(tpr+fpr) : 0;      // the same point at 50/50
+  const perTrue = hits>0 ? falses/hits : Infinity;
+  const drop = bench>0 ? bench - prec : 0;
+  const bad = prec < 0.5;
+  el.innerHTML =
+    `Deployment precision: <span class="v ${bad?'r-fail':'r-pass'}">${(prec*100).toFixed(1)}%</span> &nbsp;·&nbsp; on a balanced set the same point reads <span class="v">${(bench*100).toFixed(1)}%</span><br>` +
+    `<span class="${bad?'r-fail':'r-pass'}">${bad ? `Most alarms are false — about ${fmt(perTrue)} false for every true catch.` : `Majority of alarms are real (${fmt(perTrue)} false per true catch).`}</span><br>` +
+    `<span class="muted">The model didn't change; the base rate did. That drop of ${(drop*100).toFixed(1)} pp appears nowhere in the benchmark score.</span>`;
+}
+
 ['p1','n1','a1'].forEach(id=>$(id).addEventListener('input',calc1));
 ['w2','n2','p2'].forEach(id=>$(id).addEventListener('input',calc2));
 ['xy3','t3'].forEach(id=>$(id).addEventListener('input',calc3));
 ['n4','pa4','pb4','pw4'].forEach(id=>$(id).addEventListener('input',calc4));
-calc1(); calc2(); calc3(); calc4();
+['tpr5','fpr5','pv5'].forEach(id=>$(id).addEventListener('input',calc5));
+calc1(); calc2(); calc3(); calc4(); calc5();
 </script>
 </body>
 </html>
