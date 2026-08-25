@@ -26,7 +26,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-SITE = "https://ipezygj.github.io/eval-audit-site/"
+SITE = "https://ipezygj.com/"
 TIMEOUT = 30
 UA = {"User-Agent": "eval-audit-site-checker"}
 

@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ipezygj.github.io/eval-audit-site/sitemap.xml
+Sitemap: https://ipezygj.com/sitemap.xml
 
 # For LLMs / AI agents: see /llms.txt

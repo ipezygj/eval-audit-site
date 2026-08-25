@@ -78,7 +78,7 @@ def draw(eyebrow, headline, number, caption) -> Image.Image:
         d.text((760, 300), number, font=font("georgiab.ttf", 116), fill=ACCENT)
     d.text((110, 470 if len(headline) > 2 else 418), caption,
            font=font("segoeui.ttf", 30 if number else 34), fill=MUTED)
-    d.text((110, 530), "ipezygj.github.io/eval-audit-site",
+    d.text((110, 530), "ipezygj.com",
            font=font("consola.ttf", 26), fill=ACCENT)
     return img
 

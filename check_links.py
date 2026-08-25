@@ -21,7 +21,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
-SITE = "https://ipezygj.github.io/eval-audit-site/"
+SITE = "https://ipezygj.com/"
 SKIP_PREFIXES = ("#", "mailto:", "tel:", "data:", "javascript:")
 REF = re.compile(r'(?:href|src)\s*=\s*"([^"]+)"')
 
