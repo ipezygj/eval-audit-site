@@ -118,14 +118,19 @@ def _py_results(show: bool) -> dict:
 
 
 def main() -> int:
+    # --strict: a check that could not run is a FAILURE, not a pass. Skipping is fine on a
+    # laptop with no node and a stale evalgate; in CI the whole point is that the check ran,
+    # and a skip printed into a log nobody reads is indistinguishable from a green tick.
+    strict = "--strict" in sys.argv
+
     if shutil.which("node") is None:
         print("node not installed — parity not measured, skipping")
-        return 0
+        return 1 if strict else 0
     try:
         import evalgate  # noqa: F401
     except ModuleNotFoundError:
         print("evalgate not installed — parity not measured, skipping")
-        return 0
+        return 1 if strict else 0
 
     show = "--show" in sys.argv
     js, py = _js_results(show), _py_results(show)
@@ -184,6 +189,12 @@ def main() -> int:
         print(f"\nDIVERGED ({len(bad)} of {total}):")
         for line in bad:
             print(f"  {line}")
+        return 1
+    if unavailable and strict:
+        print(f"\nNOT MEASURED ({len(unavailable)} pair(s)): "
+              f"{', '.join(sorted(unavailable))}. CI installs evalgate from source, so a "
+              f"missing pair means the install is wrong, not that the pair is new. "
+              f"Refusing to report agreement on a comparison that did not happen.")
         return 1
     print(f"browser and evalgate agree on all {total} values (tol {TOL:g})")
     return 0
