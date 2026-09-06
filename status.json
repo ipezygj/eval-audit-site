@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-06 11:55 UTC",
+  "generated": "2026-09-06 12:23 UTC",
   "source": "https://ipezygj.com/status.html",
   "method": "bootstrap rank CIs; paired McNemar; split-half stability",
   "summary": {
@@ -28,6 +28,7 @@
         "sonar-foundation-agent_claude-opus-4-5",
         "livesweagent_claude-opus-4-5"
       ],
+      "tie_kind": "exact",
       "badge": "https://ipezygj.com/badges/swe-bench-verified.svg"
     },
     {
@@ -50,6 +51,7 @@
         "GUIRepair_o3",
         "codefuse_pycfuse_svr"
       ],
+      "tie_kind": "exact",
       "badge": "https://ipezygj.com/badges/swe-bench-multimodal.svg"
     },
     {
