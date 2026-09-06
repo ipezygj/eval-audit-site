@@ -1,10 +1,10 @@
 {
-  "generated": "2026-08-04 16:00 UTC",
-  "source": "https://ipezygj.github.io/eval-audit-site/status.html",
+  "generated": "2026-09-06 04:00 UTC",
+  "source": "https://ipezygj.com/status.html",
   "method": "bootstrap rank CIs; paired McNemar; split-half stability",
   "summary": {
     "swebench_boards": 6,
-    "swebench_coinflips": 5,
+    "swebench_coinflips": 4,
     "real_top_ranks": 3
   },
   "leaderboards": [
@@ -15,16 +15,16 @@
       "p_top_is_1": 1.0,
       "n_tied": 1,
       "leader": "sonar-foundation-agent_claude-opus-4-5",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-test.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-test.svg"
     },
     {
       "board": "SWE-bench Verified",
       "verdict": "COIN-FLIP-#1",
       "resolved": false,
-      "p_top_is_1": 0.361,
-      "n_tied": 3,
+      "p_top_is_1": 0.345,
+      "n_tied": 4,
       "leader": "sonar-foundation-agent_claude-opus-4-5",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-verified.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-verified.svg"
     },
     {
       "board": "SWE-bench Lite",
@@ -33,7 +33,7 @@
       "p_top_is_1": 0.457,
       "n_tied": 4,
       "leader": "ExpeRepair-v1_claude-4-sonnet-20250514",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-lite.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-lite.svg"
     },
     {
       "board": "SWE-bench Multimodal",
@@ -42,25 +42,25 @@
       "p_top_is_1": 0.376,
       "n_tied": 4,
       "leader": "GUIRepair_o3",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-multimodal.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-multimodal.svg"
     },
     {
       "board": "SWE-bench Multilingual",
       "verdict": "COIN-FLIP-#1",
       "resolved": false,
-      "p_top_is_1": 0.512,
+      "p_top_is_1": 0.518,
       "n_tied": 4,
       "leader": "mini-v2.0.0a0_gemini-3-flash",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-multilingual.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-multilingual.svg"
     },
     {
       "board": "SWE-bench Bash-only",
-      "verdict": "COIN-FLIP-#1",
+      "verdict": "STALE",
       "resolved": false,
-      "p_top_is_1": 0.574,
-      "n_tied": 4,
-      "leader": "mini-v2.0.0_claude-4-5-opus-high",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/swe-bench-bash-only.svg"
+      "p_top_is_1": null,
+      "n_tied": null,
+      "leader": null,
+      "badge": "https://ipezygj.com/badges/swe-bench-bash-only.svg"
     },
     {
       "board": "LMArena (Chatbot Arena)",
@@ -69,7 +69,7 @@
       "p_top_is_1": 0.993,
       "n_tied": 1,
       "leader": "gemini-2.5-pro",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/lmarena--chatbot-arena.svg"
+      "badge": "https://ipezygj.com/badges/lmarena--chatbot-arena.svg"
     },
     {
       "board": "LMArena (coding)",
@@ -78,7 +78,7 @@
       "p_top_is_1": 0.973,
       "n_tied": 1,
       "leader": "gemini-2.5-pro",
-      "badge": "https://ipezygj.github.io/eval-audit-site/badges/lmarena--coding.svg"
+      "badge": "https://ipezygj.com/badges/lmarena--coding.svg"
     }
   ]
 }
