@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-06 10:37 UTC",
+  "generated": "2026-09-06 11:55 UTC",
   "source": "https://ipezygj.com/status.html",
   "method": "bootstrap rank CIs; paired McNemar; split-half stability",
   "summary": {
@@ -24,6 +24,10 @@
       "p_top_is_1": 0.345,
       "n_tied": 4,
       "leader": "sonar-foundation-agent_claude-opus-4-5",
+      "co_leaders": [
+        "sonar-foundation-agent_claude-opus-4-5",
+        "livesweagent_claude-opus-4-5"
+      ],
       "badge": "https://ipezygj.com/badges/swe-bench-verified.svg"
     },
     {
@@ -42,6 +46,10 @@
       "p_top_is_1": 0.376,
       "n_tied": 4,
       "leader": "GUIRepair_o3",
+      "co_leaders": [
+        "GUIRepair_o3",
+        "codefuse_pycfuse_svr"
+      ],
       "badge": "https://ipezygj.com/badges/swe-bench-multimodal.svg"
     },
     {
