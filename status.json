@@ -60,7 +60,8 @@
       "p_top_is_1": null,
       "n_tied": null,
       "leader": null,
-      "badge": "https://ipezygj.com/badges/swe-bench-bash-only.svg"
+      "badge": "https://ipezygj.com/badges/swe-bench-bash-only.svg",
+      "note": "shell / terminal split \u2014 folded into Verified upstream on 2026-09-01"
     },
     {
       "board": "LMArena (Chatbot Arena)",
