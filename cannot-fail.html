@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ipezygj.github.io/eval-audit-site/cannot-fail.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ipezygj.github.io/eval-audit-site/cannot-fail.html">
+<meta property="og:title" content="The check that cannot fail">
+<meta property="og:description" content="On a vital-signs monitor a flat line means death. On a test suite it means the check has no pulse - and the screen still reads PASS.">
+<meta property="og:image" content="https://ipezygj.github.io/eval-audit-site/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AB%80%3C/text%3E%3C/svg%3E">
+<title>The check that cannot fail</title>
+<meta name="description" content="On a vital-signs monitor a flat line means death. On a test suite it means the check has no pulse — and the screen still reads PASS. A field note on the bug that agrees with you.">
+<style>
+  :root{
+    --paper:#EAEEEE; --panel:#FBFCFC; --ink:#131A1C; --muted:#586A6D;
+    --line:#D3DAD9; --accent:#0C6B65; --accent-2:#094f4a;
+    --caution:#A96C12; --caution-bg:#a96c1214; --caution-line:#a96c1240;
+    --scope-bg:#0A1416; --scope-grid:#153033; --scope-trace:#37D0A6;
+    --scope-dim:#5b7d7c; --scope-flat:#E0B15A; --scope-glow:#37d0a655;
+    --shadow:0 1px 2px #131a1c0c,0 12px 40px #131a1c12;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#080F11; --panel:#0E1719; --ink:#E4ECEC; --muted:#84999B;
+      --line:#1B2C2C; --accent:#37D0A6; --accent-2:#63e3c1;
+      --caution:#E0B15A; --caution-bg:#e0b15a12; --caution-line:#e0b15a33;
+      --shadow:0 1px 2px #0007,0 16px 46px #0008;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#EAEEEE;--panel:#FBFCFC;--ink:#131A1C;--muted:#586A6D;--line:#D3DAD9;
+    --accent:#0C6B65;--accent-2:#094f4a;--caution:#A96C12;--caution-bg:#a96c1214;
+    --caution-line:#a96c1240;--shadow:0 1px 2px #131a1c0c,0 12px 40px #131a1c12;
+  }
+  :root[data-theme="dark"]{
+    --paper:#080F11;--panel:#0E1719;--ink:#E4ECEC;--muted:#84999B;--line:#1B2C2C;
+    --accent:#37D0A6;--accent-2:#63e3c1;--caution:#E0B15A;--caution-bg:#e0b15a12;
+    --caution-line:#e0b15a33;--shadow:0 1px 2px #0007,0 16px 46px #0008;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.62;font-size:17px;letter-spacing:-.004em;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  p{margin:0 0 1.05em;max-width:64ch}
+  em{font-style:normal;color:var(--accent)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--caution-line)}
+  code{font-family:var(--mono);font-size:.88em;background:var(--caution-bg);
+    padding:.08em .34em;border-radius:4px;color:var(--ink)}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);font-weight:600}
+
+  /* hero */
+  header{padding:74px 0 24px}
+  h1{font-family:var(--mono);font-weight:670;font-size:clamp(33px,7.6vw,66px);
+    line-height:.98;letter-spacing:-.035em;margin:.34em 0 .46em;text-wrap:balance}
+  h1 .flat{color:var(--caution);position:relative;white-space:nowrap}
+  .lede{font-size:clamp(18px,2.4vw,21px);color:var(--muted);max-width:54ch;line-height:1.5}
+
+  /* the monitor */
+  .monitor{margin:30px 0 8px;background:var(--scope-bg);border:1px solid #16302f;
+    border-radius:16px;box-shadow:var(--shadow),inset 0 0 60px #00000040;overflow:hidden}
+  .mon-head{display:flex;align-items:center;gap:12px;padding:13px 18px;
+    border-bottom:1px solid #14292a;font-family:var(--mono);font-size:12px;
+    color:#6b8b8a;letter-spacing:.04em}
+  .live{display:flex;align-items:center;gap:7px;color:var(--scope-trace);font-weight:600}
+  .live .pulse{width:8px;height:8px;border-radius:50%;background:var(--scope-trace);
+    box-shadow:0 0 10px var(--scope-trace);animation:blip 1.4s ease-in-out infinite}
+  @keyframes blip{0%,100%{opacity:.35}50%{opacity:1}}
+  .mon-verdict{margin-left:auto;font-weight:700;letter-spacing:.14em;color:var(--scope-flat)}
+  canvas{display:block;width:100%;height:190px}
+  .mon-foot{display:flex;gap:8px;padding:14px 16px;border-top:1px solid #14292a;flex-wrap:wrap;
+    background:#0b1618}
+  input[type=text]{flex:1 1 240px;min-width:0;font-family:var(--mono);font-size:13.5px;
+    padding:11px 13px;border:1px solid #1c3736;border-radius:10px;background:#0a1315;
+    color:#cfe6e2}
+  input::placeholder{color:#4d6d6b}
+  input:focus-visible{outline:2px solid var(--scope-trace);outline-offset:1px}
+  button{font-family:var(--sans);font-weight:600;font-size:13.5px;padding:11px 18px;
+    border:1px solid var(--scope-trace);background:var(--scope-trace);color:#04120f;
+    border-radius:10px;cursor:pointer;transition:transform .08s,box-shadow .2s}
+  button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--scope-glow)}
+  button:active{transform:translateY(0)}
+  button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+  .diag{margin:4px 0 46px;font-family:var(--mono);font-size:12.5px;color:var(--muted);
+    display:flex;gap:18px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+  .diag b{color:var(--caution)}
+  .flatnote{max-width:60ch;margin-top:-30px;padding:16px 18px;border-left:3px solid var(--caution);
+    background:var(--caution-bg);border-radius:0 10px 10px 0;font-size:15px;display:none}
+  .flatnote.show{display:block;animation:fade .5s}
+  @keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+  section{padding:50px 0;border-top:1px solid var(--line)}
+  h2{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin:0 0 10px}
+  .big{font-size:clamp(23px,4vw,31px);font-weight:700;letter-spacing:-.02em;line-height:1.16;
+    margin:0 0 18px;text-wrap:balance}
+
+  .case{margin:20px 0;border:1px solid var(--line);border-radius:14px;background:var(--panel);
+    overflow:hidden;box-shadow:var(--shadow)}
+  .case-code{padding:16px 16px 2px}
+  pre{font-family:var(--mono);font-size:13px;line-height:1.62;margin:0;overflow-x:auto;color:var(--ink)}
+  pre .kw{color:var(--accent)}pre .cm{color:var(--muted)}pre .ret{color:var(--caution);font-weight:600}
+  pre .str{color:var(--caution)}
+  .case-q{padding:2px 16px 15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    font-size:13.5px;color:var(--muted)}
+  .case-q span{margin-right:auto}
+  .guess{font-family:var(--sans);font-weight:600;font-size:13px;padding:8px 15px;border-radius:9px;
+    border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;transition:.15s}
+  .guess:hover{border-color:var(--accent);color:var(--accent)}
+  .reveal{border-top:1px solid var(--line);padding:16px;font-size:14.5px;background:var(--caution-bg);display:none}
+  .reveal.show{display:block;animation:fade .4s}
+  .reveal p{margin:.5em 0 0}
+  .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--caution);background:var(--caution-bg);border:1px solid var(--caution-line);
+    padding:2px 9px;border-radius:20px;font-weight:600}
+  .tag.ok{color:var(--accent);border-color:var(--accent);background:transparent}
+  .real{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:11px;letter-spacing:.02em}
+
+  .q{display:flex;gap:18px;padding:19px 0;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:0}
+  .q-num{font-family:var(--mono);font-size:12px;color:var(--caution);font-weight:700;flex:0 0 auto;
+    padding-top:4px;font-variant-numeric:tabular-nums}
+  .q-body h3{margin:0 0 3px;font-size:16.5px;font-weight:650;letter-spacing:-.01em}
+  .q-body p{margin:0;color:var(--muted);font-size:14.5px;max-width:58ch}
+
+  footer{padding:52px 0 84px}
+  .stat{font-family:var(--mono);font-size:clamp(56px,13vw,104px);font-weight:700;color:var(--caution);
+    letter-spacing:-.04em;line-height:.9;font-variant-numeric:tabular-nums}
+  .stat-cap{font-size:14.5px;color:var(--muted);max-width:52ch;margin-top:10px}
+  .close{font-family:var(--mono);font-size:clamp(19px,3.2vw,26px);line-height:1.34;font-weight:600;
+    letter-spacing:-.02em;max-width:23ch;text-wrap:balance;margin:38px 0 20px}
+  .close em{color:var(--accent)}
+  .fine{font-size:14.5px;color:var(--muted);max-width:60ch}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">A field note on measurement</div>
+    <h1>The check that <span class="flat">cannot&nbsp;fail</span></h1>
+    <p class="lede">On a vital-signs monitor, a flat line means death. On a test suite,
+    it means the check has no pulse — and the screen still reads&nbsp;PASS.</p>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="monitor">
+    <div class="mon-head">
+      <span class="live"><span class="pulse"></span>MONITORING</span>
+      <span>is_authorized(user, resource)</span>
+      <span class="mon-verdict" id="verdict">PASS</span>
+    </div>
+    <canvas id="scope" aria-label="A signal trace for the check's verdict, flat at PASS"></canvas>
+    <div class="mon-foot">
+      <input type="text" id="stim" autocomplete="off"
+        placeholder="send any input — 'attacker', '', 'literally anyone'…"
+        aria-label="stimulus input to the check">
+      <button id="send">Probe the check</button>
+    </div>
+  </div>
+  <div class="diag">
+    <span>probes&nbsp;sent: <b id="n">0</b></span>
+    <span>rejections: <b id="r">0</b></span>
+    <span>trace&nbsp;variance: <b id="var">0.00</b></span>
+  </div>
+  <div class="flatnote" id="flatnote">
+    You can stop probing. The trace is flat because <code>is_authorized</code> returns
+    <code>True</code> on every path — there is no input that bends it toward REJECT. It
+    isn’t a weak guard; it’s a guard with no pulse. A healthy check’s trace <em>dips</em>
+    sometimes. This one never will — and nothing about watching it run would ever tell
+    you that.
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <h2>Why it survives every review</h2>
+    <p class="big">A missing check is an absence you can notice. This is an absence
+    wearing the clothes of a result.</p>
+    <p>A wrong number is a claim, and claims can be argued with. A check that cannot
+    fail makes no claim — it manufactures <em>agreement</em>. The build goes green. The
+    filter returns rows. The monitor reports success. Every signal a careful reviewer
+    scans for is present, and each one is hollow.</p>
+    <p>You cannot audit a measurement that was never taken. You can only notice it was
+    never taken — and noticing means asking a question the output will never prompt.</p>
+  </section>
+
+  <section>
+    <h2>Four checks · three have no pulse</h2>
+    <p style="color:var(--muted);font-size:15px;max-width:58ch">Each is from real code
+    written on one day. For each: <b>could running it ever produce a “no”?</b> Decide,
+    then reveal.</p>
+
+    <div class="case" data-answer="no">
+      <div class="case-code"><pre><span class="cm"># which job postings are relevant to us</span>
+<span class="kw">def</span> is_wanted(role):
+    <span class="kw">return</span> role.is_remote <span class="kw">or</span> <span class="str">"remote"</span> <span class="kw">in</span> location</pre></div>
+      <div class="case-q"><span>Can it be seen rejecting a role?</span>
+        <button class="guess" data-g="yes">It can fail</button>
+        <button class="guess" data-g="no">Never</button></div>
+      <div class="reveal"><span class="tag">flat line</span>
+        <p><code>role.is_remote</code> is a boolean, compared to the <em>word</em>
+        “remote” — always truthy the way it was used. The filter accepted all 2,485
+        roles. “Nothing matched” read exactly like an empty job market.</p>
+        <div class="real">2026-08-04 · a boolean read as a string · 0 of 2485</div></div>
+    </div>
+
+    <div class="case" data-answer="no">
+      <div class="case-code"><pre><span class="cm"># confirm two datasets match before trusting the result</span>
+z = (obs - mean) / sd <span class="kw">if</span> sd &gt; 0 <span class="kw">else</span> <span class="ret">0.0</span>
+verdict = <span class="str">"MATCHED"</span> <span class="kw">if</span> abs(z) &lt; 1e-9 <span class="kw">else</span> <span class="str">"DIFFERS"</span></pre></div>
+      <div class="case-q"><span>Can this control ever say DIFFERS?</span>
+        <button class="guess" data-g="yes">It can fail</button>
+        <button class="guess" data-g="no">Never</button></div>
+      <div class="reveal"><span class="tag">flat when it matters</span>
+        <p>When the datasets differed by a fixed amount, their spread was zero — so
+        <code>sd = 0</code>, and the divide-by-zero guard forced <code>z = 0</code>,
+        which reads as MATCHED. It printed <code>MATCHED</code> over two visibly
+        different numbers. The guard against a crash had become a guarantee of passing.</p>
+        <div class="real">2026-08-04 · obs=2452 null=2434 → “MATCHED”</div></div>
+    </div>
+
+    <div class="case" data-answer="no">
+      <div class="case-code"><pre><span class="cm"># restrict a null model to swap only within a group</span>
+<span class="kw">def</span> allowed(u, v):
+    <span class="kw">return</span> group(u) <span class="kw">is not</span> <span class="ret">None</span> <span class="kw">and</span> group(v) <span class="kw">is not</span> <span class="ret">None</span></pre></div>
+      <div class="case-q"><span>Does this constraint ever refuse?</span>
+        <button class="guess" data-g="yes">It can fail</button>
+        <button class="guess" data-g="no">Never</button></div>
+      <div class="reveal"><span class="tag">flat line</span>
+        <p>Every node had a group, so the predicate was always true. The “constrained”
+        null was a byte-for-byte copy of the unconstrained one — and its results,
+        differing only by noise, looked exactly like two methods agreeing. A syntax
+        checker can’t catch this: it is vacuous only because of a fact about the data.</p>
+        <div class="real">2026-08-04 · 183 of 183 nodes had a group</div></div>
+    </div>
+
+    <div class="case" data-answer="yes">
+      <div class="case-code"><pre><span class="cm"># the same check, after the fix</span>
+<span class="kw">def</span> allowed(u, v):
+    <span class="kw">return</span> group(u) == group(v)   <span class="cm"># same group — not just any group</span></pre></div>
+      <div class="case-q"><span>Can this one be seen refusing?</span>
+        <button class="guess" data-g="yes">It can fail</button>
+        <button class="guess" data-g="no">Never</button></div>
+      <div class="reveal"><span class="tag ok">this one has a pulse</span>
+        <p>Now two nodes in different groups return false — the constraint refuses, and
+        you can watch it refuse. That is the entire difference between a check and its
+        costume: <em>you have seen it say no.</em></p>
+        <div class="real">the fix · verified by watching it reject a planted input</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Four questions the output won’t ask for you</h2>
+    <p class="big">Care doesn’t scale and doesn’t survive a deadline. A short list, run
+    mechanically, does.</p>
+    <div class="q"><div class="q-num">01</div><div class="q-body">
+      <h3>Do the parts reconstruct the whole?</h3>
+      <p>After any split or filter, assert the pieces sum back to the input. A deficit
+      that repeats every run is a systematic drop, not noise.</p></div></div>
+    <div class="q"><div class="q-num">02</div><div class="q-body">
+      <h3>Can this control be made to fail on demand?</h3>
+      <p>Feed it the input it exists to reject; confirm it says no. Derive the verdict
+      from the values — never from a statistic a zero denominator can silence.</p></div></div>
+    <div class="q"><div class="q-num">03</div><div class="q-body">
+      <h3>Did this constraint ever refuse anything?</h3>
+      <p>Every filter, gate and guard should report its rejection count. Zero
+      rejections, ever, means it is decoration.</p></div></div>
+    <div class="q"><div class="q-num">04</div><div class="q-body">
+      <h3>Is the result too clean to believe?</h3>
+      <p>“0 of 2485.” “0% untraceable.” “100% pass.” A perfect number is the cheapest
+      smoke alarm there is — suspect it first.</p></div></div>
+  </section>
+
+  <footer>
+    <div class="stat">13</div>
+    <div class="stat-cap">independent instances of this one bug, in a single working
+    day — most of them in fresh code, written by someone who was actively hunting for
+    exactly it.</div>
+    <p class="close">Knowing the failure mode <em>intimately</em> did not prevent
+    producing it. The instrument fails more often than the hypothesis.</p>
+    <p class="fine">So the defence can’t be diligence. It has to be a handful of
+    questions asked in code, on every run — so that a check must be <em>seen</em> to
+    fail before its passing is allowed to mean anything.</p>
+  </footer>
+</div>
+
+
+<div class="wrap" style="border-top:1px solid var(--line);margin-top:8px">
+  <p style="font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:30px 0 60px;max-width:60ch">
+    From <a href="https://ipezygj.github.io/eval-audit-site/">an independent eval-integrity practice</a> —
+    auditing the numbers people compute and then believe. The full method is in the book,
+    <a href="https://leanpub.com/measurednotbelieved"><em>Measured, Not Believed</em></a>.
+  </p>
+</div>
+
+<script>
+(function(){
+  var cv=document.getElementById('scope'), ctx=cv.getContext('2d'),
+      verdict=document.getElementById('verdict'),
+      stim=document.getElementById('stim'), send=document.getElementById('send'),
+      nEl=document.getElementById('n'), rEl=document.getElementById('r'),
+      varEl=document.getElementById('var'), flatnote=document.getElementById('flatnote'),
+      css=getComputedStyle(document.documentElement);
+  var W,H,dpr, t=0, probes=0, beats=[], reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function color(v){return css.getPropertyValue(v).trim();}
+  function resize(){
+    dpr=Math.min(2,window.devicePixelRatio||1);
+    W=cv.clientWidth; H=cv.clientHeight;
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize',resize); resize();
+
+  function draw(){
+    var grid=color('--scope-grid'), trace=color('--scope-trace'),
+        flat=color('--scope-flat'), glow=color('--scope-glow'), bg=color('--scope-bg');
+    ctx.clearRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle=grid; ctx.lineWidth=1;
+    for(var x=0;x<W;x+=26){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(var y=0;y<H;y+=26){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    var mid=H*0.42; // the PASS baseline (high = healthy/pass)
+    // baseline label ticks
+    ctx.fillStyle=color('--scope-dim'); ctx.font='11px ui-monospace,monospace';
+    ctx.fillText('PASS',8,mid-8); ctx.fillText('REJECT',8,H-12);
+    ctx.strokeStyle='#1d3a39'; ctx.setLineDash([3,5]);
+    ctx.beginPath();ctx.moveTo(0,H-24);ctx.lineTo(W,H-24);ctx.stroke(); ctx.setLineDash([]);
+
+    // the trace: a flat line at PASS. A "beat" is a probe — but it stays flat.
+    ctx.lineWidth=2.4; ctx.strokeStyle=trace;
+    ctx.shadowColor=glow; ctx.shadowBlur=12;
+    ctx.beginPath();
+    for(var px=0;px<=W;px++){
+      var yy=mid;
+      // tiny sweep shimmer so it reads as "live", never a real deviation
+      if(!reduce) yy=mid+Math.sin((px*0.14)+t*0.06)*0.6;
+      // a passing "blip" travels but never reaches REJECT — a dead pulse
+      beats.forEach(function(b){
+        var d=px-b.x; if(Math.abs(d)<16){ yy += Math.exp(-(d*d)/40)* -6; }
+      });
+      if(px===0)ctx.moveTo(px,yy); else ctx.lineTo(px,yy);
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+    // sweep head
+    var hx=(t*1.6)%W;
+    ctx.fillStyle=trace; ctx.globalAlpha=.9;
+    ctx.beginPath();ctx.arc(hx,mid,2.6,0,7);ctx.fill(); ctx.globalAlpha=1;
+
+    // move beats leftward
+    beats=beats.filter(function(b){b.x-=1.6; return b.x>-20;});
+    t+=1;
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  if(reduce){ draw(); } else { requestAnimationFrame(draw); }
+
+  function probe(){
+    probes++; nEl.textContent=probes; rEl.textContent='0';
+    // variance stays pinned at 0.00 — the whole point
+    varEl.textContent='0.00';
+    verdict.textContent='PASS';
+    beats.push({x:W});
+    if(reduce) draw();
+    var v=stim.value.trim();
+    stim.value='';
+    if(probes>=3) flatnote.classList.add('show');
+    stim.focus();
+  }
+  send.addEventListener('click',probe);
+  stim.addEventListener('keydown',function(e){if(e.key==='Enter')probe();});
+
+  document.querySelectorAll('.case').forEach(function(card){
+    var ans=card.getAttribute('data-answer'), rev=card.querySelector('.reveal'),
+        q=card.querySelector('.case-q');
+    card.querySelectorAll('.guess').forEach(function(b){
+      b.addEventListener('click',function(){
+        var right=b.getAttribute('data-g')===ans;
+        rev.classList.add('show');
+        var m=document.createElement('span');
+        m.style.cssText='font-family:var(--mono);font-size:12px;font-weight:600;color:'+
+          (right?'var(--accent)':'var(--caution)');
+        m.textContent=right?'✓ you saw it':'✗ look again';
+        q.appendChild(m);
+        card.querySelectorAll('.guess').forEach(function(x){x.disabled=true;x.style.opacity=.45;x.style.cursor='default';});
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
