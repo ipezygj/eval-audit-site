@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Measurement Ledger — every claim I checked, both ways it went</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><!-- DRAFT: remove noindex on approval -->
+<meta name="description" content="A public ledger of independent re-measurements across astrophysics, earth science, public statistics and AI evaluation: the claims that held, the ones that didn't, and what happened next.">
+<meta property="og:title" content="The Measurement Ledger">
+<meta property="og:description" content="Every claim I re-measured, both ways it went — with the code, the data and the authors' responses.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="article.css">
+<link rel="canonical" href="https://ipezygj.com/ledger.html">
+<style>
+  .draft-banner{background:var(--verdict); color:#fff; text-align:center; padding:8px 12px;
+    font-family:ui-monospace,Consolas,monospace; font-size:.78rem; letter-spacing:.08em}
+  .hero{padding:56px 0 8px}
+  .hero h1{font-size:clamp(1.9rem,5vw,2.6rem); line-height:1.12; letter-spacing:-.015em; margin:.5rem 0 0; font-weight:600; text-wrap:balance}
+  .hero .lede{font-size:1.15rem; color:var(--muted); margin:1rem 0 0}
+  .counts{display:flex; gap:26px; flex-wrap:wrap; margin:1.6rem 0 0; font-family:ui-monospace,Consolas,monospace}
+  .counts b{font-size:1.5rem; display:block; letter-spacing:-.02em}
+  .counts span{font-size:.72rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+  section{padding:14px 0 6px}
+  .section-h{font-size:1.3rem; margin:2rem 0 .2rem; font-weight:600}
+  .entry{background:var(--paper-2); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px 13px; margin:14px 0; box-shadow:var(--shadow)}
+  .entry .tag{font-family:ui-monospace,Consolas,monospace; font-size:.68rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted)}
+  .entry h3{margin:.35rem 0 .3rem; font-size:1.06rem; line-height:1.3; font-weight:600}
+  .entry p{margin:.25rem 0 .5rem; font-size:.95rem; color:var(--ink)}
+  .entry .resp{font-size:.88rem; color:var(--muted); margin:.35rem 0 0}
+  .pill{display:inline-block; font-family:ui-monospace,Consolas,monospace; font-size:.68rem;
+    letter-spacing:.08em; text-transform:uppercase; padding:2px 9px; border-radius:99px; border:1px solid var(--line)}
+  .pill.held{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
+  .pill.over{color:var(--verdict); border-color:var(--verdict)}
+  .pill.open{color:var(--muted)}
+  .foot-note{color:var(--muted); font-size:.9rem; margin:2.2rem 0 3rem}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">DRAFT — NOT PUBLISHED · numbers pending re-verification against evidence files</div>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="index.html">Measured<span class="dot">,</span> Not Believed</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Public measurement ledger · 2026</div>
+    <h1>Every claim I re-measure goes in this ledger — both ways it goes.</h1>
+    <p class="lede">Independent re-computation of published quantitative claims, from raw or released data,
+    with the test fixed in writing before it runs. When a claim holds, that is recorded with the same care
+    as when it does not: an auditor who only ever says no isn't checking anything. Author and institution
+    responses are quoted only with permission.</p>
+    <div class="counts">
+      <div><b>26</b><span>claims re-measured</span></div>
+      <div><b>7</b><span>held as published</span></div>
+      <div><b>12</b><span>overstated or not supported</span></div>
+      <div><b>7</b><span>open / in review</span></div>
+    </div>
+  </div>
+
+  <!-- ================= ASTROPHYSICS ================= -->
+  <section>
+    <h2 class="section-h">Astrophysics &amp; physics</h2>
+
+    <!-- source: project-grb-qpo-audit.md -->
+    <div class="entry">
+      <div class="tag">MNRAS 537, 2313 (2025) · Fermi-GBM</div>
+      <h3>Kilohertz QPOs in three short GRBs, reported at p &lt; 10⁻¹⁰.</h3>
+      <p>Rebuilt the full search from public GBM photon data; the three peaks reproduce. Against a null that
+      keeps each burst's own light-curve shape (instead of a constant rate), the same search matches or beats
+      the observed statistic in 89%, 40% and 4.9% of simulations.</p>
+      <span class="pill over">not significant under a burst-shaped null</span>
+      <p class="resp">Correspondence with the authors open; methods paper in preparation (A&amp;A).</p>
+    </div>
+
+    <!-- source: project-frb-period-audit.md -->
+    <div class="entry">
+      <div class="tag">ApJL 983 (2025) · CHIME</div>
+      <h3>A possible ~126-day period in FRB 20240209A.</h3>
+      <p>The published bootstrap tests whether burst times are random — not whether they are periodic.
+      With the burst storms kept intact, the period can be neither confirmed nor refuted from three cycles:
+      a power test with a truly periodic source shows the folding statistic detects it in only 5–7% of trials.</p>
+      <span class="pill open">not decidable from these data</span>
+      <p class="resp">The author engaged in detail, confirmed a duplicate burst in the table, and plans an
+      out-of-sample test as monitoring grows — which both sides agree is the test that matters.</p>
+    </div>
+
+    <!-- source: project-void-bao-audit.md -->
+    <div class="entry">
+      <div class="tag">MNRAS 540, 545 (2025) · BAO compilation</div>
+      <h3>A local void preferred over Planck-ΛCDM at Δχ² = 28.5 across 42 "independent" BAO points.</h3>
+      <p>The 42 points contain the same galaxy samples two to four times, and the Eisenstein–Hu sound horizon
+      is converted for some points but not others. With one measurement per sample and a free H0·r_d,
+      ΛCDM fits the paper's own data better than the void profile.</p>
+      <span class="pill over">independence assumption fails</span>
+      <p class="resp">The authors' own follow-up paper (Universe 2026) independently reached the free-H0·r_d
+      point; the second author shared the original working spreadsheet, which confirms this compilation
+      (33 of 35 non-DESI values within 0.3%).</p>
+    </div>
+
+    <!-- source: project-h0trend-audit.md; Zenodo 10.5281/zenodo.23002508 -->
+    <div class="entry">
+      <div class="tag">2025 preprint · H(z) compilation</div>
+      <h3>A 6.4σ descending trend in H0 with redshift.</h3>
+      <p>The supernova points are calibrated on SH0ES and the BAO points on the Planck sound horizon, so the
+      "trend" restates the H0 tension between the two anchors. With calibrations included as uncertainties: 2.3σ;
+      with them free: 0σ.</p>
+      <span class="pill over">trend = tension, restated</span>
+      <p class="resp">Manuscript submitted to A&amp;A (Sep 2026); code and data:
+      <span class="mono">doi:10.5281/zenodo.23002508</span>.</p>
+    </div>
+
+    <!-- source: project-planet-y-audit.md -->
+    <div class="entry">
+      <div class="tag">2025 preprint · Kuiper belt</div>
+      <h3>Orbital clustering evidence for an undiscovered planet.</h3>
+      <p>The signal reproduces only with one shape parameter frozen; profiled over it the significance is
+      2.6σ / 2.4σ, the binning choice carries a global p of 0.20, and eleven newly catalogued objects go
+      against the clustering (P = 0.03).</p>
+      <span class="pill over">below discovery-grade once profiled</span>
+      <p class="resp">Shared with the lead author; a research note is planned.</p>
+    </div>
+
+    <!-- source: project-lhc152-audit.md -->
+    <div class="entry">
+      <div class="tag">2026 preprint · LHC combinations</div>
+      <h3>A 152 GeV scalar at 5.4σ.</h3>
+      <p>With the flat WW* background treated consistently and the search's own look-elsewhere effect
+      (~13 effective trials), the combination drops to roughly 4.4σ, and one channel's status changes
+      between the 2023 and 2025 datasets.</p>
+      <span class="pill over">overstated; parked until journal publication</span>
+    </div>
+
+    <!-- source: project-jades-spin-audit.md -->
+    <div class="entry">
+      <div class="tag">JADES · galaxy spin directions</div>
+      <h3>A 3.39σ asymmetry in galaxy rotation directions.</h3>
+      <p>Three duplicate galaxies and a σ-convention reduce it to 3.05σ; parity and spatial checks pass.
+      Within its own framing the claim stands — no comment was warranted.</p>
+      <span class="pill held">held (3.4σ → 3.05σ)</span>
+    </div>
+
+    <!-- source: project-geodipole-o2-audit.md -->
+    <div class="entry">
+      <div class="tag">Science Advances · geomagnetism</div>
+      <h3>Geomagnetic dipole moment correlates with atmospheric O₂ (r = 0.72).</h3>
+      <p>Autocorrelation-corrected: N_eff ≈ 15, p = 0.002–0.005. The correlation survives the same test
+      that kills most smoothed-series claims.</p>
+      <span class="pill held">held</span>
+    </div>
+
+    <!-- source: project-stacking-null-audit.md -->
+    <div class="entry">
+      <div class="tag">Fermi-LAT stacking</div>
+      <h3>A 1.5 GeV line feature in stacked AGN spectra.</h3>
+      <p>Re-measured with the paper's own sample size: 1.45σ.</p>
+      <span class="pill over">consistent with noise</span>
+    </div>
+
+    <!-- own paper; source: project-fermi-43gev-line-audit.md -->
+    <div class="entry">
+      <div class="tag">Own analysis · Fermi-LAT</div>
+      <h3>The 43 GeV line candidate in galaxy clusters, re-examined.</h3>
+      <p>Independent re-analysis of a published cluster line candidate; the significance depends on one
+      cluster (Ophiuchus) and a background model choice (ρ², 3.7σ).</p>
+      <span class="pill open">under review (minor revision), Physics of the Dark Universe</span>
+    </div>
+  </section>
+
+  <!-- ================= EARTH & LIFE ================= -->
+  <section>
+    <h2 class="section-h">Earth &amp; life sciences</h2>
+
+    <!-- source: project-coral-typhoon-audit.md -->
+    <div class="entry">
+      <div class="tag">JGR Oceans (2026) · coral palaeoclimate</div>
+      <h3>Typhoon rainfall reconstruction correlates with AMO (r = 0.54) and solar activity (r = −0.48).</h3>
+      <p>Both series are 11-year running means; the effective sample size is 6–8, and phase-randomised
+      surrogates give p = 0.33 and 0.42. The unsmoothed annual correlations are ±0.3 and not significant.</p>
+      <span class="pill over">smoothing artefact</span>
+      <p class="resp">The first author confirmed the published p-values used the nominal number of years
+      with no autocorrelation adjustment, and described the correlations as low-frequency covariability.</p>
+    </div>
+
+    <!-- source: project-masuda-sealevel-audit.md -->
+    <div class="entry">
+      <div class="tag">Sea level · drought indices</div>
+      <h3>A published sea-level / PDSI drought correlation.</h3>
+      <p>Autocorrelation-corrected: N_eff ≈ 80, p ≈ 0.003. It holds; no letter was needed.</p>
+      <span class="pill held">held</span>
+    </div>
+
+    <!-- source: project-svensmark-forbush-audit.md -->
+    <div class="entry">
+      <div class="tag">Forbush decreases · cloud cover</div>
+      <h3>Cloud response to Forbush decreases, supported by forecast errors.</h3>
+      <p>The main correlation reproduces. The "forecast error" signal, however, equals the forecast's own
+      +2σ cloud excess before the event — it is not additional evidence.</p>
+      <span class="pill open">partly reproduces; letter with the authors</span>
+    </div>
+
+    <!-- source: project-sable-antibody-benchmark.md -->
+    <div class="entry">
+      <div class="tag">Antibody ML benchmark</div>
+      <h3>A binding-affinity model's headline results.</h3>
+      <p>The protein-affinity result is genuine (p = 0.005 with leakage rules enforced). The peptide ordering
+      is not (p = 0.56).</p>
+      <span class="pill held">split: half held, half didn't</span>
+      <p class="resp">Letter with the corresponding author.</p>
+    </div>
+  </section>
+
+  <!-- ================= PUBLIC DATA & STATISTICS ================= -->
+  <section>
+    <h2 class="section-h">Public data &amp; official statistics</h2>
+
+    <!-- source: project-kela-audit-fi.md -->
+    <div class="entry">
+      <div class="tag">Kela · Finnish benefit statistics</div>
+      <h3>A structural inconsistency in published benefit series.</h3>
+      <p>Finding sent to Kela's statistics unit. Kela reviewed it, had no objections, suggested one
+      methodological merge, and gave permission to cite their response. Submitted to a Finnish economics
+      journal (Sep 2026).</p>
+      <span class="pill held">acknowledged by the institution</span>
+    </div>
+
+    <!-- source: project-datacite-buddhist-era-years.md -->
+    <div class="entry">
+      <div class="tag">DataCite · global DOI index</div>
+      <h3>166,283 records carry impossible publication years.</h3>
+      <p>99.3% of the index's impossible years are Buddhist-era dates: the offset is exactly +543 in
+      600 of 600 sampled records. Reported to the registering agency.</p>
+      <span class="pill over">systematic metadata defect, root cause identified</span>
+    </div>
+
+    <!-- source: project-ostolasku-comparability.md -->
+    <div class="entry">
+      <div class="tag">Finnish municipal purchase-invoice data</div>
+      <h3>"20.5% duplicates" in one city's open invoice data — apparently an error?</h3>
+      <p>Not an error: the rate is an artefact of the export level. The data itself is sound —
+      but totals across cities are not comparable. The ledger cuts both ways: this one defends the data.</p>
+      <span class="pill held">data defended</span>
+    </div>
+
+    <!-- source: project-drone-detection-audit.md -->
+    <div class="entry">
+      <div class="tag">CWA 18150 · C-UAS standard</div>
+      <h3>A published European workshop agreement states detection performance…</h3>
+      <p>…with sample size 0 and no confidence intervals anywhere in the document.</p>
+      <span class="pill over">performance claims without measurements</span>
+    </div>
+
+    <!-- source: project-eu-ai-act-standard-lane.md, project-ai-act-compute-threshold.md -->
+    <div class="entry">
+      <div class="tag">EU AI Act · GPAI standardisation</div>
+      <h3>Statistical-rigour comments into the drafting process.</h3>
+      <p>Eight of eight submitted comments accepted so far (four more under moderation), including
+      independence requirements and LLM-judge validation. Separately: the 10²⁵ FLOP threshold lacks a
+      tolerance statement — noted to the AI Office (<span class="mono">doi:10.5281/zenodo.22966931</span>).</p>
+      <span class="pill held">accepted into the draft</span>
+    </div>
+  </section>
+
+  <!-- ================= AI EVALUATION ================= -->
+  <section>
+    <h2 class="section-h">AI evaluation &amp; benchmarks</h2>
+
+    <!-- source: index.html case files; project-swebench-rank-audit.md -->
+    <div class="entry">
+      <div class="tag">Eleven public case files</div>
+      <h3>The original case-file series: judges, base rates, rank stability, hidden dimensions.</h3>
+      <p>Eleven audits of AI benchmarks and leaderboards from released data — ten overstated, one certified
+      as holding. Now with a deposited rank-stability study
+      (<span class="mono">doi:10.5281/zenodo.22541065</span>).</p>
+      <span class="pill held">see the case files →</span>
+      <p class="resp"><a href="index.html#proof">Full write-ups on the front page.</a></p>
+    </div>
+  </section>
+
+  <!-- ================= WRITING SYSTEMS ================= -->
+  <section>
+    <h2 class="section-h">Writing systems</h2>
+
+    <!-- source: project-script-transcription-audit.md, project-proto-elamite-granularity.md -->
+    <div class="entry">
+      <div class="tag">Rongorongo · corpus statistics</div>
+      <h3>A machine-readable transcription of the rongorongo corpus, with its error structure measured.</h3>
+      <p>Deposited (<span class="mono">doi:10.5281/zenodo.22825533</span>, code
+      <span class="mono">10.5281/zenodo.22834627</span>); under review at JDMDH. A companion measurement:
+      the same proto-Elamite corpus yields 1,738 / 680 / 468 signs under three published counting
+      conventions — sign-count disagreements are notation, not discovery.</p>
+      <span class="pill open">under review</span>
+    </div>
+  </section>
+
+  <!-- ================= METHOD ================= -->
+  <section>
+    <h2 class="section-h">Method &amp; tools</h2>
+
+    <!-- source: project-antistatistics-method.md, nullkit -->
+    <div class="entry">
+      <div class="tag">Published method</div>
+      <h3>R = spread ÷ effect: a one-number robustness check for published claims.</h3>
+      <p>Method paper deposited (<span class="mono">doi:10.5281/zenodo.22162050</span>). The periodicity
+      work above runs on an open null-model toolkit (burst-shaped nulls, selection-aware calibration,
+      trials-factor verification) that ships with each paper.</p>
+      <span class="pill held">published</span>
+    </div>
+  </section>
+
+  <p class="foot-note">
+    Every entry above was computed from public or released data, with the test pre-registered in a version-controlled
+    file before it ran. Where an author or institution is quoted, it is with permission. If you rely on a number —
+    a benchmark, a procurement criterion, a published effect — and want it re-measured the same way:
+    <a href="mailto:ilpo@ipezygj.com">ilpo@ipezygj.com</a>.
+  </p>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:18px 0; color:var(--muted); font-size:.85rem">
+    Ilpo Väätäinen · <a href="index.html">Measured, Not Believed</a> · <a href="mailto:ilpo@ipezygj.com">ilpo@ipezygj.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
