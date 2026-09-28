@@ -32,3 +32,16 @@ antibody, Kela, EU AI Act, rongorongo).
 | Proto-Elamite 1,738 / 680 / 468 | ~/script-audit/proto-elamite/RESULTS.md | OK |
 
 Fixed during verification: the hero counters (26/7/12/7 were from memory; recounted from the page → 31/5/19/7).
+
+## Publication pass, 2026-09-28 (user: "julkaise ledger ja etusivu")
+- Kela entry HELD (commented out) until 2026-10-06: the 21.9. letter to Kela promised no publication of the
+  result before that date. Counters 31/5/19/7 → 30/5/19/6 on ledger.html and index.html; restore on 6.10.
+- Planet Y: the "eleven new objects go against it (P = 0.03)" clause was withdrawn in ~/planet-y-audit/RESULTS.md
+  (resonance filter); replaced with a note that it was withdrawn. Tag corrected to MNRAS Letters 543, L27 (2025),
+  title to the warp (not "clustering").
+- Correspondence: the FRB, BAO and coral lines described the content of private replies; reduced to
+  "in correspondence" (no permission recorded). Coral: added the results that held in stage 2
+  (~/coral-typhoon-audit/RESULTS.md: ENSO/PDO p 0.002/0.012, multidecadal power p 0.024).
+- Lede: "with the test fixed in writing before it runs" overclaimed; the internal ledger found git-verified
+  preregistration for only part of the lanes → "Where I could ...". AI use disclosed (policy change 28.9.).
+- noindex and draft banner removed.

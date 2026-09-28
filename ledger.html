@@ -4,10 +4,9 @@
 <meta charset="utf-8">
 <title>The Measurement Ledger — every claim I checked, both ways it went</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex"><!-- DRAFT: remove noindex on approval -->
 <meta name="description" content="A public ledger of independent re-measurements across astrophysics, earth science, public statistics and AI evaluation: the claims that held, the ones that didn't, and what happened next.">
 <meta property="og:title" content="The Measurement Ledger">
-<meta property="og:description" content="Every claim I re-measured, both ways it went — with the code, the data and the authors' responses.">
+<meta property="og:description" content="Every claim I re-measured, both ways it went — with the code and the data.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="article.css">
@@ -40,7 +39,6 @@
 </head>
 <body>
 
-<div class="draft-banner">DRAFT — NOT PUBLISHED · numbers verified against evidence files 2026-09-28 (LEDGER_VERIFICATION.md) · awaiting approval</div>
 
 <header class="site">
   <div class="wrap masthead">
@@ -54,15 +52,19 @@
   <div class="hero">
     <div class="eyebrow">Public measurement ledger · 2026</div>
     <h1>Every claim I re-measure goes in this ledger — both ways it goes.</h1>
-    <p class="lede">Independent re-computation of published quantitative claims, from raw or released data,
-    with the test fixed in writing before it runs. When a claim holds, that is recorded with the same care
+    <p class="lede">Independent re-computation of published quantitative claims, from raw or released data.
+    Where I could, the test was fixed in writing before it ran; not every entry had that, and the entries
+    make no stronger claim than their own test. When a claim holds, that is recorded with the same care
     as when it does not: an auditor who only ever says no isn't checking anything. Author and institution
-    responses are quoted only with permission.</p>
+    responses are described only with permission.</p>
+    <p class="lede">The work is done with an AI model (Claude, by Anthropic) doing much of the coding, computation
+    and drafting. I choose what to test, check every number on this page against its evidence file, and
+    answer for all of it; own mistakes are corrected in public.</p>
     <div class="counts">
-      <div><b>31</b><span>claims re-measured</span></div>
+      <div><b>30</b><span>claims re-measured</span></div>
       <div><b>5</b><span>held as published</span></div>
       <div><b>19</b><span>overstated or not supported</span></div>
-      <div><b>7</b><span>open / in correspondence</span></div>
+      <div><b>6</b><span>open / in correspondence</span></div>
     </div>
   </div>
 
@@ -89,8 +91,7 @@
       With the burst storms kept intact, the period can be neither confirmed nor refuted from three cycles:
       a power test with a truly periodic source shows the folding statistic detects it in only 5–7% of trials.</p>
       <span class="pill open">not decidable from these data</span>
-      <p class="resp">The author engaged in detail, confirmed a duplicate burst in the table, and plans an
-      out-of-sample test as monitoring grows — which both sides agree is the test that matters.</p>
+      <p class="resp">In correspondence with the author; an out-of-sample test as monitoring grows is the test that matters.</p>
     </div>
 
     <!-- source: project-void-bao-audit.md -->
@@ -102,8 +103,7 @@
       ΛCDM fits the paper's own data better than the void profile.</p>
       <span class="pill over">independence assumption fails</span>
       <p class="resp">The authors' own follow-up paper (Universe 2026) independently reached the free-H0·r_d
-      point; the second author shared the original working spreadsheet, which confirms this compilation
-      (33 of 35 non-DESI values within 0.3%).</p>
+      point. In correspondence with the authors.</p>
     </div>
 
     <!-- source: project-h0trend-audit.md; Zenodo 10.5281/zenodo.23002508 -->
@@ -120,11 +120,12 @@
 
     <!-- source: project-planet-y-audit.md -->
     <div class="entry">
-      <div class="tag">2025 preprint · Kuiper belt</div>
-      <h3>Orbital clustering evidence for an undiscovered planet.</h3>
+      <div class="tag">MNRAS Letters 543, L27 (2025) · Kuiper belt</div>
+      <h3>A warp in the distant Kuiper belt attributed to an unseen planet.</h3>
       <p>The signal reproduces only with one shape parameter frozen; profiled over it the significance is
-      2.6σ / 2.4σ, the binning choice carries a global p of 0.20, and eleven newly catalogued objects go
-      against the clustering (P = 0.03).</p>
+      2.6σ / 2.4σ, and the binning choice carries a global p of 0.20. (An earlier note here, that newly
+      catalogued objects go against the warp, was withdrawn: their orbits are too short to apply the
+      paper's resonance filter.)</p>
       <span class="pill over">below discovery-grade once profiled</span>
       <p class="resp">Shared with the lead author; a research note is planned.</p>
     </div>
@@ -184,10 +185,11 @@
       <div class="tag">JGR Oceans (2026) · coral palaeoclimate</div>
       <h3>Typhoon rainfall reconstruction correlates with AMO (r = 0.54) and solar activity (r = −0.48).</h3>
       <p>Both series are 11-year running means; the effective sample size is 6–8, and phase-randomised
-      surrogates give p = 0.33 and 0.42. The unsmoothed annual correlations are ±0.3 and not significant.</p>
+      surrogates give p = 0.33 and 0.42. The unsmoothed annual correlations are ±0.3 and not significant.
+      Other results in the paper held in the same tests: the change in the ENSO and PDO relationships
+      around 1950 (surrogate p = 0.002 and 0.01) and excess multidecadal power over red noise (p = 0.02).</p>
       <span class="pill over">smoothing artefact</span>
-      <p class="resp">The first author confirmed the published p-values used the nominal number of years
-      with no autocorrelation adjustment, and described the correlations as low-frequency covariability.</p>
+      <p class="resp">Shared with the authors; no comment will be submitted.</p>
     </div>
 
     <!-- source: project-masuda-sealevel-audit.md -->
@@ -222,7 +224,8 @@
   <section>
     <h2 class="section-h">Public data &amp; official statistics</h2>
 
-    <!-- source: project-kela-audit-fi.md -->
+    <!-- source: project-kela-audit-fi.md. HELD until 2026-10-06: the letter to Kela promised no publication
+         of the result before that date. Restore then, and set the counters back to 31 / 7.
     <div class="entry">
       <div class="tag">Kela · Finnish benefit statistics</div>
       <h3>A structural inconsistency in published benefit series.</h3>
@@ -231,6 +234,7 @@
       journal (Sep 2026).</p>
       <span class="pill held">acknowledged by the institution</span>
     </div>
+    -->
 
     <!-- source: project-datacite-buddhist-era-years.md -->
     <div class="entry">
