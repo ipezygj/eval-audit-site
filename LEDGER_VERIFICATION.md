@@ -45,3 +45,9 @@ Fixed during verification: the hero counters (26/7/12/7 were from memory; recoun
 - Lede: "with the test fixed in writing before it runs" overclaimed; the internal ledger found git-verified
   preregistration for only part of the lanes → "Where I could ...". AI use disclosed (policy change 28.9.).
 - noindex and draft banner removed.
+
+## Added 2026-09-28 (second pass): the separation-threshold replication
+| Page claim | Evidence | Status |
+|---|---|---|
+| 653 boards; 55.1% of 2.2M below-1x pairs; 90.8% of 7.3M above; 58 inverted; shuffled 50% | ~/shakeup-atlas-audit/results_main.json + results_main.txt; deposit 10.5281/zenodo.23017379 | OK |
+Counters 30/5/19/6 -> 31/6/19/6.
