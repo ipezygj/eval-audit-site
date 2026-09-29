@@ -1,0 +1,9 @@
+{
+ "_rule": "Card h3 substring -> lane directory (string), or {lane, allow, note}. ledger_claims.py re-derives every number a mapped card states from that lane's evidence files (RESULTS.md, results*, PREREG*, README, replies/, comment/, code/); a percentage also matches its fraction form. 'allow' lists derived values that do not appear literally - each one's derivation goes in 'note' and was verified by hand once. Unmapped cards are reported, not skipped silently.",
+ "Kilohertz QPOs":                       "grb-qpo-audit",
+ "126-day period in FRB":                "frb-period-audit",
+ "local void preferred":                 "void-bao-audit",
+ "coin flip":                            {"lane": "shakeup-atlas-audit",
+                                          "allow": ["2.2", "7.3"],
+                                          "note": "2.2M = below-1x bin sums 759698+547871+851107 = 2158676; 7.3M = above-1x sums 1139194+1345172+1355971+3503088 = 7343425 (results_main.txt, verified 2026-09-29)"}
+}
