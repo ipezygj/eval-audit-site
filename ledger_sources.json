@@ -48,5 +48,12 @@
    "script-audit/proto-elamite"
   ]
  },
- "R = spread": "antistatistics"
+ "R = spread": "antistatistics",
+ "case-file series": "swebench-rank-audit",
+ "Statistical-rigour comments": {
+  "lane": [
+   "eu-ai-act-standard",
+   "ai-act-compute-audit"
+  ]
+ }
 }
