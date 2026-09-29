@@ -55,5 +55,13 @@
    "eu-ai-act-standard",
    "ai-act-compute-audit"
   ]
+ },
+ "impossible publication years": {
+  "lane": "datacite-audit",
+  "allow": [
+   "166.283",
+   "99.3"
+  ],
+  "note": "166,283 = the 22.9. count; fresh recount 29.9. gives 166,297 (+14; recount_out.txt). 99.3% = the 22.9. share; today 96.4% because other registrants added ~5k impossible records to the denominator (RESULTS.md). Re-verified 2026-09-29, card stands by pre-registered rules."
  }
 }
