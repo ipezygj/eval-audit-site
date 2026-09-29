@@ -1,0 +1,12 @@
+name: ledger gate
+on:
+  push:
+    paths: ["ledger.html", "ledger_counts.json", "check_ledger.py"]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python check_ledger.py
