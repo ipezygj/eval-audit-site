@@ -38,5 +38,15 @@
  "Typhoon rainfall": "coral-typhoon-audit",
  "sea-level / PDSI": "masuda-audit",
  "Forbush decreases": "svensmark-audit",
- "stacked AGN spectra": "stacking-null-audit"
+ "stacked AGN spectra": "stacking-null-audit",
+ "binding-affinity model": "lead-research/sable",
+ "published benefit series": "kela-audit-fi",
+ "workshop agreement": "drone-audit",
+ "rongorongo": {
+  "lane": [
+   "script-audit",
+   "script-audit/proto-elamite"
+  ]
+ },
+ "R = spread": "antistatistics"
 }

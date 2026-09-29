@@ -46,9 +46,10 @@ def numbers(text):
 
 
 def evidence(lane_dir):
-    pats = ("RESULTS.md", "results*", "PREREG*", "README*")
+    pats = ("RESULTS.md", "results*", "PREREG*", "README*", "FINDINGS.md", "NOTES.md",
+            "EVIDENCE*.md", "*out.txt", "*results.txt")
     files = [p for pat in pats for p in lane_dir.glob(pat) if p.is_file()]
-    for sub in ("results", "replies", "comment", "code"):
+    for sub in ("results", "replies", "comment", "code", "paper"):
         d = lane_dir / sub
         if d.is_dir():
             files += [p for p in d.rglob("*") if p.is_file() and p.suffix in (".md", ".txt", ".json", ".py")]
@@ -73,14 +74,20 @@ def check(html, sources, root):
         if isinstance(src, str):
             src = {"lane": src}
         allow = set(src.get("allow", []))
-        lane = root / src["lane"]
-        if not lane.is_dir():
-            print(f"[BAD] {key}: lane directory missing: {lane.name}")
+        lanes = src["lane"] if isinstance(src["lane"], list) else [src["lane"]]
+        missing_dir = [ln for ln in lanes if not (root / ln).is_dir()]
+        if missing_dir:
+            print(f"[BAD] {key}: lane directory missing: {missing_dir}")
             bad += 1
             continue
-        ev, nfiles = evidence(lane)
+        ev, nfiles = "", 0
+        for ln in lanes:
+            e, n = evidence(root / ln)
+            ev += e
+            nfiles += n
+        lane = root / lanes[0]
         if not nfiles:
-            print(f"[BAD] {key}: no evidence files found in {lane.name}")
+            print(f"[BAD] {key}: no evidence files found in {'+'.join(lanes)}")
             bad += 1
             continue
         def traced(n):
