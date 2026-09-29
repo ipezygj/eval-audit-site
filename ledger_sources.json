@@ -1,9 +1,42 @@
 {
  "_rule": "Card h3 substring -> lane directory (string), or {lane, allow, note}. ledger_claims.py re-derives every number a mapped card states from that lane's evidence files (RESULTS.md, results*, PREREG*, README, replies/, comment/, code/); a percentage also matches its fraction form. 'allow' lists derived values that do not appear literally - each one's derivation goes in 'note' and was verified by hand once. Unmapped cards are reported, not skipped silently.",
- "Kilohertz QPOs":                       "grb-qpo-audit",
- "126-day period in FRB":                "frb-period-audit",
- "local void preferred":                 "void-bao-audit",
- "coin flip":                            {"lane": "shakeup-atlas-audit",
-                                          "allow": ["2.2", "7.3"],
-                                          "note": "2.2M = below-1x bin sums 759698+547871+851107 = 2158676; 7.3M = above-1x sums 1139194+1345172+1355971+3503088 = 7343425 (results_main.txt, verified 2026-09-29)"}
+ "Kilohertz QPOs": "grb-qpo-audit",
+ "126-day period in FRB": "frb-period-audit",
+ "local void preferred": "void-bao-audit",
+ "coin flip": {
+  "lane": "shakeup-atlas-audit",
+  "allow": [
+   "2.2",
+   "7.3"
+  ],
+  "note": "2.2M = below-1x bin sums 759698+547871+851107 = 2158676; 7.3M = above-1x sums 1139194+1345172+1355971+3503088 = 7343425 (results_main.txt, verified 2026-09-29)"
+ },
+ "descending trend in H0": "h0trend-audit",
+ "unseen planet": {
+  "lane": "planet-y-audit",
+  "allow": [
+   "2.4"
+  ],
+  "note": "2.4 sigma = RESULTS.md r.25 '2023-02-25 -> 2.42 sigma' rounded to one decimal (verified 2026-09-29)"
+ },
+ "152 GeV scalar": {
+  "lane": "lhc152-audit",
+  "allow": [
+   "4.4"
+  ],
+  "note": "'roughly 4.4 sigma' = RESULTS.md r.36 global range 4.3-4.5 midpoint; nominal without WW* 4.36 (T3 table) (verified 2026-09-29)"
+ },
+ "galaxy rotation directions": {
+  "lane": "jades-spin-audit",
+  "allow": [
+   "3.4"
+  ],
+  "note": "3.4 = the paper's own ~3.39 sigma (RESULTS.md r.17) rounded to one decimal (verified 2026-09-29)"
+ },
+ "Geomagnetic dipole": "geodipole-o2-audit",
+ "43 GeV line candidate": "fermi43-audit",
+ "Typhoon rainfall": "coral-typhoon-audit",
+ "sea-level / PDSI": "masuda-audit",
+ "Forbush decreases": "svensmark-audit",
+ "stacked AGN spectra": "stacking-null-audit"
 }
