@@ -22,5 +22,6 @@
  "original case-file series":            [11, 1, 10, 0],
  "coin flip. Measured, then replicated": [1, 1, 0, 0],
  "transcription of the rongorongo":      [0, 0, 0, 0],
- "one-number robustness check":          [0, 0, 0, 0]
+ "one-number robustness check":          [0, 0, 0, 0],
+ "draft tender, then the published":     [0, 0, 0, 0]
 }
