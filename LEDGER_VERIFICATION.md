@@ -36,6 +36,10 @@ Fixed during verification: the hero counters (26/7/12/7 were from memory; recoun
 ## Publication pass, 2026-09-28 (user: "julkaise ledger ja etusivu")
 - Kela entry HELD (commented out) until 2026-10-06: the 21.9. letter to Kela promised no publication of the
   result before that date. Counters 31/5/19/7 → 30/5/19/6 on ledger.html and index.html; restore on 6.10.
+  RESTORED 2026-10-05 (pushed on/after 6.10.). Found on restoring: check_ledger.py counted the commented-out
+  entry, so from the Atlas commit (28.9. evening) the live counters read 31/6/19/6 while 30 entries / 5 open
+  were visible. The restore makes the counters true without changing them; index.html 30/5/19/6 → 31/6/19/6;
+  check_ledger.py now strips comments before counting (sidecar key "benefit series" = [1,0,0,1]).
 - Planet Y: the "eleven new objects go against it (P = 0.03)" clause was withdrawn in ~/planet-y-audit/RESULTS.md
   (resonance filter); replaced with a note that it was withdrawn. Tag corrected to MNRAS Letters 543, L27 (2025),
   title to the warp (not "clustering").

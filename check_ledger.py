@@ -13,6 +13,9 @@ COUNTS = json.loads((Path(__file__).resolve().parent / "ledger_counts.json").rea
 
 
 def recount(html):
+    # Entries inside HTML comments are not on the page. 2026-09-28..10-05 the held Kela entry was counted
+    # from inside its comment, so the live counters said 31 claims / 6 open while 30 / 5 were visible.
+    html = re.sub(r"<!--.*?-->", "", html, flags=re.S)
     counters = {v.strip(): int(k) for k, v in re.findall(r"<b>(\d+)</b><span>([^<]+)</span>", html)}
     titles = [re.sub(r"&[a-z]+;", " ", t) for t in re.findall(r"<h3>([^<]+)</h3>", html)]
     keys = [k for k in COUNTS if not k.startswith("_")]
