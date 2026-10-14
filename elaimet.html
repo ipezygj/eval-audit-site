@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Suomalaisten tuotantoeläinten olot Luken, Ruokaviraston, ProAgrian ja EMA:n julkisista tilastoista: sairaudet, tarkastukset, ulkoilu, antibiootit.">
+<link rel="canonical" href="https://ipezygj.com/elaimet.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tuotantoeläimet tilastoissa">
+<meta property="og:description" content="Suomalaisten tuotantoeläinten olot Luken, Ruokaviraston, ProAgrian ja EMA:n julkisista tilastoista: sairaudet, tarkastukset, ulkoilu, antibiootit.">
+<meta property="og:url" content="https://ipezygj.com/elaimet.html">
+<meta property="og:image" content="https://ipezygj.com/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Tuotantoeläimet tilastoissa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of numbered findings, each with its figure set large beside the text; charts inline. */
+:root {
+  --bg: #f4f6f4;
+  --surface: #ffffff;
+  --fg: #1b2723;
+  --muted: #5b6b65;
+  --rule: #d6ddd9;
+  --accent: #2e6b64;
+  --warn: #9a4a1f;
+  --good: #3c6e2f;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131a18; --surface: #1a2421; --fg: #e3ebe7; --muted: #9aaba4; --rule: #2c3a35;
+    --accent: #6fb5ab; --warn: #e0925f; --good: #8cc276; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131a18; --surface: #1a2421; --fg: #e3ebe7; --muted: #9aaba4; --rule: #2c3a35;
+  --accent: #6fb5ab; --warn: #e0925f; --good: #8cc276; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+main { max-width: 44rem; margin: 0 auto; display: grid; gap: 48px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 6vw, 2.9rem); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.25; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 500; font-size: 1.2rem; line-height: 1.3; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.lede { font-size: 1.1rem; color: var(--fg); }
+.meta { font-size: 13px; color: var(--muted); }
+section { display: grid; gap: 20px; }
+.finding { display: grid; grid-template-columns: 8.5rem 1fr; gap: 8px 24px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.finding > * { min-width: 0; }
+.fig { font-family: var(--display); font-weight: 700; font-size: 2.1rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.fig small { display: block; font-family: var(--mono); font-weight: 400; font-size: 11px; letter-spacing: .04em; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+.finding.warn .fig { color: var(--warn); }
+.finding.good .fig { color: var(--good); }
+.text { display: grid; gap: 8px; }
+.src { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.tag { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; border: 1px solid currentColor; }
+.tag.good { color: var(--good); } .tag.limit { color: var(--muted); }
+.chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; overflow-x: auto; }
+.chart svg { display: block; width: 100%; height: auto; min-width: 320px; }
+.chart figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+svg text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+svg .lbl { fill: var(--fg); font-weight: 500; }
+svg .grid { stroke: var(--rule); stroke-width: 1; }
+svg .line { fill: none; stroke: var(--warn); stroke-width: 2.5; }
+svg .dot { fill: var(--warn); }
+svg .bar { fill: var(--muted); opacity: .45; }
+svg .bar.fi { fill: var(--good); opacity: 1; }
+svg .bar.eu { fill: var(--fg); opacity: .7; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+td { padding: 6px 0; border-bottom: 1px solid var(--rule); }
+td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.box { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 20px; display: grid; gap: 12px; }
+ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 6px; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 560px) {
+  .finding { grid-template-columns: 1fr; }
+  .fig { font-size: 1.9rem; }
+}
+</style>
+</head>
+<body>
+
+<main>
+  <header>
+    <div class="eyebrow">Suomi · tuotantoeläimet · tilanne 14.10.2026</div>
+    <h1>Mitä tilastot kertovat suomalaisten tuotantoeläinten oloista</h1>
+    <p class="lede">Luvut ovat Luken, Ruokaviraston, ProAgrian ja Euroopan lääkeviraston julkisista tilastoista. Kysymys pidettiin auki, joten mukana on myös se, mikä puhuu suomalaisen tuotannon puolesta.</p>
+    <p class="meta">Ilpo Väätäinen. Datan haku, taulukointi ja tekstin luonnos tehtiin tekoälyavustajalla; luvut on luettu lähteistä, ei arvioitu.</p>
+  </header>
+
+  <section aria-labelledby="h-tulokset">
+    <h2 id="h-tulokset">Kuusi havaintoa</h2>
+
+    <div class="finding">
+      <div class="fig">96 %<small>teurastetuista eläimistä on broilereita, lihasta 36 %</small></div>
+      <div class="text">
+        <h3>Eläiminä lähes kaikki ovat broilereita, lihakiloina reilu kolmannes</h3>
+        <p>Vuonna 2025 teurastamoissa teurastettiin 85,3 miljoonaa eläintä: 82,1 miljoonaa broileria, 1,74 miljoonaa lihasikaa ja 243 000 nautaa. Vuonna 2000 teurastettiin 48,6 miljoonaa, ja kasvu tulee lähes kokonaan broilereista.</p>
+        <table>
+          <tr><td></td><td class="n">eläimistä</td><td class="n">lihasta</td></tr>
+          <tr><td>Siipikarja</td><td class="n">97,6 %</td><td class="n">38,7 %</td></tr>
+          <tr><td>Siat</td><td class="n">2,1 %</td><td class="n">40,8 %</td></tr>
+          <tr><td>Naudat</td><td class="n">0,3 %</td><td class="n">20,2 %</td></tr>
+        </table>
+        <p>Lihakilo mittaa sitä, mitä syödään. Eläinten määrä mittaa sitä, kuinka moni elää tuotannossa. Tonniin lihaa tarvitaan noin 560 broileria, 11 sikaa tai 3 nautaa.</p>
+        <p class="src">Luke, lihantuotanto 0300 (teurastukset ja lihantuotanto kg)</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="fig">42,5 %<small>lypsylehmistä yli 100 lehmän karjoissa (2000: 0 %)</small></div>
+      <div class="text">
+        <h3>Tilat ovat kasvaneet nopeasti</h3>
+        <table>
+          <tr><td>Lypsylehmät yli 100 lehmän karjoissa</td><td class="n">0 % → 42,5 %</td><td class="n">2000–2025</td></tr>
+          <tr><td>Lihasiat yli 1000 paikan sikaloissa</td><td class="n">49 % → 65 %</td><td class="n">2015–2025</td></tr>
+          <tr><td>Munivat kanat yli 50 000 kanan kanaloissa</td><td class="n">57 %</td><td class="n">2026</td></tr>
+        </table>
+        <p>Tilakoko ei yksinään kerro hyvinvoinnista. Se kertoo, millaisissa yksiköissä eläimet elävät.</p>
+        <p class="src">Luke, kotieläinten lukumäärä 0300, 0500, 0600</p>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <div class="fig">27,7 %<small>lihasioista keuhkokalvon&shy;tulehdus 2025</small></div>
+      <div class="text">
+        <h3>Sikojen sairausmuutokset teurastamossa ovat yleistyneet</h3>
+        <p>Noin joka neljännellä teurastetulla lihasialla todetaan keuhkokalvontulehdus. Osuus oli 22,4 % vuonna 2018 ja huipussaan 30,9 % vuonna 2023. Sydänpussintulehdus nousi 4,0 %:sta 6,5 %:iin ja hännänpurenta 0,9 %:sta 1,4 %:iin. Luokitus on pysynyt samana koko jakson, joten vuodet ovat vertailukelpoisia.</p>
+        <p class="src">Ruokavirasto, sikojen lihantarkastuslöydökset 2018–2025</p>
+      </div>
+    </div>
+
+    <figure class="chart" style="margin:0">
+      <svg id="pig" viewBox="0 0 640 260" role="img" aria-label="Keuhkokalvontulehduksen osuus lihasioista 2018–2025"></svg>
+      <figcaption>Keuhkokalvontulehdus lihasioilla lihantarkastuksessa, % teurastetuista. Pystyakseli alkaa nollasta.</figcaption>
+    </figure>
+
+    <div class="finding warn">
+      <div class="fig">36 %<small>tarkastetuista tiloista laiminlyöntejä (114/315)</small></div>
+      <div class="text">
+        <h3>Joka kolmannella tarkastetulla tilalla oli puutteita</h3>
+        <p>Vuonna 2025 ilman epäilyä tehdyissä tarkastuksissa eläinten hyvinvointivaatimuksia ei noudatettu 36 %:lla tuotantoeläintiloista. Kiireellisiä toimia vaati 2 tapausta.</p>
+        <p><span class="tag limit">Rajoitus</span> Tilat valitaan osin satunnaisesti, osin riskitekijöiden perusteella, eikä näitä eritellä. Luku ei siksi kerro, kuinka yleisiä laiminlyönnit ovat kaikilla tiloilla. Erittely on pyydetty Ruokavirastolta.</p>
+        <p class="src">Ruokavirasto, Eläinten hyvinvoinnin valvonta 2025, taulukko 2</p>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <div class="fig">5,4 v<small>lypsylehmän keskimääräinen poistoikä</small></div>
+      <div class="text">
+        <h3>Lypsylehmät poistetaan harvoin vanhuuden takia</h3>
+        <p>Vähintään kahdesti poikineista poistetuista lehmistä (36 927) vain 2,0 % poistettiin siksi, että ne olivat vanhoja.</p>
+        <table>
+          <tr><td>Utaretulehdus</td><td class="n">18,7 %</td></tr>
+          <tr><td>Huono hedelmällisyys</td><td class="n">14,1 %</td></tr>
+          <tr><td>Huono tuotos tai jalostusarvo</td><td class="n">6,8 %</td></tr>
+          <tr><td>Jalkasairaus</td><td class="n">5,4 %</td></tr>
+          <tr><td>Tapaturma</td><td class="n">4,6 %</td></tr>
+          <tr><td>Vanha</td><td class="n">2,0 %</td></tr>
+        </table>
+        <p>Poistoikä on pidentynyt: vuonna 2004 se oli 4,9 vuotta. Data kattaa tuotosseurannan karjat, noin 189 000 lehmää.</p>
+        <p class="src">ProAgria, Lypsykarjan tuotosseurannan tulokset 2024</p>
+      </div>
+    </div>
+
+    <div class="finding good">
+      <div class="fig">15,7<small>mg/PCU antibiootteja 2024 (EU-ka 89,6)</small></div>
+      <div class="text">
+        <h3>Antibiootteja käytetään hyvin vähän</h3>
+        <p><span class="tag good">Puhuu Suomen puolesta</span> Suomi on EU:n toiseksi pienin tuotantoeläinten antibioottien käyttäjä Ruotsin jälkeen. Vähäinen käyttö kertoo hyvästä taudinhallinnasta ja varovaisesta lääkinnästä, mutta ei yksinään mittaa eläinten hyvinvointia.</p>
+        <p class="src">EMA, ESUAvet 2024, taulukko A9</p>
+      </div>
+    </div>
+
+    <figure class="chart" style="margin:0">
+      <svg id="abx" viewBox="0 0 640 230" role="img" aria-label="Antibioottien myynti tuotantoeläimille 2024, mg/PCU"></svg>
+      <figcaption>Antibioottien myynti tuotantoeläimille 2024, mg/PCU (milligrammaa eläinbiomassan yksikköä kohden).</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="h-ulos">
+    <h2 id="h-ulos">Pääsevätkö eläimet ulos?</h2>
+    <p>Pito-olojen luvut ovat maatalouslaskennasta 2020. Seuraava laskenta tehdään 2030.</p>
+
+    <div class="finding warn">
+      <div class="fig">0,1 %<small>sikapaikoista ulkokasvatusta (2020)</small></div>
+      <div class="text">
+        <h3>Siat: ulkona pito on kielletty</h3>
+        <p>Sikojen pitäminen ulkona on kielletty koko maassa afrikkalaisen sikaruton torjumiseksi. Kielto koskee myös luomutiloja. Poikkeus sallitaan, jos ulkotarhan ympärille rakennetaan toinen aita, joko teräsverkko vähintään kahden metrin päähän vanhasta aidasta tai sähköaita, ja siitä ilmoitetaan kunnaneläinlääkärille kaksi kuukautta etukäteen. Kielto on ollut voimassa vuodesta 2017. Itse tauti löytyi Suomesta villisioista heinäkuussa 2026.</p>
+        <table>
+          <tr><td>Sikapaikat ulkokasvatuksessa</td><td class="n">0,1 %</td></tr>
+          <tr><td>Sikatilat, joilla on jaloittelualue</td><td class="n">6,1 %</td></tr>
+          <tr><td>Lihasiat osittain rakolattiaisissa sikaloissa</td><td class="n">86 %</td></tr>
+          <tr><td>Sikatilat, joilla on vapaaporsituspaikkoja</td><td class="n">10 %</td></tr>
+          <tr><td>Luomusikoja teurastettiin 2025 (2022: 8 500)</td><td class="n">5 400</td></tr>
+        </table>
+        <p>Luomusikoja oli 0,3 % teurastetuista sioista, ja niiden määrä on laskenut. Ilman vapaaporsituspaikkoja emakko porsii porsitushäkissä.</p>
+        <p class="src">Ruokavirasto, ilmoitus sikojen ulkonapidosta (MMMa 401/2017); Luke, eläinsuojat 0200, 0300, 0500; Luke, luomuliha 0500</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="fig">37 %<small>lypsylehmien paikoista parsinavetoissa (2020)</small></div>
+      <div class="text">
+        <h3>Naudat: osa elää kytkettynä, laidunnus on vähentynyt</h3>
+        <p>Parsinavetassa lehmä on kytkettynä paikalleen. Parsipaikkojen osuus kaikista nautapaikoista laski 46 %:sta (2010) 25 %:iin (2020). Vuodesta 2024 kytkettyjen lehmien ja hiehojen on pitänyt päästä laitumelle tai jaloittelemaan vähintään 90 päivää vuodessa, joista 60 kesällä. Uusia parsinavettoja ei saa enää rakentaa.</p>
+        <table>
+          <tr><td>Lypsytilat, jotka laiduntavat</td><td class="n">87 % → 72 %</td><td class="n">2010–2020</td></tr>
+          <tr><td>Lypsylehmien laidunkausi</td><td class="n">4,6 kk</td><td class="n">2020</td></tr>
+          <tr><td>Lypsylehmien aika laitumella päivässä</td><td class="n">11,7 h</td><td class="n">2020</td></tr>
+        </table>
+        <p class="src">Luke, eläinsuojat 0100, 0700; aluehallintovirasto, tiedote laidunnus- ja jaloitteluvaatimuksesta</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="fig">46 %<small>kanapaikoista virikehäkeissä (2020)</small></div>
+      <div class="text">
+        <h3>Munivat kanat: häkit eivät kadonneet, ne muuttuivat</h3>
+        <p>Perinteiset häkit kiellettiin EU:ssa vuonna 2012. Vuonna 2010 niissä oli 32 % kanapaikoista, vuonna 2020 ei yhtään. Tilalle tulivat pääosin virikehäkit, joissa on orsi, pesä ja kuopimisalue. Ulkokanaloissa oli 5 % kanapaikoista.</p>
+        <table>
+          <tr><td>Virikehäkki</td><td class="n">22,9 % → 46,3 %</td></tr>
+          <tr><td>Kerroslattiakanala</td><td class="n">12,5 % → 35,8 %</td></tr>
+          <tr><td>Ulkokanala</td><td class="n">0 % → 5,0 %</td></tr>
+        </table>
+        <p class="src">Luke, eläinsuojat 0400 (2010 → 2020)</p>
+      </div>
+    </div>
+
+    <p>Broilereiden ulkoilusta ei ole tilastoa.</p>
+  </section>
+
+  <section aria-labelledby="h-ihminen">
+    <h2 id="h-ihminen">Vaikuttaako sian keuhkokalvontulehdus lihan syöjään?</h2>
+    <div class="box">
+      <p>Tunnettua terveysriskiä kypsennetyn sianlihan syöjälle ei ole.</p>
+      <ul>
+        <li>Muutos on sian rintaontelossa, keuhkojen ja rintakehän pinnalla. Lihantarkastaja poistaa muuttuneet osat. Koko ruho hylätään, jos tauti on levinnyt yleiseksi, esimerkiksi verenmyrkytyksenä.</li>
+        <li>Tavallisimmat aiheuttajat, kuten <i>Actinobacillus pleuropneumoniae</i> ja <i>Glaesserella parasuis</i>, ovat sian tauteja eivätkä tartu ihmiseen ruoan kautta.</li>
+        <li>Yksi mahdollinen aiheuttaja, <i>Streptococcus suis</i>, voi sairastuttaa ihmisen. Tartunta tulee tavallisesti haavan kautta raakaa lihaa käsiteltäessä, joten riskissä ovat lähinnä teurastamo- ja sikalatyöntekijät. Kypsennys tuhoaa bakteerin.</li>
+      </ul>
+      <p>Keuhkokalvontulehdus on siis ennen kaikkea eläimen kärsimystä ja sairautta, ei ruokaturvallisuusongelma. Epäsuora yhteys ihmiseen kulkee antibioottien kautta: hengitystieinfektiot ovat yksi yleisimmistä syistä lääkitä sikoja, ja runsas käyttö lisää vastustuskykyisiä bakteereja. Suomessa käyttö on vähäistä.</p>
+      <p class="src">Yleistieto eläinlääketieteen kirjallisuudesta, ei tämän työn omaa mittausta.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-aiempi">
+    <h2 id="h-aiempi">Mitä tästä on jo tutkittu</h2>
+    <table>
+      <tr><td><b>Sikojen keuhkokalvontulehdus</b><br>Hälli ym. (2020) totesivat sen yleistyneen selvästi 2010-luvulla. Riskitekijöinä olivat sikalatyyppi ja sikalan koko. Tämän sivun luvut jatkavat samaa sarjaa vuoteen 2025.</td></tr>
+      <tr><td><b>Laiminlyönnit tarkastuksissa</b><br>Väärikkälä ym. (2019) kävivät läpi tarkastusraportit vuosilta 2010–2015: laiminlyöntejä oli 24 %:lla nautatiloista ja 28 %:lla sikatiloista. Erittelyä satunnaisesti ja riskin perusteella valittuihin tiloihin ei ole julkaistu.</td></tr>
+      <tr><td><b>Broilerien kuolleisuus</b><br>Ylen selvityksen mukaan vähintään miljoona broileria vuodessa kuolee ennen teurastusta. Vertaisarvioitua kansallista aikasarjaa ei löytynyt.</td></tr>
+      <tr><td><b>Broilerien jalkapohjat</b><br>Kaukonen ym. (2016) löysivät vakavia muutoksia 64 %:lta broileriemoista teurasiässä (10 tilaa). Teurastamoiden kansallisia pisteitä ei ole julkaistu.</td></tr>
+    </table>
+    <p>Sikojen ja tarkastusten suunnat on siis raportoitu aiemmin. Uutta tietoa olisivat laiminlyöntien todellinen yleisyys satunnaisesti valituilla tiloilla sekä broilerien kuolleisuus koko maan tasolla. Kumpaakin on pyydetty Ruokavirastolta.</p>
+  </section>
+
+  <section aria-labelledby="h-auki">
+    <h2 id="h-auki">Mitä ei vielä tiedetä</h2>
+    <ul>
+      <li><b>Broilerit, 96 % eläimistä ja 36 % lihasta.</b> Kasvatuksen aikainen kuolleisuus ja jalkapohjien kunto puuttuvat julkisista tilastoista. Teurastamon tilasto näkee vain elävänä perille tulleet linnut.</li>
+      <li><b>Laiminlyöntien todellinen yleisyys.</b> Satunnaisesti valittujen tilojen tulokset erikseen.</li>
+      <li><b>Nautojen ruhjeet ja emakoiden lapahaavat.</b> Niiden osuudet nousevat jyrkästi 2021–2022, mikä voi johtua kirjaustavan muutoksesta. Niitä ei käytetä ennen kuin asia on selvitetty.</li>
+    </ul>
+    <p>Nämä on pyydetty Ruokavirastolta tietopyynnöllä 14.10.2026. Vastausta odotetaan noin 28.10.</p>
+  </section>
+
+  <section aria-labelledby="h-lahteet">
+    <h2 id="h-lahteet">Lähteet</h2>
+    <ul class="meta">
+      <li><a href="https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/">Luke, tilastotietokanta</a>: kotieläinten lukumäärä, lihantuotanto, kokoluokat</li>
+      <li><a href="https://www.ruokavirasto.fi/globalassets/yritykset/elintarvikeala/teurastus/teurastamot/lihantarkastustilastot/sikojen-lihantarkastusloydokset-2025.pdf">Ruokavirasto, lihantarkastuslöydökset 2017–2025</a></li>
+      <li><a href="https://www.ruokavirasto.fi/globalassets/elaimet/elainten-hyvinvointi/valvonta/elainten-hyvinvoinnin-valvonta-2025.pdf">Ruokavirasto, Eläinten hyvinvoinnin valvonta 2025</a></li>
+      <li><a href="https://www.hamk.fi/wp-content/uploads/2025/03/Tuotosseurannan_tulokset_2024.pdf">ProAgria, Lypsykarjan tuotosseurannan tulokset 2024</a></li>
+      <li><a href="https://www.ema.europa.eu/en/documents/report/european-sales-use-antimicrobials-veterinary-medicine-annual-surveillance-report-2024_en.pdf">EMA, ESUAvet 2024</a></li>
+      <li><a href="https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/">Luke, eläinsuojat ja lantavarastot (maatalouslaskenta 2010 ja 2020)</a></li>
+      <li><a href="https://www.ruokavirasto.fi/globalassets/viljelijat/elaintenpito/elaintaudit/afrikkalainen-sikarutto/rv_ilmoitus_sikojen_ulkonapidosta.pdf">Ruokavirasto, ilmoitus sikojen ulkonapidosta</a></li>
+      <li><a href="https://www.sttinfo.fi/tiedote/71228056/lehmien-ja-hiehojen-pitaa-paasta-parresta-jaloittelemaan-tai-laitumille-vahintaan-kolmen-kuukauden-ajan-vuodessapublisherId=69818103&amp;lang=fi">Aluehallintovirasto: lehmien ja hiehojen pitää päästä parresta jaloittelemaan tai laitumille</a></li>
+      <li><a href="https://link.springer.com/article/10.1186/s40813-020-00156-0">Hälli ym. 2020, Porcine Health Management</a></li>
+      <li><a href="https://doi.org/10.3390/ani9050263">Väärikkälä ym. 2019, Animals</a></li>
+      <li><a href="https://doi.org/10.1080/03079457.2016.1197377">Kaukonen ym. 2016, Avian Pathology</a></li>
+      <li><a href="https://www.verkkouutiset.fi/a/yle-yli-miljoona-broileria-kuolee-jo-ennen-teurastusta/">Yle: yli miljoona broileria kuolee ennen teurastusta (Verkkouutiset)</a></li>
+    </ul>
+  </section>
+</main>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  function el(svg, tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e); return e;
+  }
+  function fi(v) { return String(v).replace(".", ","); }
+
+  // Lihasikojen keuhkokalvontulehdus, % (Ruokavirasto)
+  var pig = [[2018,22.41],[2019,22.47],[2020,23.80],[2021,23.31],[2022,27.96],[2023,30.88],[2024,29.73],[2025,27.73]];
+  var s = document.getElementById("pig");
+  var L = 44, R = 616, T = 20, B = 226, ymax = 35;
+  var x = function (i) { return L + i * (R - L) / (pig.length - 1); };
+  var y = function (v) { return B - v / ymax * (B - T); };
+  [0, 10, 20, 30].forEach(function (g) {
+    el(s, "line", { x1: L, x2: R, y1: y(g), y2: y(g), "class": "grid" });
+    el(s, "text", { x: L - 8, y: y(g) + 4, "text-anchor": "end" }, g + " %");
+  });
+  el(s, "polyline", { points: pig.map(function (d, i) { return x(i) + "," + y(d[1]); }).join(" "), "class": "line" });
+  pig.forEach(function (d, i) {
+    el(s, "circle", { cx: x(i), cy: y(d[1]), r: 4, "class": "dot" });
+    el(s, "text", { x: x(i), y: B + 18, "text-anchor": "middle" }, d[0]);
+    el(s, "text", { x: x(i), y: y(d[1]) - 10, "text-anchor": "middle", "class": "lbl" }, fi(d[1].toFixed(1)));
+  });
+
+  // Antibiootit 2024, mg/PCU (ESUAvet A9)
+  var abx = [["Ruotsi",11.3,""],["Suomi",15.7,"fi"],["Tanska",34.9,""],["Saksa",75.5,""],["EU-keskiarvo",89.6,"eu"],["Espanja",166.9,""]];
+  var a = document.getElementById("abx");
+  var AL = 110, AR = 580, row = 34, top = 10, amax = 180;
+  var ax = function (v) { return AL + v / amax * (AR - AL); };
+  abx.forEach(function (d, i) {
+    var yy = top + i * row;
+    el(a, "text", { x: AL - 10, y: yy + 17, "text-anchor": "end", "class": d[2] ? "lbl" : "" }, d[0]);
+    el(a, "rect", { x: AL, y: yy + 4, width: Math.max(1, ax(d[1]) - AL), height: 20, rx: 2, "class": "bar " + d[2] });
+    el(a, "text", { x: ax(d[1]) + 6, y: yy + 18, "class": "lbl" }, fi(d[1].toFixed(1)));
+  });
+})();
+</script>
+
+</body>
+</html>
