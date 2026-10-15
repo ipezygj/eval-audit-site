@@ -142,8 +142,15 @@
     .file,.tier,.probe{transition:transform .18s ease, box-shadow .18s ease}
     .file:hover,.tier:hover{transform:translateY(-2px)}
   }
+  .lang{display:inline-flex;gap:4px;font-family:ui-monospace,Consolas,monospace;font-size:.72rem}
+  .lang a,.lang span{padding:3px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+  .lang span{border-color:var(--accent);color:var(--ink)}
+  .lang a:hover{text-decoration:none;border-color:var(--accent);color:var(--accent)}
+  @media(max-width:620px){.masthead{flex-wrap:wrap}}
 </style>
 <link rel="canonical" href="https://ipezygj.com/">
+<link rel="alternate" hreflang="en" href="https://ipezygj.com/">
+<link rel="alternate" hreflang="fi" href="https://ipezygj.com/fi/">
 <meta property="og:url" content="https://ipezygj.com/">
 <meta property="og:image" content="https://ipezygj.com/og-card.png">
 <meta property="og:image:width" content="1200">
@@ -156,10 +163,11 @@
 <header>
   <div class="wrap masthead">
     <span class="brand">Measured<span class="dot">,</span> Not Believed <span style="color:var(--muted);font-weight:400">— eval integrity</span></span>
-    <span style="display:flex;gap:18px;align-items:center">
+    <span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
       <a class="nav" href="ledger.html" style="color:var(--accent)">the ledger →</a>
       <a class="nav" href="status.html" style="color:var(--accent)">live status →</a>
       <a class="nav" href="calculator.html" style="color:var(--accent)">free checks →</a>
+      <span class="lang" aria-label="Language / Kieli"><span aria-current="true">🇬🇧 EN</span><a href="fi/" hreflang="fi" lang="fi">🇫🇮 FI</a></span>
     </span>
   </div>
 </header>

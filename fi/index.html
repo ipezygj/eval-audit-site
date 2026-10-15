@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<title>Riippumaton mittaus — Measured, Not Believed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Lasken julkaistuja määrällisiä väitteitä uudelleen niiden omasta aineistosta – tutkimuksia, virallisia tilastoja ja päätöksenteon lukuja – ja kirjaan tuloksen julkisesti kumpaankin suuntaan. Ilpo Väätäinen, Helsinki.">
+<meta property="og:title" content="Riippumaton mittaus — Measured, Not Believed">
+<meta property="og:description" content="Useimmat otsikkoluvut eivät kestä toista mittausta. Lasken ne uudelleen niiden omasta aineistosta ja kirjaan tuloksen julkisesti.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fi_FI">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%90%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --paper:#F5F7F9; --paper-2:#FFFFFF; --ink:#12161E; --muted:#586274;
+    --line:#DCE1E8; --accent:#0E7C86; --accent-soft:#0e7c8618; --verdict:#C1392B;
+    --shadow:0 1px 2px rgba(16,22,32,.05), 0 8px 30px rgba(16,22,32,.05);
+    --maxw:66ch;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0D1117; --paper-2:#151B24; --ink:#E8EDF3; --muted:#93A0B1;
+      --line:#222A35; --accent:#37C6D0; --accent-soft:#37c6d016; --verdict:#EA7160;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#F5F7F9; --paper-2:#FFFFFF; --ink:#12161E; --muted:#586274;
+    --line:#DCE1E8; --accent:#0E7C86; --accent-soft:#0e7c8618; --verdict:#C1392B;
+    --shadow:0 1px 2px rgba(16,22,32,.05), 0 8px 30px rgba(16,22,32,.05);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0D1117; --paper-2:#151B24; --ink:#E8EDF3; --muted:#93A0B1;
+    --line:#222A35; --accent:#37C6D0; --accent-soft:#37c6d016; --verdict:#EA7160;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    line-height:1.62; font-size:18px;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  .mono{font-family:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Consolas,monospace}
+  .wrap{max-width:min(92vw,760px); margin:0 auto; padding:0 20px}
+  .eyebrow{
+    font-family:ui-monospace,Consolas,monospace; font-size:.7rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1,h2,h3{text-wrap:balance; font-weight:600; line-height:1.12; letter-spacing:-.01em}
+  hr{border:none; border-top:1px solid var(--line); margin:0}
+
+  header{border-bottom:1px solid var(--line); background:var(--paper-2)}
+  .masthead{display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:18px 0}
+  .brand{font-size:.95rem; font-weight:600; letter-spacing:-.01em}
+  .brand .dot{color:var(--verdict)}
+  .nav{font-family:ui-monospace,Consolas,monospace; font-size:.72rem; letter-spacing:.06em; color:var(--muted)}
+
+  .hero{padding:64px 0 44px}
+  .hero h1{font-size:clamp(2rem,5.4vw,3.15rem); margin:.5rem 0 0}
+  .hero .lede{font-size:1.24rem; color:var(--muted); margin:1.15rem 0 0; max-width:var(--maxw)}
+  .hero .lede b{color:var(--ink); font-weight:600}
+  .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; align-items:center}
+  .btn{
+    font-family:ui-monospace,Consolas,monospace; font-size:.82rem; letter-spacing:.03em;
+    padding:12px 20px; border-radius:7px; border:1px solid transparent; cursor:pointer; display:inline-block;
+  }
+  .btn-primary{background:var(--accent); color:#fff; box-shadow:var(--shadow)}
+  .btn-primary:hover{text-decoration:none; filter:brightness(1.06)}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink)}
+  .btn-ghost:hover{text-decoration:none; border-color:var(--accent); color:var(--accent)}
+
+  section{padding:48px 0}
+  .section-h{font-size:1.6rem; margin:0 0 6px}
+  .section-sub{color:var(--muted); margin:0 0 26px; max-width:var(--maxw)}
+  p{max-width:var(--maxw)}
+
+  .files{display:grid; gap:18px}
+  .file{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:10px;
+    padding:22px 22px 20px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .file::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent)}
+  .file .tag{font-family:ui-monospace,Consolas,monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+  .file h3{font-size:1.16rem; margin:.35rem 0 .5rem}
+  .file p{font-size:.98rem; margin:.2rem 0; color:var(--ink)}
+  .readout{
+    font-family:ui-monospace,Consolas,monospace; font-variant-numeric:tabular-nums;
+    font-size:.86rem; background:var(--accent-soft); border-radius:7px; padding:12px 14px;
+    margin:12px 0 4px; color:var(--ink); line-height:1.7; border:1px solid var(--line);
+  }
+  .readout .k{color:var(--muted)}
+  .readout .claim{color:var(--verdict)}
+  .readout .real{color:var(--accent); font-weight:600}
+  .verdict{
+    font-family:ui-monospace,Consolas,monospace; font-size:.72rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--verdict); font-weight:700; margin-top:10px; display:inline-block;
+    border:1px solid var(--verdict); padding:3px 9px; border-radius:5px;
+  }
+  .file-more{display:block; margin-top:14px; font-family:ui-monospace,Consolas,monospace; font-size:.78rem; color:var(--accent)}
+
+  .tiers{display:grid; gap:16px; grid-template-columns:1fr}
+  @media(min-width:680px){.tiers{grid-template-columns:repeat(3,1fr)}}
+  .tier{background:var(--paper-2); border:1px solid var(--line); border-radius:10px; padding:22px; display:flex; flex-direction:column; box-shadow:var(--shadow)}
+  .tier.feature{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow)}
+  .tier .name{font-size:1.05rem; font-weight:600}
+  .tier .price{font-family:ui-monospace,Consolas,monospace; font-size:1.5rem; font-weight:600; margin:8px 0 2px; letter-spacing:-.02em}
+  .tier .price small{font-size:.72rem; color:var(--muted); font-weight:400; letter-spacing:.02em}
+  .tier .who{font-size:.86rem; color:var(--muted); margin:0 0 14px; min-height:2.4em}
+  .tier ul{list-style:none; padding:0; margin:0 0 6px; font-size:.92rem; display:grid; gap:8px}
+  .tier li{padding-left:18px; position:relative}
+  .tier li::before{content:"—"; position:absolute; left:0; color:var(--accent)}
+  .feature .flag{font-family:ui-monospace,Consolas,monospace; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .tier-cta{margin-top:auto; display:block; text-align:center; padding-top:12px; padding-bottom:12px}
+
+  .method{display:grid; gap:14px; grid-template-columns:1fr}
+  @media(min-width:640px){.method{grid-template-columns:1fr 1fr}}
+  .probe{border:1px solid var(--line); border-radius:9px; padding:16px 18px; background:var(--paper-2)}
+  .probe .n{font-family:ui-monospace,Consolas,monospace; font-size:.7rem; color:var(--accent); letter-spacing:.1em}
+  .probe h3{font-size:1rem; margin:.3rem 0 .3rem}
+  .probe p{font-size:.9rem; color:var(--muted); margin:0}
+
+  .book{background:var(--paper-2); border:1px solid var(--line); border-radius:12px; padding:26px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:22px; align-items:center; justify-content:space-between}
+  .book .t{max-width:44ch}
+  .book h3{font-size:1.28rem; margin:0 0 6px}
+  .book p{font-size:.96rem; color:var(--muted); margin:0}
+
+  .final{text-align:center; padding:60px 0 68px}
+  .final h2{font-size:clamp(1.6rem,4.4vw,2.3rem); margin:0 auto 10px; max-width:20ch}
+  .final p{color:var(--muted); margin:0 auto 26px; max-width:52ch}
+  .final .cta-row{justify-content:center}
+
+  footer{border-top:1px solid var(--line); color:var(--muted); font-size:.82rem; padding:24px 0 40px}
+  footer .mono{font-size:.74rem; letter-spacing:.04em}
+
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+  @media (prefers-reduced-motion:no-preference){
+    .file,.tier,.probe{transition:transform .18s ease, box-shadow .18s ease}
+    .file:hover,.tier:hover{transform:translateY(-2px)}
+  }
+  .lang{display:inline-flex;gap:4px;font-family:ui-monospace,Consolas,monospace;font-size:.72rem}
+  .lang a,.lang span{padding:3px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+  .lang span{border-color:var(--accent);color:var(--ink)}
+  .lang a:hover{text-decoration:none;border-color:var(--accent);color:var(--accent)}
+  @media(max-width:620px){.masthead{flex-wrap:wrap}}
+</style>
+<link rel="canonical" href="https://ipezygj.com/fi/">
+<link rel="alternate" hreflang="en" href="https://ipezygj.com/">
+<link rel="alternate" hreflang="fi" href="https://ipezygj.com/fi/">
+<meta property="og:url" content="https://ipezygj.com/fi/">
+<meta property="og:image" content="https://ipezygj.com/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header>
+  <div class="wrap masthead">
+    <span class="brand">Measured<span class="dot">,</span> Not Believed <span style="color:var(--muted);font-weight:400">— riippumaton mittaus</span></span>
+    <span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <a class="nav" href="../ledger.html" style="color:var(--accent)">tuloskirja (en) →</a>
+      <a class="nav" href="../elaimet.html" style="color:var(--accent)">tuotantoeläimet →</a>
+      <span class="lang" aria-label="Kieli / Language"><a href="../" hreflang="en" lang="en">🇬🇧 EN</a><span aria-current="true">🇫🇮 FI</span></span>
+    </span>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="eyebrow">Riippumaton mittaus · Helsinki</div>
+    <h1>Useimmat otsikkoluvut eivät kestä toista mittausta.</h1>
+    <p class="lede">Lasken julkaistuja määrällisiä väitteitä uudelleen niiden omasta aineistosta – tutkimuksia, virallisia tilastoja, standardeja ja tekoälyn vertailulukuja. Testi lukitaan kirjallisesti ennen laskemista aina kun se on mahdollista, ja jokainen tulos kirjataan julkiseen tuloskirjaan <b>kumpaankin suuntaan</b>: tähän mennessä 31 väitettä, joista 6 kesti, 19 oli liioiteltu tai ei tukenut väitettään ja 6 on auki. Suuren osan koodista ja laskennasta tekee tekoälymalli; minä päätän, mitä testataan, ja tarkistan jokaisen luvun.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="../ledger.html">Lue tuloskirja (englanniksi) →</a>
+      <a class="btn btn-ghost" href="#yhteys">Ota yhteyttä</a>
+    </div>
+  </div>
+
+  <hr>
+
+  <section class="wrap">
+    <div class="eyebrow">Suomi · julkiset luvut</div>
+    <h2 class="section-h">Päätöksiä tehdään luvuilla, joita harva laskee uudelleen.</h2>
+    <p class="section-sub">Etuusmenojen arviot, hallituksen esitysten kustannusarviot ja virallisten tilastojen sarjat ovat päätöksenteon pohja. Mittaan niitä samalla tavalla kuin tutkimusta: luku toistetaan ensin lähdeaineistosta, sitten testataan, ja tulos lähetetään laatijalle ennen julkaisua.</p>
+
+    <div class="files">
+      <div class="file">
+        <div class="tag">Kela · etuustilastot</div>
+        <h3>Rakenteellinen epäjohdonmukaisuus julkaistuissa etuussarjoissa.</h3>
+        <p>Löydös lähetettiin Kelan tilastoyksikölle. Kela kävi sen läpi, ei esittänyt vastaväitteitä, ehdotti yhtä menetelmällistä yhdistämistä ja antoi luvan viitata vastaukseensa. Käsikirjoitus on arvioitavana suomalaisessa taloustieteen lehdessä.</p>
+        <span class="verdict" style="color:var(--accent);border-color:var(--accent)">laitos kuittasi</span>
+      </div>
+
+      <div class="file">
+        <div class="tag">Ruokavirasto · Luke · EMA</div>
+        <h3>Mitä tilastot kertovat suomalaisten tuotantoeläinten oloista.</h3>
+        <p>Julkisista tilastoista koottu kokonaiskuva: eläinmäärät, valvonnan tulokset, antibioottien käyttö ja ulkonapito. Esimerkiksi vuoden 2025 ilman epäilyä tehdyissä tarkastuksissa hyvinvointivaatimuksia ei noudatettu 36 %:lla tuotantoeläintiloista.</p>
+        <a class="file-more" href="../elaimet.html">Lue koko sivu →</a>
+      </div>
+
+      <div class="file">
+        <div class="tag">Ministeriö · arviointihankinta</div>
+        <h3>Kommentit hankintaluonnokseen – ja julkaistu hankinta.</h3>
+        <p>Ministeriö avasi arviointihankintansa luonnoksen kommenteille. Kymmenestä esitetystä kohdasta yhdeksän muuttui siihen suuntaan julkaistussa versiossa, ja yksi täsmentyi. Aineisto-osio vaatii nyt tarjoajilta, miten lähteet valitaan, miten ne saatetaan vertailukelpoisiksi ja kuinka epävarmoja ne ovat. Muitakin kommentoijia oli, joten muutokset ovat kommenttien mukaisia, eivät todistetusti niiden seurausta.</p>
+        <span class="verdict" style="color:var(--accent);border-color:var(--accent)">otettiin hankintaan</span>
+      </div>
+
+      <div class="file">
+        <div class="tag">Kaupungin avoin ostolaskudata</div>
+        <h3>”20,5 % kaksoiskappaleita” – virhe aineistossa?</h3>
+        <p>Ei virhe: osuus syntyy vientitasosta. Aineisto itsessään on kunnossa, mutta kaupunkien summat eivät ole keskenään vertailukelpoisia. Tuloskirja toimii kumpaankin suuntaan – tämä tulos puolustaa aineistoa.</p>
+        <span class="verdict" style="color:var(--accent);border-color:var(--accent)">aineisto kesti</span>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="wrap">
+    <div class="eyebrow">Menetelmä</div>
+    <h2 class="section-h">Viisi kysymystä jokaiselle luvulle.</h2>
+    <p class="section-sub">Ei mielipiteitä vaan laskentaa. Jokainen on tarkistus, jonka huolellinen laatija voisi tehdä itse; arvo on siinä, että ne tehdään kaikki, etukäteen lukittuina, ulkopuolisen silmin.</p>
+    <div class="method">
+      <div class="probe"><div class="n">01 · toisto</div><h3>Toistuuko luku omasta aineistostaan?</h3><p>Ennen mitään testiä luku lasketaan uudelleen samasta lähteestä. Jos se ei toistu, sekin kirjataan – vika voi olla myös omassa laskussa.</p></div>
+      <div class="probe"><div class="n">02 · yksikkö</div><h3>Mitataanko sitä, mitä väitetään?</h3><p>Ilmoittautunut vai suoritettu, brutto vai netto, arvio vai yläraja. Moni virhe on yksikössä, ei laskussa.</p></div>
+      <div class="probe"><div class="n">03 · toteuma</div><h3>Osuiko arvio, kun toteuma tuli?</h3><p>Ennusteita ja arvioita verrataan toteumaan vuosi vuodelta. Yksittäinen ohilaukaus on kohinaa; joka vuosi samaan suuntaan on rakenne.</p></div>
+      <div class="probe"><div class="n">04 · valikointi</div><h3>Montako vaihtoehtoa olisi voinut valita?</h3><p>Paras osajoukko, paras vuosi, paras vertailu – korjataan sen joukon koolla, josta se poimittiin.</p></div>
+      <div class="probe"><div class="n">05 · hauraus</div><h3>Kääntääkö yksi rivi johtopäätöksen?</h3><p>Jos tulos riippuu yhdestä havainnosta, se ei ole vielä tulos.</p></div>
+      <div class="probe" style="background:var(--accent-soft);border-color:var(--accent)"><div class="n">→ ja</div><h3>Jos luku kestää, sanon sen.</h3><p>Mittaaja, joka löytää aina vain vikoja, ei mittaa mitään. Kestäneet kirjataan yhtä huolellisesti kuin kaatuneet, ja omat virheeni korjataan julkisesti.</p></div>
+    </div>
+  </section>
+
+  <section id="yhteys" class="wrap final">
+    <div class="eyebrow" style="display:block;margin-bottom:10px">Yhteys</div>
+    <h2>Lähetä luku, josta olet vähiten varma.</h2>
+    <p>Arvio, kustannuslaskelma tai tilastosarja, jonka varaan päätös on tehty tai tehdään. Kerron, kestääkö se – ja jos kestää, sekin kirjataan.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:ipezygj2@gmail.com">Sähköposti →</a>
+      <a class="btn btn-ghost" href="../about.html" hreflang="en">Tietoa minusta (en)</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ilpo Väätäinen — riippumaton mittaus, Helsinki — <a href="mailto:ipezygj2@gmail.com">ipezygj2@gmail.com</a></div>
+    <div class="mono" style="margin-top:6px">toistettava · etukäteen lukittu · selkokielinen · kumpaankin suuntaan</div>
+  </div>
+</footer>
+
+</body>
+</html>
