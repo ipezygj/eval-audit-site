@@ -95,4 +95,4 @@ submissions are statistically tied for #1 — report a tie group, not a lone #1.
 - [Measured, Not Believed](https://leanpub.com/measurednotbelieved): the book — why AI benchmark
   scores and trading backtests overpromise, and how to catch them.
 
-Contact: ipezygj2@gmail.com
+Contact: ilpo@ipezygj.com
