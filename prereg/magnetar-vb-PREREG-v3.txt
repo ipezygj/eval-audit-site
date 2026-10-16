@@ -1,0 +1,83 @@
+Pre-registration, magnetar 1E 1547.0-5408 / MAGTHOMSCATT grid (Stewart et al. 2026, Nature 656, 590).
+Locked: git commit ca7eb9b57ec5944b3184abc19505f83d63613afa, 2026-10-16 23:49 +03:00 (date typo in the title corrected in 6ffde1257, see section 7).
+Published here before any file from the paper's authors was received or opened.
+Ilpo Väätäinen, independent researcher, ilpo@ipezygj.com
+
+----------------------------------------------------------------------
+
+# PREREG — is the vacuum-birefringence preference robust to the MAGTHOMSCATT geometry search? (v3, LOCKED 16.10.2026)
+
+Written 15.10.2026 (v1), rewritten 16.10.2026 (v2, v3) before the chi-square map has been received or opened. LOCKED by the commit that
+changed this line (user: "ok lukitse ja lähetä"), before any file from Dinh Thi / Stewart has arrived; published on ipezygj.com.
+Changes after the lock go to §7 only (append-only, dated).
+
+## 0. Why the target changed (v1 and v2 were wrong; recorded so the change is visible)
+v1 planned a look-elsewhere correction of the per-band significances quoted in Stewart et al. 2026 (Nature 656, 590; arXiv:2509.19446;
+magnetar 1E 1547.0−5408). Those figures (≈10.5σ 2–8 keV, ≈5.5σ 4–5 keV, ≈3.5σ 4–8 keV) are polarisation detections above the 99 %
+MDP: they do not depend on the (α, ζ) grid, so a grid trials factor does not apply. The ≈2.5σ figure compares the X-ray RVM geometry
+with the radio RVM geometry ("broadly consistent … at the ∼2.5σ level"), a distance between two fits, not a significance of
+MAGTHOMSCATT; v2's test of it (Q2) used the wrong surface and is withdrawn. v2 also misread the paper's remark that "the dominant
+contribution to the χ² values in the Q/I and U/I fits comes from the 7th phase bin": that is the VB-on model's misfit, not the VB
+preference. Both misreadings are corrected in our scoping notes. What remains, and is tested here, is the one place the grid search
+enters the VB argument: the VB-off χ² values in the paper are computed at the VB-on best geometry.
+The 15.10. letter to Dinh Thi promised trials-corrected per-band significances and "nothing about the geometry or the vacuum-
+birefringence interpretation". v3 tests the VB-on vs VB-off comparison itself and needs a VB-off surface that was never requested.
+The protocol sent with the lock says this plainly (scope changed, why, what extra file is needed) and leaves it to the authors
+whether to share the VB-off surface.
+
+## 1. Questions
+Q1 (primary). The paper's best VB-on fit is at (α, ζ) = (0°, 1.5°); the VB-off fit quoted beside it is at the same wedge geometry.
+   Fair comparison: each model at ITS OWN best point of the same grid (same wedge parameters, same α, ζ grid).
+   Δχ²_VB = min_grid χ²_off − min_grid χ²_on, polarisation only (Q/I + U/I). The intensity χ² is reported beside it, not used.
+Q2. (Secondary.) Does Δχ²_VB depend on one phase bin? Leave-one-bin-out over the 7 polarisation phase bins.
+
+## 2. Input (from the authors; private until they say otherwise)
+Q1 needs χ² over the (α, ζ) grid for VB-on AND VB-off, with Q/I and U/I separately (or combined Q/I + U/I). Q2 needs per-phase-bin
+χ² contributions (surfaces, or values at each model's own minimum). If the VB-off surface is not shared, Q1 is "not testable with
+the shared material" and only the reproduction check (§4) is run on the VB-on surface. No reconstruction from figures.
+Condition for Q1 as defined: both surfaces come from the same search space (same wedge parameters, same grid). If they do not (e.g.
+VB-off was searched with a different emission geometry, as the paper's circular-spot alternative), Q1 is reported per surface as
+given and labelled "different search spaces"; no reading is made.
+
+## 3. Statistics (fixed now)
+Q1. Paper point P = the grid cell nearest (α, ζ) = (0°, 1.5°), fixed by coordinates (not by the surface's minimum).
+   (a) Δχ²_own = min χ²_off − min χ²_on (Q/I + U/I). (b) Δχ²_P = χ²_off(P) − χ²_on(P). (c) r = Δχ²_own / Δχ²_P.
+   (d) Goodness of fit of each minimum (χ² and the number of phase bins, as given; no p-value from the paper's unexplained dof).
+   (e) Sensitivity (reported, not decided on): Δχ²_own divided by the larger of 1 and the VB-on reduced χ² at its minimum,
+       χ²_on,min / n_dof with n_dof = 2 × 7 bins − 2 (α, ζ), because a Δχ² between misfitting models overstates the evidence.
+   Approximate significance for orientation only: √Δχ²_own (one discrete model switch; not calibrated — that needs simulations of
+   the VB-off model, which we cannot run). No look-elsewhere factor enters, because both models are minimised over the same grid.
+   Reading (on Q/I + U/I, Δχ²_own and r): "robust to the search" if Δχ²_own ≥ 25 and r ≥ 0.5; "weakened" if 9 ≤ Δχ²_own < 25, or
+   Δχ²_own ≥ 25 with r < 0.5 (r is relative to the paper-point gap, so a large Δχ² with r < 0.5 is still strong evidence and is
+   described as "smaller than the paper's figure but large"); "not robust" if Δχ²_own < 9. "Undefined" if Δχ²_P ≤ 0 or the
+   reproduction check fails (§4). Also reported: the VB-off minimum's (α, ζ) and its distance from the VB-on minimum.
+Q2. Δχ²_VB with each of the 7 bins removed in turn: both models re-minimised over the grid if per-bin surfaces exist; otherwise using
+   each model's per-bin values at ITS OWN full-data minimum (stated). Reading: "single-bin dependent" if removing one bin lowers
+   Δχ²_VB below 9, or below half of the full Δχ²_VB when the full value is positive; report every bin. Undefined if the full value ≤ 0.
+
+## 4. Controls
+- Reproduction at P: the surfaces must reproduce the paper's numbers at P within 5 %. The paper's labels conflict (Methods: panel b
+  χ² 106.8/4 and panel c 95.6/4 for VB-off; the Extended Data Fig. 8 caption has a = Q/I, b = U/I, c = intensity), so both mappings
+  are checked component by component and the one that matches is recorded: mapping A (Q/I 106.8, U/I 95.6), mapping B (U/I 106.8,
+  intensity 95.6). VB-on at P: Q/I 19.0, U/I 10.9, intensity 33.9. If the shared surface is Q/I + U/I combined only, the combined
+  values are checked under each mapping. No mapping reproduces → all readings "undefined (surface-paper mismatch)", and the authors
+  are asked before anything is shared further.
+- Grid boundary: a minimum at α = 0° is the aligned-rotator physical boundary, not a truncation, and is not flagged; a minimum at
+  α = 90° or at the first/last ζ bin is reported (the true minimum may lie outside the searched range).
+- NaN cells are ignored; an all-NaN surface makes that question "not testable".
+- Code tested on synthetic surfaces before the map is opened (`code/test_synth.py`: same-point and elsewhere VB-off minima, the
+  three readings, minimum at α = 0, NaN cells, Δχ²_P ≤ 0, an explicit paper point, both label mappings, the single-bin cases); the
+  test output is committed with this lock.
+
+## 5. Not claimed
+Nothing about QED itself, the inclined-rotator alternative (Taverna et al. 2026), the polarisation-detection significances, the RVM
+fits or their ≈2.5σ comparison. Results of Q1–Q2 only, each with its reading.
+
+## 6. Sharing
+Results go to Dinh Thi and Stewart first, in full, before any posting; joint note offered. The locked protocol, with the §0 change
+stated, is sent to them before the map is opened (the user approves that message). AI assistance: protocol and code drafted with AI
+assistance, and an AI referee reviewed the draft; the author checks the locked protocol and the final numbers.
+
+## 7. After the lock (append-only)
+1. *16.10.2026, right after the lock (commit ca7eb9b57, 23:49 +03:00):* the title said "LOCKED 17.10.2026"; corrected to 16.10.2026,
+   the date of the lock commit. No other change; no file from the authors has arrived.
